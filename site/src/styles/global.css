@@ -7,21 +7,6 @@
 @import "./tokens/elements.css";
 
 /* ------------------------------------------------------------------
-   Site-scale overrides. The design-system tokens above are copied verbatim
-   and the type scale is used as-is; only the page width changes so the
-   layout fills a wide desktop instead of stopping at 1560px.
-   ------------------------------------------------------------------ */
-:root{
-  --max-page:2200px;
-  --gutter:clamp(18px,4vw,112px);
-  --grid-gap:clamp(14px,1.6vw,32px);
-  --column-gap:clamp(24px,2.4vw,48px);
-  /* Macro-whitespace first: sections breathe, hierarchy does the rest. */
-  --section-y:clamp(80px,9vw,176px);
-  --section-y-tight:clamp(56px,6vw,112px);
-}
-
-/* ------------------------------------------------------------------
    Layout primitives. The page is white, dense and ruled — not boxed.
    ------------------------------------------------------------------ */
 html{scroll-behavior:smooth;background:var(--surface)}

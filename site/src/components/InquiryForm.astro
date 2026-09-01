@@ -1,0 +1,120 @@
+---
+/* Underline-only fields with real labels, one filled brass submit — the single filled
+   CTA on the page. Posts to the Cloudflare function without any JavaScript; the
+   thank-you / error state is read from the ?inquiry= query the function redirects to. */
+import Button from './Button.astro';
+import type { HomePage } from '@/lib/sanity';
+
+interface Props { home: HomePage }
+const { home } = Astro.props;
+---
+<section class="wrap iq section-tight" id="inquire" aria-labelledby="iq-title">
+  <div class="rule-black"></div>
+  <div class="grid iq__grid">
+    <div class="iq__intro">
+      <p class="eyebrow">{home.inquiryEyebrow}</p>
+      <h2 id="iq-title" class="display-m iq__title">{home.inquiryHeadline}</h2>
+      {home.inquiryIntro && <p class="body-s iq__lede">{home.inquiryIntro}</p>}
+    </div>
+    <form class="iq__form" method="post" action="/api/inquiry" data-inquiry novalidate>
+      <p class="iq__status iq__status--sent" role="status" tabindex="-1" hidden data-sent>
+        <span class="display-s">Thank you.</span>
+        <span class="body-s">Your inquiry has reached us. We will reply personally within two business days.</span>
+      </p>
+      <p class="iq__status iq__status--error" role="alert" tabindex="-1" hidden data-error>
+        <span class="body-s">Something went wrong and your message did not send. Please check your name, email and message and try again.</span>
+      </p>
+      <div class="iq__fields">
+        <div class="iq__field">
+          <label for="iq-name" class="eyebrow eyebrow--muted">Name <span class="iq__req" aria-hidden="true">*</span></label>
+          <input id="iq-name" name="name" type="text" autocomplete="name" required maxlength="120" />
+        </div>
+        <div class="iq__field">
+          <label for="iq-email" class="eyebrow eyebrow--muted">Email <span class="iq__req" aria-hidden="true">*</span></label>
+          <input id="iq-email" name="email" type="email" autocomplete="email" required maxlength="200" />
+        </div>
+        <div class="iq__field">
+          <label for="iq-phone" class="eyebrow eyebrow--muted">Phone</label>
+          <input id="iq-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
+        </div>
+        <div class="iq__field">
+          <label for="iq-interest" class="eyebrow eyebrow--muted">I am interested in</label>
+          <select id="iq-interest" name="interest">
+            <option>Interior design</option>
+            <option>Personal styling</option>
+            <option>Both</option>
+          </select>
+        </div>
+        <div class="iq__field iq__field--wide">
+          <label for="iq-message" class="eyebrow eyebrow--muted">Tell us a little about the project <span class="iq__req" aria-hidden="true">*</span></label>
+          <textarea id="iq-message" name="message" rows="4" required maxlength="4000"></textarea>
+        </div>
+        <div class="iq__hp" aria-hidden="true">
+          <label for="iq-company">Company</label>
+          <input id="iq-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+      </div>
+      <div class="iq__actions">
+        <Button type="submit" variant="accent">Begin an inquiry</Button>
+        {home.inquiryNote && <span class="eyebrow eyebrow--muted iq__note">{home.inquiryNote}</span>}
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .iq{scroll-margin-top:72px}
+  .iq__grid{padding-top:var(--space-6);align-items:start}
+  .iq__intro{grid-column:1 / span 4;display:flex;flex-direction:column;gap:var(--space-4)}
+  .eyebrow{margin:0}
+  .iq__title{margin:0;max-width:14ch}
+  .iq__lede{margin:0;max-width:var(--measure-narrow)}
+  .iq__form{grid-column:6 / span 7}
+  .iq__fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6) var(--column-gap)}
+  .iq__field{display:flex;flex-direction:column;gap:var(--space-2)}
+  .iq__field--wide{grid-column:1 / -1}
+  .iq__field label{display:block}
+  .iq__req{color:var(--accent-strong)}
+  .iq__field input,.iq__field select,.iq__field textarea{width:100%;min-height:44px;border:0;border-bottom:var(--hairline) solid var(--rule-strong);background:transparent;padding:10px 0;color:var(--ink);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:1.5;transition:border-color var(--dur-base) var(--ease-editorial)}
+  .iq__field textarea{resize:vertical;min-height:88px}
+  .iq__field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 9px) 55%,calc(100% - 4px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:24px;cursor:pointer}
+  .iq__field input:focus,.iq__field select:focus,.iq__field textarea:focus{outline:none;border-bottom-color:var(--accent-strong)}
+  .iq__field input:focus-visible,.iq__field select:focus-visible,.iq__field textarea:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:3px}
+  .iq__hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+  .iq__actions{margin-top:var(--space-7);display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
+  .iq__note{margin:0}
+  .iq__status{margin:0 0 var(--space-6);display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-5) 0;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
+  .iq__status--error{border-top-color:var(--accent-strong)}
+  .iq__status:focus{outline:none}
+  .iq__status[hidden],.iq__fields[hidden],.iq__actions[hidden]{display:none}
+  @media (max-width:1024px){
+    .iq__intro{grid-column:1 / span 3}
+    .iq__form{grid-column:4 / span 5}
+  }
+  @media (max-width:640px){
+    .iq__intro,.iq__form{grid-column:1 / -1}
+    .iq__fields{grid-template-columns:1fr}
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-inquiry]');
+  if (form) {
+    const state = new URLSearchParams(location.search).get('inquiry');
+    const sent = form.querySelector<HTMLElement>('[data-sent]');
+    const error = form.querySelector<HTMLElement>('[data-error]');
+    if (state === 'sent' && sent) { sent.hidden = false; form.querySelector<HTMLElement>('.iq__fields')!.hidden = true; form.querySelector<HTMLElement>('.iq__actions')!.hidden = true; sent.scrollIntoView({ block: 'center' }); sent.focus({ preventScroll: true }); }
+    if (state === 'error' && error) { error.hidden = false; error.scrollIntoView({ block: 'center' }); error.focus({ preventScroll: true }); }
+    // Client-side validation with real messages; the function validates again.
+    form.addEventListener('submit', (e) => {
+      const invalid = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')).filter((el) => !el.checkValidity());
+      if (invalid.length) {
+        e.preventDefault();
+        if (error) { error.hidden = false; }
+        invalid[0].focus();
+        invalid.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+      }
+    });
+    form.addEventListener('input', (e) => (e.target as HTMLElement).removeAttribute('aria-invalid'));
+  }
+</script>

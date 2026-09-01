@@ -1,5 +1,5 @@
 /* Cloudflare Pages Function: POST /api/inquiry
-   Stores the intake as a Sanity `inquiry` document (the "Inquiries" inbox in Studio)
+   Stores the inquiry as a Sanity `inquiry` document (the "Inquiries" inbox in Studio)
    and redirects back to the form with a thank-you state. No JavaScript is required
    on the page; the form is a plain <form method="post">.
 
@@ -12,19 +12,15 @@ interface Env {
   SANITY_WRITE_TOKEN: string;
 }
 
-const FIELDS: Record<string, number> = {
-  name: 120, email: 200, phone: 40, city: 120, service: 40,
-  projectType: 80, budget: 40, scope: 300, experience: 80, goals: 300,
-  timeline: 60, source: 60, message: 4000,
-};
-const SERVICES = new Set(['Interior design', 'Personal styling', 'Both']);
+const MAX = { name: 120, email: 200, phone: 40, interest: 40, message: 4000 } as const;
+const INTERESTS = new Set(['Interior design', 'Personal styling', 'Both']);
 
 const clean = (v: unknown, max: number) =>
   typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, max) : '';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
-  const back = (state: 'sent' | 'error') => Response.redirect(`${url.origin}/inquire/?inquiry=${state}`, 303);
+  const back = (state: 'sent' | 'error') => Response.redirect(`${url.origin}/?inquiry=${state}#inquire`, 303);
 
   let form: FormData;
   try {
@@ -36,16 +32,17 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   // Honeypot: real people never see or fill this field.
   if (clean(form.get('company'), 10)) return back('sent');
 
-  const doc: Record<string, string> = { _type: 'inquiry', receivedAt: new Date().toISOString() };
-  for (const [name, max] of Object.entries(FIELDS)) {
-    const v = clean(form.get(name), max);
-    if (v) doc[name] = v;
-  }
-  if (!doc.name || !doc.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(doc.email) || !doc.message) return back('error');
-  if (!SERVICES.has(doc.service)) doc.service = 'Both';
-  // Keep only the details that belong to the chosen service line.
-  if (doc.service === 'Personal styling') { delete doc.projectType; delete doc.budget; delete doc.scope; }
-  if (doc.service === 'Interior design') { delete doc.experience; delete doc.goals; }
+  const doc = {
+    _type: 'inquiry',
+    name: clean(form.get('name'), MAX.name),
+    email: clean(form.get('email'), MAX.email),
+    phone: clean(form.get('phone'), MAX.phone),
+    interest: clean(form.get('interest'), MAX.interest),
+    message: clean(form.get('message'), MAX.message),
+    receivedAt: new Date().toISOString(),
+  };
+  if (!doc.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(doc.email) || !doc.message) return back('error');
+  if (!INTERESTS.has(doc.interest)) doc.interest = 'Both';
 
   const dataset = env.PUBLIC_SANITY_DATASET || 'production';
   const endpoint = `https://${env.PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2026-08-31/data/mutate/${dataset}`;
