@@ -1,12 +1,13 @@
 ---
 /* The founders: portrait plate in the first four columns; eyebrow, headline, the
-   pillars row, two short paragraphs and a link in the remaining seven. */
+   pillars row, two short paragraphs, then a client's words as a small ruled quote. */
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { HomePage } from '@/lib/sanity';
 
 interface Props { home: HomePage }
 const { home } = Astro.props;
+const t = home.testimonial;
 ---
 <section class="wrap st section-tight" id="studio" aria-labelledby="st-title">
   <div class="rule-black"></div>
@@ -28,14 +29,20 @@ const { home } = Astro.props;
         ))}
       </div>
       <TextLink href="/journal/">Read the journal</TextLink>
+      {t && (
+        <figure class="st__quote">
+          <blockquote class="st__q"><p>&ldquo;{t.quote}&rdquo;</p></blockquote>
+          <figcaption class="st__by"><span class="st__rule" aria-hidden="true"></span><span class="eyebrow eyebrow--muted">{t.attribution}{t.role ? ` · ${t.role}` : ''}</span></figcaption>
+        </figure>
+      )}
     </div>
   </div>
 </section>
 
 <style>
   .st__grid{padding-top:var(--space-6);align-items:start}
-  .st__img{grid-column:1 / span 4}
-  .st__text{grid-column:6 / span 7;display:flex;flex-direction:column;gap:var(--space-5);padding-top:var(--space-4)}
+  .st__img{grid-column:1 / span 5}
+  .st__text{grid-column:7 / span 6;display:flex;flex-direction:column;gap:var(--space-5);padding-top:var(--space-4)}
   .eyebrow{margin:0}
   .st__title{margin:0}
   .st__pillars{display:flex;flex-wrap:wrap;gap:var(--space-3)}
@@ -44,6 +51,11 @@ const { home } = Astro.props;
   .st__body{display:flex;flex-direction:column;gap:var(--space-4);max-width:56ch}
   .st__body p{margin:0}
   .st__lede{font-size:var(--text-title);line-height:1.5;color:var(--ink)}
+  .st__quote{margin:var(--space-6) 0 0;padding-top:var(--space-6);border-top:var(--hairline) solid var(--rule);max-width:56ch}
+  .st__q{margin:0}
+  .st__q p{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-display-s);line-height:1.3;color:var(--ink);text-wrap:pretty}
+  .st__by{margin-top:var(--space-4);display:flex;align-items:center;gap:var(--space-4)}
+  .st__rule{width:40px;height:var(--hairline);background:var(--rule-strong)}
   @media (max-width:1024px){
     .st__img{grid-column:1 / span 4}
     .st__text{grid-column:5 / span 4;padding-top:0}

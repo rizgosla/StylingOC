@@ -7,7 +7,7 @@ for type, colour and spacing; `src/styles/tokens/` is a verbatim copy.
 
 ```
 site/
-├─ src/pages/            index.astro (Home), journal/index.astro, journal/[slug].astro
+├─ src/pages/            index.astro (Home), inquire.astro (intake form), journal/index.astro, journal/[slug].astro
 ├─ src/components/       Astro ports of the design-system components (no React on public pages)
 ├─ src/lib/sanity.ts     data layer: GROQ queries + local fallback
 ├─ src/styles/           tokens (copied from the design system) + global.css
@@ -53,8 +53,10 @@ Create a Pages project from this repository:
 | Environment variables | `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, `PUBLIC_SITE_URL=https://<your-domain>`, `SANITY_WRITE_TOKEN` (encrypt it — used only by the inquiry function) |
 
 The `functions/` folder is picked up automatically: `POST /api/inquiry` becomes a Pages
-Function. It validates the form, stores an `inquiry` document in Sanity (visible under
-**Inquiries** in the Studio) and redirects back to `/?inquiry=sent#inquire`.
+Function. It validates the intake form at `/inquire/`, stores an `inquiry` document in Sanity
+(visible under **Inquiries** in the Studio, with service, project type, budget, timeline and
+so on) and redirects back to `/inquire/?inquiry=sent`. The form does not run under
+`astro dev`; test it with `npm run pages:dev` after a build.
 
 ### Rebuild when the client publishes
 
@@ -80,7 +82,7 @@ Open `https://<your-domain>/studio` and sign in.
   font or spacing controls by design. Leave the *Draft note* filled while a story is being
   reviewed — the page shows a small "Draft — for client review" line and stays out of search
   engines until it is cleared.
-- **Service packages** — the two menus; prices are copy and should be stated in full.
+- **Service packages** — the two menus; each has a small photograph and prices are copy, stated in full. The large plate beside each menu lives on **Home → Services**.
 - **Testimonials** — client words, verbatim, first name only.
 - **Site settings** — navigation, footer columns, taglines, email / phone / Instagram.
 - **Inquiries** — read-only inbox of form submissions.

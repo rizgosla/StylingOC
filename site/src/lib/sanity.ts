@@ -31,7 +31,7 @@ const IMG = `{
   "lqip": asset->metadata.lqip,
   alt, caption
 }`;
-const PKG = `{ _id, line, numeral, title, items, price, priceNote, note }`;
+const PKG = `{ _id, line, numeral, title, items, price, priceNote, note, "image": image ${IMG} }`;
 const CARD = `{
   _id, title, "slug": slug.current, category, location, publishedAt, standfirst, dek, ratio, photoCredit, draftNote,
   "leadImage": leadImage ${IMG}
@@ -51,7 +51,9 @@ const HOME = `{
     "latest": latest[]-> ${CARD},
     "featuredPost": featuredPost-> ${CARD},
     "testimonial": testimonial->{ _id, quote, attribution, role },
-    "studioPortrait": studioPortrait ${IMG}
+    "studioPortrait": studioPortrait ${IMG},
+    "interiorsImage": interiorsImage ${IMG},
+    "stylingImage": stylingImage ${IMG}
   },
   "settings": *[_type == "siteSettings"][0],
   "packages": *[_type == "servicePackage"] | order(line asc, numeral asc) ${PKG},
@@ -97,13 +99,18 @@ export function getHome() {
       featuredPost: featured,
       testimonial: r.home.testimonial || local.homePage.testimonial,
       studioPortrait: cleanImg(r.home.studioPortrait),
+      interiorsImage: cleanImg(r.home.interiorsImage),
+      stylingImage: cleanImg(r.home.stylingImage),
       studioBody: r.home.studioBody?.length ? r.home.studioBody : local.homePage.studioBody,
       pillars: r.home.pillars?.length ? r.home.pillars : local.homePage.pillars,
     };
     const settings: SiteSettings = { ...local.siteSettings, ...stripNulls(r.settings) };
     if (!settings.nav?.length) settings.nav = local.siteSettings.nav;
     if (!settings.footerColumns?.length) settings.footerColumns = local.siteSettings.footerColumns;
-    return { home, settings, packages: r.packages?.length ? r.packages : local.servicePackages };
+    const packages: ServicePackage[] = r.packages?.length
+      ? r.packages.map((p: any) => ({ ...p, image: cleanImg(p.image) }))
+      : local.servicePackages;
+    return { home, settings, packages };
   })();
   return homeMemo;
 }

@@ -63,7 +63,7 @@ async function main() {
   console.log(`Seeding ${projectId}/${dataset}`);
   const tx = client.transaction();
 
-  for (const s of c.servicePackages) tx.createOrReplace({ ...s, _type: 'servicePackage' });
+  for (const s of c.servicePackages) tx.createOrReplace({ ...s, _type: 'servicePackage', image: await imageRef(s.image) });
   for (const t of c.testimonials) tx.createOrReplace({ ...t, _type: 'testimonial' });
   for (const p of c.posts) tx.createOrReplace(await postDoc(p));
 
@@ -73,8 +73,8 @@ async function main() {
     leadStory: { _type: 'reference', _ref: h.leadStory._id },
     latest: h.latest.map((p, i) => ({ _type: 'reference', _ref: p._id, _key: `l${i}` })),
     featuredPost: { _type: 'reference', _ref: h.featuredPost._id },
-    interiorsEyebrow: h.interiorsEyebrow, interiorsHeadline: h.interiorsHeadline, interiorsIntro: h.interiorsIntro,
-    stylingEyebrow: h.stylingEyebrow, stylingHeadline: h.stylingHeadline, stylingIntro: h.stylingIntro,
+    interiorsEyebrow: h.interiorsEyebrow, interiorsHeadline: h.interiorsHeadline, interiorsIntro: h.interiorsIntro, interiorsImage: await imageRef(h.interiorsImage),
+    stylingEyebrow: h.stylingEyebrow, stylingHeadline: h.stylingHeadline, stylingIntro: h.stylingIntro, stylingImage: await imageRef(h.stylingImage),
     testimonial: { _type: 'reference', _ref: h.testimonial._id },
     studioEyebrow: h.studioEyebrow, studioHeadline: h.studioHeadline, studioBody: h.studioBody,
     studioPortrait: await imageRef(h.studioPortrait), pillars: h.pillars,

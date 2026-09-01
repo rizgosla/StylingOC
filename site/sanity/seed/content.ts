@@ -32,7 +32,7 @@ export type BodyNode = Block | ImageBlock | QuoteBlock | ServiceCallout;
 
 export interface ServicePackage {
   _id: string; line: 'interiors' | 'styling'; numeral: string; title: string;
-  items: string[]; price: string; priceNote?: string; note?: string;
+  items: string[]; price: string; priceNote?: string; note?: string; image?: Img | null;
 }
 export interface Testimonial { _id: string; quote: string; attribution: string; role?: string }
 export interface Post {
@@ -48,8 +48,8 @@ export interface SiteSettings {
 }
 export interface HomePage {
   leadStory: Post; latest: Post[]; featuredPost: Post;
-  interiorsEyebrow: string; interiorsHeadline: string; interiorsIntro: string;
-  stylingEyebrow: string; stylingHeadline: string; stylingIntro: string;
+  interiorsEyebrow: string; interiorsHeadline: string; interiorsIntro: string; interiorsImage: Img | null;
+  stylingEyebrow: string; stylingHeadline: string; stylingIntro: string; stylingImage: Img | null;
   testimonial: Testimonial;
   studioEyebrow: string; studioHeadline: string; studioBody: string[]; studioPortrait: Img | null; pillars: string[];
   inquiryEyebrow: string; inquiryHeadline: string; inquiryIntro: string; inquiryNote: string;
@@ -77,19 +77,25 @@ export const images = {
   foundersDenim: { src: '/images/founders-denim.jpeg', width: 1320, height: 1879, alt: 'Jenn and Merlyn standing against a white wall in the studio, in denim and silk shirts.', caption: 'Jenn and Merlyn in the studio' } satisfies Img,
   foundersWarm: { src: '/images/founders-portrait-warm.jpeg', width: 1320, height: 1906, alt: 'Jenn seated in a cream bouclé chair with Merlyn perched on its arm, against a warm taupe studio ground.', caption: 'Portrait of the founders' } satisfies Img,
   foundersGray: { src: '/images/founders-studio-gray.jpeg', width: 1313, height: 1798, alt: 'Jenn and Merlyn laughing together in black and navy tailoring against a grey studio ground.', caption: 'Jenn and Merlyn' } satisfies Img,
+  /* Room photographs from the printed interiors menu — small files, used as thumbnails only. */
+  menuConsultation: { src: '/images/menu-consultation.jpeg', width: 215, height: 401, alt: 'A black vase of greenery and a stack of books on a round travertine coffee table.' } satisfies Img,
+  menuFullService: { src: '/images/menu-full-service.jpeg', width: 217, height: 401, alt: 'Open oak shelving with ceramics above a stone counter and a bouclé stool.' } satisfies Img,
+  menuEDesign: { src: '/images/menu-e-design.jpeg', width: 215, height: 401, alt: 'Fabric and stone samples laid out with a pencil sketch.' } satisfies Img,
+  menuTurnkey: { src: '/images/menu-turnkey.jpeg', width: 217, height: 401, alt: 'A marble kitchen island with two cream counter stools and a vase of olive branches.' } satisfies Img,
+  menuBasicRoom: { src: '/images/menu-basic-room.jpeg', width: 426, height: 301, alt: 'A living room at dusk with a lit fireplace, cream sofas and candles on a dark coffee table.' } satisfies Img,
 };
 
 /* ---------- service packages — verbatim from the two printed menus ---------- */
 export const servicePackages: ServicePackage[] = [
-  { _id: 'package-interiors-01', line: 'interiors', numeral: '01', title: 'Consultation-Only Package', items: ['One-time meeting (in person or virtual) for advice, ideas, color selection, furniture arrangement, and general styling tips.'], price: '$500 per hour' },
-  { _id: 'package-interiors-02', line: 'interiors', numeral: '02', title: 'Full-Service Interior Design Package', items: ['End-to-end service, including concept development, space planning, furniture and décor selection, ordering, contractor coordination, and final styling.'], price: '$20,000 – $40,000', priceNote: 'Depending on square footage and design considerations.' },
-  { _id: 'package-interiors-03', line: 'interiors', numeral: '03', title: 'E-Design Package', items: ['A remote design service where the designer provides a mood board, shopping list, floor plan, and styling tips. Clients handle purchases and execution.'], price: '$3,000 per room' },
-  { _id: 'package-interiors-04', line: 'interiors', numeral: '04', title: 'Turnkey Interior Design Package', items: ['A comprehensive package where the designer handles everything from start to finish, including purchasing, delivery, setup, and finishing touches. Ideal for luxury homes or high-end clients.'], price: '$50,000 – $250,000', priceNote: 'For an entire home, depending on square footage and design consideration.' },
-  { _id: 'package-interiors-05', line: 'interiors', numeral: '05', title: 'Basic Room Design Package', items: ['Space planning, furniture selection, color palette, and styling recommendations. Does not include execution or full project management.'], price: '$5,000 per room' },
-  { _id: 'package-interiors-06', line: 'interiors', numeral: '06', title: 'Evening Design Consultation', items: ['In-person evening consultation available for your convenience.'], price: '$750', priceNote: 'Two-hour minimum.' },
-  { _id: 'package-styling-01', line: 'styling', numeral: '01', title: 'The Style Edit', items: ['One-on-one personal style consultation', 'Create polished outfits using pieces you already own', 'Styling guidance for fit, proportion, layering and accessories', 'Recommendations for key pieces to complete your wardrobe'], price: '$500 per hour', note: 'A focused refresh designed to make your existing wardrobe work beautifully.' },
-  { _id: 'package-styling-02', line: 'styling', numeral: '02', title: 'The Concierge', items: ['Personal style and lifestyle consultation', 'Wardrobe assessment and edit', 'Curated selection and sourcing of new wardrobe pieces', 'Full styling session with complete head-to-toe outfit creation', 'Accessory and finishing-piece recommendations'], price: '$5,000', note: 'A luxury concierge experience — your wardrobe, elevated and curated for you.' },
-  { _id: 'package-styling-03', line: 'styling', numeral: '03', title: 'The Image Experience', items: ['Comprehensive personal image consultation', 'Curated wardrobe selections, sourcing and complete styling', 'Personal color consultation', 'Referrals for hair styling and color, makeup and beauty professionals', 'Beauty and aesthetic treatment recommendations and referrals', 'Coordinated image direction across wardrobe, hair, makeup and beauty'], price: '$10,000', note: 'More than a wardrobe — a complete image experience tailored to how you want to be seen.' },
+  { _id: 'package-interiors-01', line: 'interiors', numeral: '01', title: 'Consultation-Only Package', items: ['One-time meeting (in person or virtual) for advice, ideas, color selection, furniture arrangement, and general styling tips.'], price: '$500 per hour', image: images.menuConsultation },
+  { _id: 'package-interiors-02', line: 'interiors', numeral: '02', title: 'Full-Service Interior Design Package', items: ['End-to-end service, including concept development, space planning, furniture and décor selection, ordering, contractor coordination, and final styling.'], price: '$20,000 – $40,000', priceNote: 'Depending on square footage and design considerations.', image: images.menuFullService },
+  { _id: 'package-interiors-03', line: 'interiors', numeral: '03', title: 'E-Design Package', items: ['A remote design service where the designer provides a mood board, shopping list, floor plan, and styling tips. Clients handle purchases and execution.'], price: '$3,000 per room', image: images.menuEDesign },
+  { _id: 'package-interiors-04', line: 'interiors', numeral: '04', title: 'Turnkey Interior Design Package', items: ['A comprehensive package where the designer handles everything from start to finish, including purchasing, delivery, setup, and finishing touches. Ideal for luxury homes or high-end clients.'], price: '$50,000 – $250,000', priceNote: 'For an entire home, depending on square footage and design consideration.', image: images.menuTurnkey },
+  { _id: 'package-interiors-05', line: 'interiors', numeral: '05', title: 'Basic Room Design Package', items: ['Space planning, furniture selection, color palette, and styling recommendations. Does not include execution or full project management.'], price: '$5,000 per room', image: images.menuBasicRoom },
+  { _id: 'package-interiors-06', line: 'interiors', numeral: '06', title: 'Evening Design Consultation', items: ['In-person evening consultation available for your convenience.'], price: '$750', priceNote: 'Two-hour minimum.', image: null },
+  { _id: 'package-styling-01', line: 'styling', numeral: '01', title: 'The Style Edit', items: ['One-on-one personal style consultation', 'Create polished outfits using pieces you already own', 'Styling guidance for fit, proportion, layering and accessories', 'Recommendations for key pieces to complete your wardrobe'], price: '$500 per hour', note: 'A focused refresh designed to make your existing wardrobe work beautifully.', image: null },
+  { _id: 'package-styling-02', line: 'styling', numeral: '02', title: 'The Concierge', items: ['Personal style and lifestyle consultation', 'Wardrobe assessment and edit', 'Curated selection and sourcing of new wardrobe pieces', 'Full styling session with complete head-to-toe outfit creation', 'Accessory and finishing-piece recommendations'], price: '$5,000', note: 'A luxury concierge experience — your wardrobe, elevated and curated for you.', image: null },
+  { _id: 'package-styling-03', line: 'styling', numeral: '03', title: 'The Image Experience', items: ['Comprehensive personal image consultation', 'Curated wardrobe selections, sourcing and complete styling', 'Personal color consultation', 'Referrals for hair styling and color, makeup and beauty professionals', 'Beauty and aesthetic treatment recommendations and referrals', 'Coordinated image direction across wardrobe, hair, makeup and beauty'], price: '$10,000', note: 'More than a wardrobe — a complete image experience tailored to how you want to be seen.', image: null },
 ];
 const pkg = (id: string) => servicePackages.find((s) => s._id === id)!;
 
@@ -181,10 +187,10 @@ export const siteSettings: SiteSettings = {
     { label: 'Personal styling', href: '/#styling' },
     { label: 'Journal', href: '/journal/' },
     { label: 'The studio', href: '/#studio' },
-    { label: 'Inquire', href: '/#inquire' },
+    { label: 'Inquire', href: '/inquire/' },
   ],
   footerColumns: [
-    { title: 'The studio', items: [{ label: 'Jenn & Merlyn', href: '/#studio' }, { label: 'Journal', href: '/journal/' }, { label: 'Inquire', href: '/#inquire' }] },
+    { title: 'The studio', items: [{ label: 'Jenn & Merlyn', href: '/#studio' }, { label: 'Journal', href: '/journal/' }, { label: 'Inquire', href: '/inquire/' }] },
     { title: 'Services', items: [{ label: 'Interior design', href: '/#interiors' }, { label: 'Personal styling', href: '/#styling' }, { label: 'Evening design consultation', href: '/#interiors' }] },
     { title: 'Contact', items: [{ label: 'Orange County, California', href: '' }] },
   ],
@@ -198,9 +204,11 @@ export const homePage: HomePage = {
   interiorsEyebrow: 'Interior design',
   interiorsHeadline: 'Design that feels like home.',
   interiorsIntro: 'Full-service residential design, remodels, e-design and turnkey furnishing, interior and exterior. We work closely with real-estate agents on pre-listing makeovers and post-purchase transformations.',
+  interiorsImage: images.poolView,
   stylingEyebrow: 'Personal styling',
   stylingHeadline: 'Style that empowers. Confidence that lasts.',
   stylingIntro: 'Wardrobe editing, sourcing and full image direction. Three experiences, from a focused edit of what you already own to complete image direction across wardrobe, hair, makeup and beauty.',
+  stylingImage: images.foundersWarm,
   testimonial: testimonials[0],
   studioEyebrow: 'The studio',
   studioHeadline: 'Jenn & Merlyn',
@@ -212,6 +220,6 @@ export const homePage: HomePage = {
   pillars: ['Vision', 'Intention', 'Beauty', 'Balance'],
   inquiryEyebrow: 'Inquiries',
   inquiryHeadline: 'Tell us about your space.',
-  inquiryIntro: 'Or your wardrobe. A few lines is enough — we will reply personally and arrange a first conversation.',
+  inquiryIntro: 'Or your wardrobe. The intake form takes about five minutes; we read every answer ourselves and reply personally to arrange a first conversation.',
   inquiryNote: 'We reply within two business days.',
 };

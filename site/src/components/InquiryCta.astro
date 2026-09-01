@@ -1,0 +1,42 @@
+---
+/* The closing call to action on every page: black rule, headline, one line, and the
+   single filled brass button, which leads to the intake form. */
+import Button from './Button.astro';
+import type { HomePage } from '@/lib/sanity';
+
+interface Props { home: HomePage }
+const { home } = Astro.props;
+---
+<section class="wrap cta section-tight" id="inquire" aria-labelledby="cta-title">
+  <div class="rule-black"></div>
+  <div class="grid cta__grid">
+    <div class="cta__text">
+      <p class="eyebrow">{home.inquiryEyebrow}</p>
+      <h2 id="cta-title" class="display-l cta__title">{home.inquiryHeadline}</h2>
+    </div>
+    <div class="cta__side">
+      {home.inquiryIntro && <p class="body">{home.inquiryIntro}</p>}
+      <div class="cta__actions">
+        <Button href="/inquire/" variant="accent" size="lg">Begin an inquiry</Button>
+        {home.inquiryNote && <span class="eyebrow eyebrow--muted">{home.inquiryNote}</span>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__grid{padding-top:var(--space-6);align-items:end}
+  .cta__text{grid-column:1 / span 7;display:flex;flex-direction:column;gap:var(--space-4)}
+  .eyebrow{margin:0}
+  .cta__title{margin:0;max-width:12ch;text-wrap:balance}
+  .cta__side{grid-column:8 / span 5;display:flex;flex-direction:column;gap:var(--space-6);padding-bottom:var(--space-2)}
+  .cta__side .body{margin:0;max-width:44ch}
+  .cta__actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
+  @media (max-width:1024px){
+    .cta__text{grid-column:1 / span 5}
+    .cta__side{grid-column:6 / span 3}
+  }
+  @media (max-width:640px){
+    .cta__text,.cta__side{grid-column:1 / -1}
+  }
+</style>

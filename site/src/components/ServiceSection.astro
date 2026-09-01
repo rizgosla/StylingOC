@@ -1,0 +1,98 @@
+---
+/* One service line as its own section, laid out like the printed menu: a black rule,
+   the headline row, then a large portrait plate beside a ruled list of packages —
+   each with a small thumbnail, brass numeral, what is included and the price in full. */
+import Plate from './Plate.astro';
+import TextLink from './TextLink.astro';
+import type { Img, ServicePackage } from '@/lib/sanity';
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  headline: string;
+  intro: string;
+  image: Img | null;
+  packages: ServicePackage[];
+  flip?: boolean;
+}
+const { id, eyebrow, headline, intro, image, packages, flip = false } = Astro.props;
+---
+<section class:list={['wrap', 'svc', 'section-tight', { 'svc--flip': flip }]} id={id} aria-labelledby={`${id}-title`}>
+  <div class="rule-black"></div>
+  <header class="grid svc__head">
+    <div class="svc__intro">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={`${id}-title`} class="display-l svc__title">{headline}</h2>
+    </div>
+    <div class="svc__lede">
+      <p class="body">{intro}</p>
+      <TextLink href="/inquire/">Begin an inquiry</TextLink>
+    </div>
+  </header>
+  <div class="grid svc__body">
+    <div class="svc__plate reveal">
+      <Plate image={image} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 38vw" />
+    </div>
+    <ol class="svc__menu">
+      {packages.map((p) => (
+        <li class="svc__row reveal">
+          <div class="svc__thumb">
+            <Plate image={p.image} ratio="3:4" sizes="160px" caption={false} placeholder="To come" />
+          </div>
+          <div class="svc__text">
+            <div class="svc__name">
+              <span class="numeral" aria-hidden="true">{p.numeral}</span>
+              <h3 class="display-s svc__pkg">{p.title}</h3>
+            </div>
+            <ul class="svc__items">
+              {p.items.map((it) => <li class="body-s">{it}</li>)}
+            </ul>
+            {p.note && <p class="svc__note">{p.note}</p>}
+          </div>
+          <div class="svc__price">
+            <span class="label">{p.price}</span>
+            {p.priceNote && <span class="svc__pn">{p.priceNote}</span>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .svc__head{padding:var(--space-6) 0 var(--space-8);align-items:end}
+  .svc__intro{grid-column:1 / span 7;display:flex;flex-direction:column;gap:var(--space-4)}
+  .svc__lede{grid-column:8 / span 5;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-2)}
+  .svc__lede .body{margin:0;max-width:46ch}
+  .eyebrow{margin:0}
+  .svc__title{margin:0;max-width:14ch;text-wrap:balance}
+  .svc__body{align-items:start}
+  .svc__plate{grid-column:1 / span 5;position:sticky;top:88px}
+  .svc__menu{grid-column:6 / span 7;border-top:var(--hairline) solid var(--rule-black)}
+  .svc--flip .svc__plate{grid-column:8 / span 5;order:2}
+  .svc--flip .svc__menu{grid-column:1 / span 7;order:1}
+  .svc__row{display:grid;grid-template-columns:clamp(88px,9vw,150px) minmax(0,1fr) auto;column-gap:var(--column-gap);align-items:start;padding:var(--space-6) 0;border-bottom:var(--hairline) solid var(--rule)}
+  .svc__thumb{min-width:0}
+  .svc__text{display:flex;flex-direction:column;gap:var(--space-4);min-width:0}
+  .svc__name{display:flex;align-items:baseline;gap:var(--space-4)}
+  .svc__pkg{margin:0;max-width:22ch}
+  .svc__items{display:flex;flex-direction:column;gap:var(--space-2);max-width:56ch}
+  .svc__items li{margin:0}
+  .svc__note{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-body);line-height:1.5;color:var(--ink-muted);max-width:48ch}
+  .svc__price{display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-1);text-align:right;color:var(--ink);white-space:nowrap;padding-top:var(--space-2)}
+  .svc__pn{font-size:var(--text-body-s);line-height:1.5;color:var(--ink-muted);max-width:22ch;white-space:normal}
+  @media (max-width:1024px){
+    .svc__intro{grid-column:1 / span 5}
+    .svc__lede{grid-column:6 / span 3}
+    .svc__plate,.svc--flip .svc__plate{grid-column:1 / span 4;position:static;order:0}
+    .svc__menu,.svc--flip .svc__menu{grid-column:1 / -1;order:1}
+    .svc__row{grid-template-columns:clamp(88px,12vw,140px) minmax(0,1fr);row-gap:var(--space-3)}
+    .svc__price{grid-column:2;align-items:flex-start;text-align:left;padding-top:0}
+    .svc__pn{text-align:left}
+  }
+  @media (max-width:640px){
+    .svc__intro,.svc__lede,.svc__plate,.svc--flip .svc__plate{grid-column:1 / -1}
+    .svc__row{grid-template-columns:88px minmax(0,1fr);column-gap:var(--space-5)}
+    .svc__name{flex-wrap:wrap}
+  }
+</style>

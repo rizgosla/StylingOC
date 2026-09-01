@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro';
 import Plate from '@/components/Plate.astro';
 import PortableText from '@/components/portable-text/PortableText.astro';
 import StoryGrid from '@/components/StoryGrid.astro';
-import InquiryForm from '@/components/InquiryForm.astro';
+import InquiryCta from '@/components/InquiryCta.astro';
 import { getHome, getPosts, getRelated, formatDate, kicker } from '@/lib/sanity';
 
 export async function getStaticPaths() {
@@ -46,7 +46,7 @@ const portrait = Boolean(post.leadImage && post.leadImage.height > post.leadImag
   </article>
 
   {related.length > 0 && <StoryGrid posts={related} title="More stories" moreHref="/journal/" numbered={false} />}
-  <InquiryForm home={home} />
+  <InquiryCta home={home} />
 </Base>
 
 <style>
