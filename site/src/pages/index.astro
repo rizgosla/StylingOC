@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import LeadStory from '@/components/LeadStory.astro';
 import StoryGrid from '@/components/StoryGrid.astro';
-import ServiceList from '@/components/ServiceList.astro';
+import ServiceGrid from '@/components/ServiceGrid.astro';
 import ServiceCollage from '@/components/ServiceCollage.astro';
 import SplitFeature from '@/components/SplitFeature.astro';
 import PullQuote from '@/components/PullQuote.astro';
@@ -26,7 +26,7 @@ const styling = packages.filter((p) => p.line === 'styling');
   <LeadStory post={home.leadStory} rail={rail} />
   <StoryGrid posts={latest} title="The latest" moreHref="/journal/" uniform />
   <ServiceCollage id="interiors" eyebrow={home.interiorsEyebrow} headline={home.interiorsHeadline} intro={home.interiorsIntro} packages={interiors} />
-  <ServiceList id="styling" eyebrow={home.stylingEyebrow} headline={home.stylingHeadline} intro={home.stylingIntro} packages={styling} />
+  <ServiceGrid id="styling" eyebrow={home.stylingEyebrow} headline={home.stylingHeadline} intro={home.stylingIntro} packages={styling} />
   <SplitFeature post={home.featuredPost} />
   <PullQuote quote={home.testimonial.quote} attribution={home.testimonial.attribution} role={home.testimonial.role} />
   <StudioBlock home={home} />

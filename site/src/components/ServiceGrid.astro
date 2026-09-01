@@ -1,0 +1,63 @@
+---
+/* The styling menu as a shop-style grid: a centred title above a black rule, the
+   description in the left column, and the experiences to the right as equal columns
+   divided by hairlines — a plate on the paper ground, then the title, the price and
+   the one italic benefit line centred beneath it. */
+import Plate from './Plate.astro';
+import TextLink from './TextLink.astro';
+import type { ServicePackage } from '@/lib/sanity';
+
+interface Props { id: string; eyebrow: string; headline: string; intro: string; packages: ServicePackage[] }
+const { id, eyebrow, headline, intro, packages } = Astro.props;
+---
+<section class="wrap sgd section-tight" id={id} aria-labelledby={`${id}-title`}>
+  <p class="eyebrow eyebrow--ink sgd__kicker">{eyebrow}</p>
+  <div class="rule-black"></div>
+  <div class="grid sgd__body">
+    <div class="sgd__desc reveal">
+      <h2 id={`${id}-title`} class="display-m sgd__title">{headline}</h2>
+      <p class="body sgd__lede">{intro}</p>
+      <TextLink href="/#inquire">Begin an inquiry</TextLink>
+    </div>
+    <ol class="sgd__items">
+      {packages.map((p, i) => (
+        <li class="sgd__item reveal" style={`--i:${i}`}>
+          <div class="sgd__plate">
+            <Plate image={p.image ?? null} ratio="1:1" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 24vw" caption={false} />
+          </div>
+          <span class="numeral sgd__num" aria-hidden="true">{p.numeral}</span>
+          <h3 class="sgd__name">{p.title}</h3>
+          <p class="sgd__price"><span class="label">{p.price}</span></p>
+          {p.note && <p class="sgd__note">{p.note}</p>}
+        </li>
+      ))}
+    </ol>
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .sgd{scroll-margin-top:72px}
+  .sgd__kicker{margin:0 0 var(--space-5);text-align:center}
+  .sgd__body{padding:var(--space-7) 0;align-items:start}
+  .sgd__desc{grid-column:1 / span 3;display:flex;flex-direction:column;gap:var(--space-5);padding-right:var(--column-gap);position:sticky;top:88px}
+  .sgd__title{margin:0;max-width:12ch;text-wrap:balance}
+  .sgd__lede{margin:0;max-width:34ch}
+  .sgd__items{grid-column:4 / span 9;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2);margin:0}
+  .sgd__item{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-2);min-width:0;transition-delay:calc(var(--i,0) * 90ms)}
+  .sgd__item + .sgd__item::before{content:"";position:absolute;top:0;bottom:0;left:calc(-1 * var(--column-gap));width:var(--hairline);background:var(--rule)}
+  .sgd__plate{width:100%;margin-bottom:var(--space-5)}
+  .sgd__num{font-size:1.125rem}
+  .sgd__name{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);max-width:14ch;text-wrap:balance}
+  .sgd__price{margin:var(--space-1) 0 0;color:var(--accent-strong)}
+  .sgd__note{margin:var(--space-3) 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-body);line-height:1.5;color:var(--ink-muted);max-width:26ch}
+  @media (max-width:1024px){
+    .sgd__desc{grid-column:1 / -1;position:static;padding-right:0;padding-bottom:var(--space-6);border-bottom:var(--hairline) solid var(--rule)}
+    .sgd__items{grid-column:1 / -1}
+  }
+  @media (max-width:640px){
+    .sgd__items{grid-template-columns:1fr;row-gap:var(--space-8)}
+    .sgd__item::before{display:none}
+    .sgd__item + .sgd__item{padding-top:var(--space-7);border-top:var(--hairline) solid var(--rule)}
+  }
+</style>
