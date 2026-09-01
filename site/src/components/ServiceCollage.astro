@@ -47,10 +47,10 @@ const ratios = ['4:5', '3:4'] as const;
   /* Geometry shared by both modes: the intro panel and the package panels have fixed
      viewport widths so the row's length — and therefore the pinned scroll distance —
      is known in CSS: intro 34vw + n × 24vw. */
-  .col{--intro-w:34vw;--panel-w:24vw;--bar:64px;position:relative;scroll-margin-top:0}
+  .col{--intro-w:34vw;--panel-w:24vw;--bar:64px;--edge:max(var(--gutter),calc((100vw - var(--max-page)) / 2 + var(--gutter)));position:relative;scroll-margin-top:0}
   .col__track{display:flex;align-items:stretch;margin:0;padding:0;width:max-content}
   .col__panel{flex:0 0 var(--panel-w);width:var(--panel-w);display:flex;flex-direction:column;gap:var(--space-4);padding:0 clamp(20px,2.4vw,44px);border-left:var(--hairline) solid var(--rule);min-width:0}
-  .col__panel--intro{flex-basis:var(--intro-w);width:var(--intro-w);border-left:0;padding-left:var(--gutter);padding-right:clamp(32px,4vw,80px);justify-content:center}
+  .col__panel--intro{flex-basis:var(--intro-w);width:var(--intro-w);border-left:0;padding-left:var(--edge);padding-right:clamp(32px,4vw,80px);justify-content:center}
   .col__introin{display:flex;flex-direction:column;gap:var(--space-5);max-width:40ch}
   .eyebrow{margin:0}
   .col__title{margin:0;max-width:14ch;text-wrap:balance}
@@ -84,7 +84,7 @@ const ratios = ['4:5', '3:4'] as const;
     .col__panel{scroll-snap-align:start;padding-top:var(--space-4)}
     .col__panel--low{padding-top:clamp(40px,8vw,96px)}
     .col--row .col__panel{--panel-w:40vw}
-    .col__panel--intro{padding-left:var(--gutter);justify-content:flex-start}
+    .col__panel--intro{padding-left:var(--edge);justify-content:flex-start}
     .col__hint{display:none}
   }
   @media (max-width:640px){
