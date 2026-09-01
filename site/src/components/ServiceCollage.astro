@@ -47,7 +47,7 @@ const ratios = ['4:5', '3:4'] as const;
   /* Geometry shared by both modes: the intro panel and the package panels have fixed
      viewport widths so the row's length — and therefore the pinned scroll distance —
      is known in CSS: intro 34vw + n × 24vw. */
-  .col{--intro-w:34vw;--panel-w:24vw;--bar:64px;position:relative;scroll-margin-top:0}
+  .col{--intro-w:max(34vw,420px);--panel-w:max(24vw,300px);--bar:64px;position:relative;scroll-margin-top:0}
   /* The row starts on the page's left gutter and runs off the right edge of the screen. */
   .col__track{display:flex;align-items:stretch;margin:0;padding:0;width:max-content}
   .col__panel{flex:0 0 var(--panel-w);width:var(--panel-w);display:flex;flex-direction:column;gap:var(--space-4);padding:0 clamp(20px,2.4vw,44px);border-left:var(--hairline) solid var(--rule);min-width:0}
@@ -58,7 +58,7 @@ const ratios = ['4:5', '3:4'] as const;
   .col__lede{margin:0}
   .col__hint{margin-top:var(--space-8)}
   .col__arrow{display:inline-block;margin-left:.4em}
-  .col__num{font-family:var(--font-display);font-weight:300;font-size:clamp(3rem,5.2vw,5.75rem);line-height:.9;letter-spacing:-.02em;color:var(--accent);margin:0 0 var(--space-3)}
+  .col__num{font-family:var(--font-display);font-weight:300;font-size:clamp(2.5rem,4.8vw,5.75rem);line-height:.9;letter-spacing:-.02em;color:var(--accent);margin:0 0 var(--space-3)}
   .col__plate{width:100%}
   .col__name{margin:var(--space-3) 0 0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-title);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);max-width:20ch;text-wrap:balance}
   .col__price{margin:0;display:flex;flex-direction:column;gap:2px;color:var(--ink)}
@@ -69,9 +69,11 @@ const ratios = ['4:5', '3:4'] as const;
     .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100vw + 100vh)}
     .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
     .col__track{height:100vh;will-change:transform}
-    .col__panel{padding-top:calc(var(--bar) + 6vh);padding-bottom:6vh}
-    .col__panel--high{padding-top:calc(var(--bar) + 4vh)}
-    .col__panel--low{padding-top:calc(var(--bar) + 18vh)}
+    /* Content sits around the vertical centre of the frame whatever the window height;
+       the stagger comes from asymmetric padding, so short windows have no dead band. */
+    .col__panel{justify-content:center;padding-top:var(--bar);padding-bottom:4vh}
+    .col__panel--high{padding-bottom:14vh}
+    .col__panel--low{padding-top:calc(var(--bar) + 14vh)}
     .col__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:-6px}
   }
 
@@ -84,8 +86,8 @@ const ratios = ['4:5', '3:4'] as const;
     .col__track{padding-top:var(--space-7);padding-right:var(--gutter);padding-bottom:var(--space-8)}
     .col__panel{scroll-snap-align:start;padding-top:var(--space-4)}
     .col__panel--low{padding-top:clamp(40px,8vw,96px)}
-    .col--row .col__panel{--panel-w:40vw}
-    .col__panel--intro{padding-left:var(--gutter);justify-content:flex-start}
+    .col__panel{--panel-w:clamp(280px,42vw,400px)}
+    .col__panel--intro{--intro-w:min(88vw,480px);padding-left:var(--gutter);justify-content:flex-start}
     .col__hint{display:none}
   }
   @media (max-width:640px){
