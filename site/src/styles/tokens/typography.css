@@ -1,0 +1,45 @@
+:root{
+  --font-display:"Zodiak",Didot,"Times New Roman",serif;
+  --font-editorial:"Zodiak",Georgia,serif;   /* italic voice */
+  --font-label:"Archivo Variable","Archivo","Founders Grotesk",Helvetica,Arial,sans-serif;
+  --font-body:"Archivo Variable","Archivo","Founders Grotesk",Helvetica,Arial,sans-serif;
+
+  /* modular scale — masthead-weighted, ratio ~1.32 desktop */
+  --text-display-xl:clamp(3.75rem,9vw,8.5rem);   /* masthead / hero */
+  --text-display-l:clamp(3rem,6vw,5.75rem);
+  --text-display-m:clamp(2.25rem,3.8vw,3.5rem);
+  --text-display-s:clamp(1.5rem,2.2vw,2rem);
+  --text-title:1.1875rem;
+  --text-lede:0.8125rem;    /* all-caps sans standfirst */
+  --text-body:0.9375rem;
+  --text-body-s:0.8125rem;
+  --text-label:0.5625rem;   /* 9px — captions, eyebrows */
+  --text-label-l:0.6875rem; /* 11px — nav, prices */
+  --text-numeral:1.625rem;
+
+  --weight-body:300;
+  --weight-label:400;
+  --weight-display:400;
+  --weight-display-strong:500;
+  /* Zodiak has no optical-size axis, so nothing needs pinning — one drawing at every size. */
+  --display-opsz:normal; /* @kind font */
+
+  --leading-display:0.98;
+  --leading-display-loose:1.08;
+  --leading-title:1.15;
+  --leading-body:1.8;
+  --leading-body-loose:1.85;
+  --leading-label:1.35;
+
+  --track-display:-0.02em;
+  --track-display-wide:0.1em;   /* masthead wordmark */
+  --track-body:0.005em; /* @kind other */
+  --track-lede:0.06em;
+  --track-label:0.34em;
+  --track-label-wide:0.42em;
+  --track-numeral:0.02em;
+
+  --measure:64ch; /* @kind spacing */
+  --measure-narrow:40ch; /* @kind spacing */
+  --column-gap:clamp(24px,2.4vw,40px); /* @kind spacing */
+}

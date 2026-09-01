@@ -1,0 +1,10 @@
+<!-- @dsCard group="Brand" viewport="700x200" name="Motion" subtitle="Slow fades only — no scale, no spring, no parallax" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>body{margin:0;background:var(--surface);overflow:hidden;height:200px}.wrap{padding:24px 28px;height:100%;box-sizing:border-box}
+.mono{font-family:var(--font-label);font-size:9px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.lbl{font-family:var(--font-label);font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink)}</style></head><body><div class="wrap"><style>@keyframes soc-draw{0%,14%{width:0}70%,100%{width:100%}}@keyframes soc-fade{0%,12%{opacity:0;transform:translateY(8px)}62%,100%{opacity:1;transform:none}}</style>
+<div style="display:flex;flex-direction:column;gap:22px">
+<div><span style="font-family:var(--font-label);font-size:11px;letter-spacing:.34em;text-transform:uppercase;position:relative;display:inline-block;padding-bottom:5px">Read the project<span style="position:absolute;left:0;bottom:0;height:1px;background:var(--accent);animation:soc-draw 2.6s var(--ease-rule) infinite"></span></span><div class="mono" style="margin-top:12px">Underline draws · 280ms</div></div>
+<div style="height:1px;background:var(--rule)"></div>
+<div><div style="font-family:var(--font-display);font-size:30px;letter-spacing:-.02em;animation:soc-fade 3.2s var(--ease-editorial) infinite">A beautiful transformation.</div><div class="mono" style="margin-top:10px">Reveal · 700ms fade + 8px rise · parallax removed</div></div>
+</div></div></body></html>

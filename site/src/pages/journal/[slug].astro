@@ -1,0 +1,69 @@
+---
+import Base from '@/layouts/Base.astro';
+import Plate from '@/components/Plate.astro';
+import PortableText from '@/components/portable-text/PortableText.astro';
+import StoryGrid from '@/components/StoryGrid.astro';
+import InquiryForm from '@/components/InquiryForm.astro';
+import { getHome, getPosts, getRelated, formatDate, kicker } from '@/lib/sanity';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { home, settings } = await getHome();
+const related = await getRelated(post.slug, 3);
+const isoDate = post.publishedAt.length === 10 ? `${post.publishedAt}T12:00:00Z` : post.publishedAt;
+const portrait = Boolean(post.leadImage && post.leadImage.height > post.leadImage.width);
+---
+<Base settings={settings} title={post.title} description={post.standfirst} image={post.leadImage} type="article" noindex={Boolean(post.draftNote)}>
+  <article class="post">
+    <header class="wrap post__head">
+      <div class="grid">
+        <div class="post__headin">
+          <p class="eyebrow">{kicker(post)} · <time datetime={isoDate}>{formatDate(post.publishedAt)}</time></p>
+          <h1 class="display-l post__title">{post.title}</h1>
+          <p class="standfirst post__standfirst">{post.standfirst}</p>
+          <p class="caption post__byline">Styling OC{post.photoCredit ? ` · ${post.photoCredit}` : ''}</p>
+          {post.draftNote && <p class="eyebrow post__draft">Draft — for client review</p>}
+        </div>
+      </div>
+      <div class="rule-black"></div>
+    </header>
+
+    <div class="wrap post__lead">
+      <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes={portrait ? '(max-width: 640px) 100vw, 70vh' : '(max-width: 1600px) 100vw, 1560px'} loading="eager" fetchpriority="high" maxHeight={portrait ? '86vh' : '80vh'} fit={portrait ? 'height' : 'width'} />
+    </div>
+
+    <div class="wrap">
+      <div class="grid">
+        <div class="post__body">
+          <PortableText value={post.body} />
+        </div>
+      </div>
+    </div>
+  </article>
+
+  {related.length > 0 && <StoryGrid posts={related} title="More stories" moreHref="/journal/" numbered={false} />}
+  <InquiryForm home={home} />
+</Base>
+
+<style>
+  .post__head{padding-top:clamp(28px,4vw,56px)}
+  .post__headin{grid-column:2 / span 9;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-7)}
+  .eyebrow{margin:0}
+  .post__title{margin:0;max-width:18ch;text-wrap:balance}
+  .post__standfirst{margin:0;max-width:60ch}
+  .post__byline{margin:0}
+  .post__draft{margin:0}
+  .post__lead{padding-top:var(--space-5)}
+  .post__body{grid-column:4 / span 6;padding-top:var(--section-y-tight);padding-bottom:var(--space-6)}
+  @media (max-width:1024px){
+    .post__headin{grid-column:1 / span 7}
+    .post__body{grid-column:2 / span 6}
+  }
+  @media (max-width:640px){
+    .post__headin,.post__body{grid-column:1 / -1}
+  }
+</style>

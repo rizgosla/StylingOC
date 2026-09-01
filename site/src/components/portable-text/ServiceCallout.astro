@@ -1,0 +1,42 @@
+---
+/* A ruled line naming the package this story used, with its price stated plainly. */
+import type { TypedObjectProps } from 'astro-portabletext/types';
+import TextLink from '@/components/TextLink.astro';
+type Props = TypedObjectProps;
+const { node } = Astro.props as any;
+const pkg = node.package;
+const line = pkg?.line === 'styling' ? 'Personal styling' : 'Interior design';
+---
+{pkg && (
+  <aside class="sc" aria-label={`Service: ${pkg.title}`}>
+    <div class="sc__head">
+      <span class="numeral" aria-hidden="true">{pkg.numeral}</span>
+      <div class="sc__text">
+        <p class="eyebrow">{line}</p>
+        <p class="sc__title">{pkg.title}</p>
+        {pkg.note && <p class="sc__note">{pkg.note}</p>}
+      </div>
+      <div class="sc__price">
+        <span class="label">{pkg.price}</span>
+        {pkg.priceNote && <span class="sc__pn">{pkg.priceNote}</span>}
+      </div>
+    </div>
+    <TextLink href={`/#${pkg.line === 'styling' ? 'styling' : 'interiors'}`}>See the menu</TextLink>
+  </aside>
+)}
+
+<style>
+  .sc{margin:var(--space-8) 0;padding:var(--space-5) 0 var(--space-5);border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule);display:flex;flex-direction:column;gap:var(--space-5)}
+  .sc__head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:var(--space-4) var(--space-5);align-items:start}
+  .sc__text{display:flex;flex-direction:column;gap:var(--space-2)}
+  .eyebrow{margin:0}
+  .sc__title{margin:0;font-family:var(--font-display);font-size:var(--text-title);line-height:var(--leading-title);color:var(--ink)}
+  .sc__note{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-body);line-height:1.5;color:var(--ink-muted)}
+  .sc__price{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;color:var(--ink)}
+  .sc__pn{font-size:.75rem;line-height:1.5;color:var(--ink-muted);max-width:22ch}
+  @media (max-width:640px){
+    .sc__head{grid-template-columns:auto minmax(0,1fr)}
+    .sc__price{grid-column:2;align-items:flex-start;text-align:left}
+    .sc__pn{text-align:left}
+  }
+</style>

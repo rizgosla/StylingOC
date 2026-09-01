@@ -1,0 +1,11 @@
+---
+import type { TypedObjectProps } from 'astro-portabletext/types';
+import Plate from '@/components/Plate.astro';
+import type { Img } from '@/lib/sanity';
+type Props = TypedObjectProps;
+const { node } = Astro.props as any;
+const image = (node.image && node.image.src ? node.image : null) as Img | null;
+const width: 'column' | 'wide' | 'full' = node.width ?? 'wide';
+const sizes = width === 'full' ? '100vw' : width === 'wide' ? '(max-width: 1024px) 100vw, 70vw' : '(max-width: 1024px) 100vw, 50vw';
+---
+<Plate image={image} ratio={image ? 'natural' : '3:2'} sizes={sizes} class={`pt-img pt-img--${width}`} />

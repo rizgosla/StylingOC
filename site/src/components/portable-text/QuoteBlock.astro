@@ -1,0 +1,7 @@
+---
+import type { TypedObjectProps } from 'astro-portabletext/types';
+import PullQuote from '@/components/PullQuote.astro';
+type Props = TypedObjectProps;
+const { node } = Astro.props as any;
+---
+<PullQuote inline size="md" quote={node.quote} attribution={node.attribution} role={node.role} />

@@ -1,0 +1,24 @@
+/* Styling OC webfonts.
+
+   Display: Zodiak (Indian Type Foundry, Fontshare Free Licence — see assets/fonts/FFL.txt).
+   Supplied by the studio; variable across weight 100–900, roman and italic.
+   Labels and body: Archivo, loaded from Google Fonts. */
+
+@font-face{
+  font-family:"Zodiak";
+  src:url("../assets/fonts/Zodiak-Variable.woff2") format("woff2-variations"),
+      url("../assets/fonts/Zodiak-Variable.woff") format("woff");
+  font-weight:100 900;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"Zodiak";
+  src:url("../assets/fonts/Zodiak-VariableItalic.woff2") format("woff2-variations"),
+      url("../assets/fonts/Zodiak-VariableItalic.woff") format("woff");
+  font-weight:100 900;
+  font-style:italic;
+  font-display:swap;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&display=swap");

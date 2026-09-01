@@ -1,0 +1,68 @@
+---
+import '@/styles/global.css';
+import Masthead from '@/components/Masthead.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+import type { Img, SiteSettings } from '@/lib/sanity';
+import { picture } from '@/lib/sanity';
+
+interface Props {
+  settings: SiteSettings;
+  title?: string;
+  description?: string;
+  image?: Img | null;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+const { settings, title, description = settings.description, image, type = 'website', noindex = false } = Astro.props;
+const pageTitle = title ? `${title} — ${settings.title}` : `${settings.title} — Interior design and personal styling, Orange County`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = image ? picture(image, '3:2') : null;
+const ogUrl = og ? (og.src.startsWith('http') ? og.src : new URL(og.src, Astro.site).href) : undefined;
+---
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/Zodiak-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Zodiak-VariableItalic.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:site_name" content={settings.title} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? settings.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    {image?.alt && <meta property="og:image:alt" content={image.alt} />}
+    <meta name="twitter:card" content={ogUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>document.documentElement.classList.remove('no-js');</script>
+  </head>
+  <body>
+    <Masthead settings={settings} current={Astro.url.pathname} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter settings={settings} />
+    <script>
+      // Reveal: a 700ms fade with an 8px rise, once per element, on entering the viewport.
+      const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) els.forEach((el) => el.classList.add('is-in'));
+      else {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) if (e.isIntersecting) { (e.target as HTMLElement).classList.add('is-in'); io.unobserve(e.target); }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+        // Safety: if the observer never fires (background tab, print, odd embeds), show everything.
+        setTimeout(() => els.forEach((el) => el.classList.add('is-in')), 2500);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+:root{
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:28px;
+  --space-7:40px;
+  --space-8:56px;
+  --space-9:80px;
+  --space-10:112px;
+
+  /* Tight editorial grid — the page is dense, not airy. */
+  --section-y:clamp(56px,7vw,120px); /* @kind spacing */
+  --section-y-tight:clamp(36px,4vw,64px); /* @kind spacing */
+  --gutter:clamp(18px,4vw,64px); /* @kind spacing */
+  --grid-cols:12; /* @kind other */
+  --grid-gap:clamp(14px,1.6vw,26px); /* @kind spacing */
+  --max-page:1560px; /* @kind spacing */
+
+  --radius-0:0px;
+  --radius-1:0px;   /* nothing in this system has a radius */
+  --hairline:1px;
+}

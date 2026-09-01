@@ -1,0 +1,64 @@
+:root{
+  /* raw palette */
+  --white:#FFFFFF;
+  --paper-50:#FAF9F7;
+  --paper-100:#F2F0EC;
+  --paper-200:#E7E4DE;
+  --gray-300:#CFCAC2;
+  --gray-400:#A9A49B;
+  --gray-500:#8E8A84;
+  --brass-300:#C2A164;
+  --brass-400:#9C7C4A;
+  --brass-500:#7E6238;
+  --brass-600:#65502F;
+  --ink-700:#3D3A36;
+  --ink-800:#252321;   /* darkest ink in the system — pure-black #111 was cut */
+
+  /* semantic — day (default) */
+  --surface:var(--white);
+  --surface-raised:var(--paper-50);
+  --surface-sunken:var(--paper-100);
+  --surface-inverse:var(--ink-800);
+  --ink:var(--ink-800);
+  --ink-muted:var(--ink-700);
+  --ink-faint:var(--gray-500);
+  --ink-inverse:var(--white);
+  /* Antique brass, carried over from the printed menus.
+     --accent (3.9:1 on white) is for numerals, rules and marks 24px+ only.
+     --accent-strong (5.6:1) is the one to use for label text and links. */
+  --accent:var(--brass-400);
+  --accent-strong:var(--brass-500);
+  --accent-deep:var(--brass-600);
+  --rule:rgba(37,35,33,.18);
+  --rule-strong:rgba(37,35,33,.45);
+  --rule-black:var(--ink-800);
+  --rule-inverse:rgba(245,243,239,.24);
+  --overlay:rgba(37,35,33,.28);
+  /* Bottom-weighted: hero type sits in the lower band, which must stay dark enough
+     for white text to clear 4.5:1 over the brightest photograph. */
+  --overlay-scrim:linear-gradient(to bottom,rgba(37,35,33,.34) 0%,rgba(37,35,33,.24) 40%,rgba(37,35,33,.62) 62%,rgba(37,35,33,.88) 100%); /* @kind color */
+  --overlay-band:linear-gradient(to top,rgba(37,35,33,.80) 0%,rgba(37,35,33,0) 100%); /* @kind color */
+  --focus-ring:var(--brass-500);
+}
+
+/* semantic — night. A dark editorial spread, not an inverted UI:
+   near-black ground, warm paper ink, the brass lifting to stay legible. */
+:root[data-theme="night"]{
+  --surface:#141414;
+  --surface-raised:#1C1B1A;
+  --surface-sunken:#0E0E0E;
+  --surface-inverse:var(--white);
+  --ink:#F5F3EF;
+  --ink-muted:#B5B0A8;
+  --ink-faint:#7C7872;
+  --ink-inverse:var(--ink-800);
+  --accent:var(--brass-300);
+  --accent-strong:#D8BC85;
+  --accent-deep:var(--brass-400);
+  --rule:rgba(245,243,239,.20);
+  --rule-strong:rgba(245,243,239,.42);
+  --rule-black:rgba(245,243,239,.9);
+  --rule-inverse:rgba(17,17,17,.24);
+  --overlay:rgba(10,10,10,.42);
+  --focus-ring:var(--brass-300);
+}

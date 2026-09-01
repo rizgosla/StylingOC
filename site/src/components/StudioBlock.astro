@@ -1,0 +1,54 @@
+---
+/* The founders: portrait plate in the first four columns; eyebrow, headline, the
+   pillars row, two short paragraphs and a link in the remaining seven. */
+import Plate from './Plate.astro';
+import TextLink from './TextLink.astro';
+import type { HomePage } from '@/lib/sanity';
+
+interface Props { home: HomePage }
+const { home } = Astro.props;
+---
+<section class="wrap st section-tight" id="studio" aria-labelledby="st-title">
+  <div class="rule-black"></div>
+  <div class="grid st__grid">
+    <div class="st__img reveal">
+      <Plate image={home.studioPortrait} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+    </div>
+    <div class="st__text reveal">
+      <p class="eyebrow">{home.studioEyebrow}</p>
+      <h2 id="st-title" class="display-m st__title">{home.studioHeadline}</h2>
+      <ul class="st__pillars" aria-label="Studio pillars">
+        {home.pillars.map((p, i) => (
+          <li class="eyebrow eyebrow--ink">{i > 0 && <span class="st__dot" aria-hidden="true">·</span>}{p}</li>
+        ))}
+      </ul>
+      <div class="st__body">
+        {home.studioBody.map((para, i) => (
+          <p class:list={['body', { 'st__lede italic': i === 0 }]}>{para}</p>
+        ))}
+      </div>
+      <TextLink href="/journal/">Read the journal</TextLink>
+    </div>
+  </div>
+</section>
+
+<style>
+  .st__grid{padding-top:var(--space-6);align-items:start}
+  .st__img{grid-column:1 / span 4}
+  .st__text{grid-column:6 / span 7;display:flex;flex-direction:column;gap:var(--space-5);padding-top:var(--space-4)}
+  .eyebrow{margin:0}
+  .st__title{margin:0}
+  .st__pillars{display:flex;flex-wrap:wrap;gap:var(--space-3)}
+  .st__pillars li{display:inline-flex;gap:var(--space-3);align-items:baseline}
+  .st__dot{color:var(--accent-strong)}
+  .st__body{display:flex;flex-direction:column;gap:var(--space-4);max-width:56ch}
+  .st__body p{margin:0}
+  .st__lede{font-size:var(--text-title);line-height:1.5;color:var(--ink)}
+  @media (max-width:1024px){
+    .st__img{grid-column:1 / span 4}
+    .st__text{grid-column:5 / span 4;padding-top:0}
+  }
+  @media (max-width:640px){
+    .st__img,.st__text{grid-column:1 / -1}
+  }
+</style>

@@ -1,0 +1,6 @@
+---
+import type { ListProps } from 'astro-portabletext/types';
+type Props = ListProps;
+const { node } = Astro.props;
+---
+{node.listItem === 'number' ? <ol class="pt-list"><slot /></ol> : <ul class="pt-list"><slot /></ul>}

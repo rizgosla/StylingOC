@@ -1,0 +1,23 @@
+---
+import Base from '@/layouts/Base.astro';
+import LeadStory from '@/components/LeadStory.astro';
+import StoryGrid from '@/components/StoryGrid.astro';
+import ServiceLines from '@/components/ServiceLines.astro';
+import SplitFeature from '@/components/SplitFeature.astro';
+import PullQuote from '@/components/PullQuote.astro';
+import StudioBlock from '@/components/StudioBlock.astro';
+import InquiryForm from '@/components/InquiryForm.astro';
+import { getHome } from '@/lib/sanity';
+
+const { home, settings, packages } = await getHome();
+const latest = home.latest.slice(0, 3);
+---
+<Base settings={settings} image={home.leadStory.leadImage ?? home.studioPortrait}>
+  <LeadStory post={home.leadStory} />
+  <StoryGrid posts={latest} title="The latest" moreHref="/journal/" />
+  <ServiceLines home={home} packages={packages} />
+  <SplitFeature post={home.featuredPost} />
+  <PullQuote quote={home.testimonial.quote} attribution={home.testimonial.attribution} role={home.testimonial.role} />
+  <StudioBlock home={home} />
+  <InquiryForm home={home} />
+</Base>

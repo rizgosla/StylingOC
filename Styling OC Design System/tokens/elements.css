@@ -1,0 +1,13 @@
+/* Minimal element defaults. Components carry their own styling. */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-variation-settings:var(--display-opsz);background:var(--surface);color:var(--ink);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:var(--leading-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-wrap:pretty}
+h1,h2,h3{font-family:var(--font-display);font-weight:var(--weight-display);letter-spacing:var(--track-display);line-height:var(--leading-display);margin:0}
+p{margin:0}
+img{display:block;max-width:100%}
+a{color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid var(--rule);transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
+a:hover{color:var(--accent-strong);border-color:var(--accent)}
+::selection{background:var(--paper-200);color:var(--ink)}
+:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:3px}
+.soc-eyebrow{font-family:var(--font-label);font-size:var(--text-label);font-weight:var(--weight-label);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink)}
+.soc-rule{height:var(--hairline);background:var(--rule);border:0;margin:0}
+.soc-rule-black{height:var(--hairline);background:var(--rule-black);border:0;margin:0}

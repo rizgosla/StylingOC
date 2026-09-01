@@ -1,0 +1,69 @@
+---
+/* Black top rule, three hairline-divided columns, the stacked "Styling / OC" lockup
+   from the brand sheets, and the tagline in wide caps along the bottom. */
+import type { SiteSettings } from '@/lib/sanity';
+interface Props { settings: SiteSettings }
+const { settings } = Astro.props;
+const year = new Date().getFullYear();
+const contact = [
+  settings.email && { label: settings.email, href: `mailto:${settings.email}` },
+  settings.phone && { label: settings.phone, href: `tel:${settings.phone.replace(/[^\d+]/g, '')}` },
+  settings.instagram && { label: 'Instagram', href: settings.instagram },
+].filter(Boolean) as { label: string; href: string }[];
+const columns = settings.footerColumns.map((c, i) =>
+  i === settings.footerColumns.length - 1 && /contact/i.test(c.title) ? { ...c, items: [...c.items, ...contact] } : c,
+);
+---
+<footer class="ft">
+  <div class="wrap">
+    <div class="rule-black"></div>
+    <div class="ft__grid">
+      <div class="ft__lockup" aria-hidden="true">
+        <span class="ft__l1">Styling</span>
+        <span class="ft__l2">OC</span>
+      </div>
+      {columns.map((c) => (
+        <div class="ft__col">
+          <h2 class="eyebrow ft__title">{c.title}</h2>
+          <ul class="ft__list">
+            {c.items.map((it) =>
+              it.href ? <li><a class="ft__link" href={it.href}>{it.label}</a></li> : <li class="ft__text">{it.label}</li>,
+            )}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="rule"></div>
+    <div class="ft__bottom">
+      <p class="ft__tagline">{settings.footerTagline}</p>
+      <p class="ft__note">© {year} Styling OC · Orange County, California</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft{background:var(--surface);margin-top:var(--section-y)}
+  .ft__grid{display:grid;grid-template-columns:minmax(0,4fr) repeat(3,minmax(0,2fr));column-gap:var(--column-gap);padding:var(--space-7) 0 var(--space-8)}
+  .ft__lockup{display:flex;flex-direction:column;font-family:var(--font-display);font-weight:var(--weight-display);letter-spacing:-.01em;line-height:.9;color:var(--ink)}
+  .ft__l1{font-size:clamp(2.4rem,4vw,3.6rem)}
+  .ft__l2{font-size:clamp(3.2rem,5.6vw,5.2rem);margin-top:.04em}
+  .ft__col{border-left:var(--hairline) solid var(--rule);padding-left:var(--column-gap)}
+  .ft__title{margin:0 0 var(--space-5);font-size:var(--text-label);font-weight:400;line-height:var(--leading-label)}
+  .ft__list{display:flex;flex-direction:column;gap:var(--space-2)}
+  .ft__link{font-size:var(--text-body-s);color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid transparent;transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial);line-height:1.7;display:inline-block}
+  .ft__link:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
+  .ft__text{font-size:var(--text-body-s);color:var(--ink-muted);line-height:1.7}
+  .ft__bottom{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-6);align-items:baseline;justify-content:space-between;padding:var(--space-5) 0 var(--space-6)}
+  .ft__tagline{margin:0;font-family:var(--font-label);font-size:var(--text-label);letter-spacing:var(--track-label-wide);text-transform:uppercase;color:var(--ink)}
+  .ft__note{margin:0;font-family:var(--font-label);font-size:var(--text-label);letter-spacing:.1em;color:var(--ink-muted)}
+  @media (max-width:1024px){
+    .ft__grid{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:var(--space-7)}
+    .ft__lockup{grid-column:1 / -1}
+    .ft__col:first-of-type{border-left:0;padding-left:0}
+  }
+  @media (max-width:640px){
+    .ft__grid{grid-template-columns:1fr;row-gap:0}
+    .ft__col{border-left:0;padding:var(--space-5) 0;border-top:var(--hairline) solid var(--rule)}
+    .ft__lockup{padding-bottom:var(--space-6)}
+  }
+</style>

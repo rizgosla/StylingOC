@@ -1,0 +1,156 @@
+---
+/* The AD-style masthead. In flow at the top of every page: black rule, the set-type
+   "STYLING OC" wordmark centered, a 9px tagline, a hairline and a centered nav row.
+   Once the reader scrolls past it, a compact fixed bar slides in (wordmark left,
+   links right). On small screens the nav row becomes a "Menu" text button that
+   opens a full-height white panel. Nothing is ever transparent over a photograph. */
+import type { SiteSettings } from '@/lib/sanity';
+
+interface Props { settings: SiteSettings; current?: string }
+const { settings, current = '' } = Astro.props;
+const links = settings.nav;
+function isActive(href: string): boolean {
+  const path = href.split('#')[0];
+  return path.length > 1 && current.startsWith(path);
+}
+---
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="mh" data-masthead>
+  <div class="rule-black"></div>
+  <div class="wrap mh__stack">
+    <a class="mh__mark" href="/" aria-label="Styling OC, home">Styling OC</a>
+    {settings.tagline && <p class="mh__tag">{settings.tagline}</p>}
+  </div>
+  <div class="wrap"><div class="rule"></div></div>
+  <nav class="wrap mh__nav" aria-label="Primary">
+    <ul class="mh__links">
+      {links.map((l) => (
+        <li><a href={l.href} class:list={['mh__link', { 'mh__link--cta': /inquire/i.test(l.label), 'is-active': isActive(l.href) }]} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a></li>
+      ))}
+    </ul>
+    <button class="mh__menu label" type="button" aria-controls="site-menu" aria-expanded="false" data-menu-open>Menu</button>
+  </nav>
+  <div class="wrap"><div class="rule"></div></div>
+</header>
+
+<div class="bar" data-bar aria-hidden="true">
+  <div class="wrap bar__in">
+    <a class="bar__mark" href="/" tabindex="-1">Styling OC</a>
+    <ul class="bar__links">
+      {links.map((l) => (
+        <li><a href={l.href} tabindex="-1" class:list={['mh__link', { 'mh__link--cta': /inquire/i.test(l.label) }]}>{l.label}</a></li>
+      ))}
+    </ul>
+    <button class="mh__menu label" type="button" tabindex="-1" aria-controls="site-menu" aria-expanded="false" data-menu-open>Menu</button>
+  </div>
+</div>
+
+<div class="menu" id="site-menu" hidden data-menu>
+  <div class="wrap menu__in">
+    <div class="menu__top">
+      <span class="bar__mark">Styling OC</span>
+      <button class="mh__menu label" type="button" data-menu-close>Close</button>
+    </div>
+    <div class="rule-black"></div>
+    <nav aria-label="Primary, expanded">
+      <ul class="menu__links">
+        {links.map((l, i) => (
+          <li>
+            <a href={l.href} class="menu__link" data-menu-link>
+              <span class="numeral" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="menu__label">{l.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    {settings.tagline && <p class="eyebrow eyebrow--ink menu__tag">{settings.tagline}</p>}
+  </div>
+</div>
+
+<style>
+  .skip{position:absolute;left:var(--gutter);top:-100px;z-index:100;background:var(--ink);color:#fff;padding:12px 18px;font-family:var(--font-label);font-size:var(--text-label-l);letter-spacing:var(--track-label);text-transform:uppercase;border:0}
+  .skip:focus{top:8px}
+
+  .mh{background:var(--surface);position:relative;z-index:30}
+  .mh__stack{text-align:center;padding-top:clamp(20px,2.6vw,36px);padding-bottom:clamp(14px,1.8vw,24px)}
+  .mh__mark{display:inline-block;font-family:var(--font-display);font-weight:var(--weight-display-strong);font-size:var(--text-display-m);line-height:1;letter-spacing:var(--track-display-wide);text-transform:uppercase;color:var(--ink);text-decoration:none;border:0;padding-left:.1em}
+  .mh__tag{margin:var(--space-4) 0 0;font-family:var(--font-label);font-size:var(--text-label);letter-spacing:var(--track-label-wide);text-transform:uppercase;color:var(--ink);padding-left:.42em}
+  .mh__nav{display:flex;align-items:center;justify-content:center;min-height:52px}
+  .mh__links{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-2) clamp(20px,3vw,44px)}
+  .mh__link{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-label);font-size:var(--text-label-l);font-weight:400;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink);text-decoration:none;border:0;border-bottom:var(--hairline) solid transparent;transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
+  .mh__link:hover,.mh__link:focus-visible{border-bottom-color:var(--accent)}
+  .mh__link.is-active{border-bottom-color:var(--accent)}
+  .mh__link--cta{color:var(--accent-strong)}
+  .mh__menu{display:none;min-height:44px;padding:0 var(--space-2);color:var(--ink);border-bottom:var(--hairline) solid transparent}
+  .mh__menu:hover{border-bottom-color:var(--accent)}
+
+  /* Compact bar: fixed, hidden above the viewport until the masthead has scrolled away. */
+  .bar{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--surface);border-bottom:var(--hairline) solid var(--rule-black);transform:translateY(-101%);transition:transform var(--dur-slow) var(--ease-editorial)}
+  .bar.is-on{transform:none}
+  .bar__in{display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);min-height:56px}
+  .bar__mark{font-family:var(--font-display);font-weight:var(--weight-display-strong);font-size:1rem;letter-spacing:var(--track-display-wide);text-transform:uppercase;color:var(--ink);text-decoration:none;border:0;white-space:nowrap}
+  .bar__links{display:flex;gap:clamp(16px,2.4vw,36px)}
+  .bar__links .mh__link{font-size:var(--text-label)}
+
+  /* Full-height menu panel for small screens. */
+  .menu{position:fixed;inset:0;z-index:50;background:var(--surface);overflow:auto}
+  .menu__in{display:flex;flex-direction:column;min-height:100%;padding-top:var(--space-2);padding-bottom:var(--space-7)}
+  .menu__top{display:flex;align-items:center;justify-content:space-between;min-height:56px}
+  .menu__links{display:flex;flex-direction:column;padding-top:var(--space-4)}
+  .menu__link{display:flex;align-items:baseline;gap:var(--space-4);padding:var(--space-4) 0;border-bottom:var(--hairline) solid var(--rule);text-decoration:none;color:var(--ink)}
+  .menu__label{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);letter-spacing:var(--track-display);line-height:1.1}
+  .menu__tag{margin-top:auto;padding-top:var(--space-8)}
+
+  @media (max-width:640px){
+    .mh__links,.bar__links{display:none}
+    .mh__menu{display:inline-flex;align-items:center}
+    .mh__nav{justify-content:flex-end;min-height:48px}
+    .mh__mark{font-size:2rem}
+  }
+</style>
+
+<script>
+  const masthead = document.querySelector<HTMLElement>('[data-masthead]');
+  const bar = document.querySelector<HTMLElement>('[data-bar]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const openers = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-menu-open]'));
+  const closer = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+
+  // Compact bar: show once the reader has scrolled past the masthead.
+  if (masthead && bar) {
+    let threshold = masthead.offsetHeight;
+    const setBar = (on: boolean) => {
+      bar.classList.toggle('is-on', on);
+      bar.setAttribute('aria-hidden', on ? 'false' : 'true');
+      bar.querySelectorAll<HTMLElement>('a,button').forEach((el) => (on ? el.removeAttribute('tabindex') : el.setAttribute('tabindex', '-1')));
+    };
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { setBar(window.scrollY > threshold - 8); ticking = false; });
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', () => { threshold = masthead.offsetHeight; onScroll(); });
+    onScroll();
+  }
+
+  // Small-screen menu panel.
+  if (menu) {
+    let lastFocus: HTMLElement | null = null;
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      openers.forEach((b) => b.setAttribute('aria-expanded', String(open)));
+      if (open) { lastFocus = document.activeElement as HTMLElement; closer?.focus(); }
+      else lastFocus?.focus();
+    };
+    openers.forEach((b) => b.addEventListener('click', () => setOpen(true)));
+    closer?.addEventListener('click', () => setOpen(false));
+    menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setOpen(false); });
+    matchMedia('(min-width: 641px)').addEventListener('change', (e) => { if (e.matches && !menu.hidden) setOpen(false); });
+  }
+</script>

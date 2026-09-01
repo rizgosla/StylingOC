@@ -1,0 +1,47 @@
+---
+/* Journal body. A 64ch column offset on the grid, first paragraph under a Zodiak
+   drop cap, one heading level, hairline-marked lists, and three studio blocks. */
+import { PortableText as PT } from 'astro-portabletext';
+import Block from './Block.astro';
+import List from './List.astro';
+import ListItem from './ListItem.astro';
+import Mark from './Mark.astro';
+import ImageBlock from './ImageBlock.astro';
+import QuoteBlock from './QuoteBlock.astro';
+import ServiceCallout from './ServiceCallout.astro';
+
+interface Props { value: any[] }
+const { value } = Astro.props;
+const components = {
+  type: { imageBlock: ImageBlock, quoteBlock: QuoteBlock, serviceCallout: ServiceCallout },
+  block: Block,
+  list: List,
+  listItem: ListItem,
+  mark: Mark,
+};
+---
+<div class="prose">
+  <PT value={value} components={components} />
+</div>
+
+<style is:global>
+  .prose{font-size:var(--text-body);line-height:var(--leading-body);color:var(--ink-muted);max-width:var(--measure)}
+  .prose > * + *{margin-top:var(--space-5)}
+  .prose p{margin:0}
+  .prose > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.2em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
+  .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:var(--space-8);max-width:24ch}
+  .prose h2 + *{margin-top:var(--space-4)}
+  .prose ul{margin-top:var(--space-5);border-top:var(--hairline) solid var(--rule-black)}
+  .prose li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
+  .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1.08em;color:var(--ink)}
+  .prose strong{font-weight:500;color:var(--ink)}
+  .prose a{color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid var(--rule-strong);transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
+  .prose a:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
+  /* Wide and full-bleed photographs break out of the 64ch column. */
+  .prose .pt-img{margin-top:var(--space-8);margin-bottom:var(--space-8)}
+  .prose .pt-img--wide{width:calc(100% + 2 * var(--space-9));margin-left:calc(-1 * var(--space-9))}
+  .prose .pt-img--full{width:calc(100vw - var(--gutter) * 2);position:relative;left:50%;margin-left:min(calc(-50vw + var(--gutter)), calc(-1 * (var(--max-page) / 2) + var(--gutter)))}
+  @media (max-width:1024px){
+    .prose .pt-img--wide{width:100%;margin-left:0}
+  }
+</style>

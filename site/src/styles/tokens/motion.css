@@ -1,0 +1,13 @@
+:root{
+  /* Slow fades only. No springs, no scale, no travel beyond 8px. */
+  --ease-editorial:cubic-bezier(.22,.61,.36,1); /* @kind other */
+  --ease-rule:cubic-bezier(.65,0,.35,1); /* @kind other */
+  --dur-fast:160ms; /* @kind other */
+  --dur-base:280ms; /* @kind other */
+  --dur-slow:560ms; /* @kind other */
+  --dur-reveal:700ms; /* @kind other */
+  --parallax-shift:0%; /* @kind other */
+}
+@media (prefers-reduced-motion:reduce){
+  :root{--dur-fast:0ms; /* @kind other */ --dur-base:0ms; /* @kind other */ --dur-slow:0ms; /* @kind other */ --dur-reveal:0ms; /* @kind other */}
+}

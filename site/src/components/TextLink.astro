@@ -1,0 +1,24 @@
+---
+/* The default call to action: a hairline underline that draws left-to-right in
+   brass on hover. Buttons are the exception; links are the rule. */
+interface Props {
+  href: string;
+  caps?: boolean;
+  tone?: 'ink' | 'accent';
+  class?: string;
+  'aria-label'?: string;
+}
+const { href, caps = true, tone = 'ink', class: cls = '', ...rest } = Astro.props;
+---
+<a href={href} class:list={['tl', { 'tl--caps': caps, 'tl--accent': tone === 'accent' }, cls]} {...rest}><slot /></a>
+
+<style>
+  .tl{position:relative;display:inline-block;color:var(--ink);text-decoration:none;border:0;padding-bottom:5px;min-height:24px}
+  .tl--caps{font-family:var(--font-label);font-size:var(--text-label-l);font-weight:400;letter-spacing:var(--track-label);text-transform:uppercase;line-height:1.4}
+  .tl--accent{color:var(--accent-strong)}
+  .tl::before,.tl::after{content:"";position:absolute;left:0;bottom:0;height:var(--hairline)}
+  .tl::before{width:100%;background:currentColor;opacity:.24}
+  .tl::after{width:0;background:var(--accent);transition:width var(--dur-base) var(--ease-rule)}
+  .tl:hover::after,.tl:focus-visible::after{width:100%}
+  .tl:hover{color:var(--accent-strong)}
+</style>

@@ -1,0 +1,68 @@
+@import "@fontsource-variable/archivo";
+@import "./tokens/fonts.css";
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/motion.css";
+@import "./tokens/elements.css";
+
+/* ------------------------------------------------------------------
+   Layout primitives. The page is white, dense and ruled — not boxed.
+   ------------------------------------------------------------------ */
+html{scroll-behavior:smooth;background:var(--surface)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{min-height:100vh;overflow-x:clip}
+h4,h5,h6{font-family:var(--font-display);font-weight:var(--weight-display);letter-spacing:var(--track-display);margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;border-radius:0}
+input,select,textarea{font:inherit;color:inherit;border-radius:0}
+a{border-bottom:0}
+strong,b{font-weight:500}
+em,i{font-style:italic}
+img{height:auto}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.wrap{max-width:var(--max-page);margin:0 auto;padding-inline:var(--gutter)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--grid-gap);row-gap:var(--space-6)}
+.section{padding-block:var(--section-y)}
+.section-tight{padding-block:var(--section-y-tight)}
+
+/* Rules carry structure: black opens a section, 45% marks hover/inputs, 18% divides. */
+.rule{height:var(--hairline);background:var(--rule);border:0;margin:0}
+.rule-strong{height:var(--hairline);background:var(--rule-strong);border:0;margin:0}
+.rule-black{height:var(--hairline);background:var(--rule-black);border:0;margin:0}
+
+/* Type roles ------------------------------------------------------- */
+.eyebrow{font-family:var(--font-label);font-size:var(--text-label);font-weight:var(--weight-label);letter-spacing:var(--track-label);text-transform:uppercase;line-height:var(--leading-label);color:var(--accent-strong)}
+.eyebrow--ink{color:var(--ink)}
+.eyebrow--muted{color:var(--ink-muted)}
+.label{font-family:var(--font-label);font-size:var(--text-label-l);font-weight:var(--weight-label);letter-spacing:var(--track-label);text-transform:uppercase;line-height:var(--leading-label)}
+/* Captions: --ink-faint (3.4:1) is what the design system sketches, but AA is a hard rule there
+   too, so captions carry --ink-muted (11.2:1) and stay tiny and wide-tracked instead. */
+.caption{font-family:var(--font-label);font-size:var(--text-label);font-weight:var(--weight-label);letter-spacing:var(--track-label);text-transform:uppercase;line-height:var(--leading-label);color:var(--ink-muted)}
+/* The AD standfirst: a small all-caps sans line under a large serif headline. */
+.standfirst{font-family:var(--font-label);font-size:var(--text-lede);font-weight:300;letter-spacing:var(--track-lede);text-transform:uppercase;line-height:1.75;color:var(--ink)}
+.display-xl{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-xl);line-height:var(--leading-display);letter-spacing:var(--track-display)}
+.display-l{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-l);line-height:var(--leading-display);letter-spacing:var(--track-display)}
+.display-m{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-m);line-height:var(--leading-display-loose);letter-spacing:var(--track-display)}
+.display-s{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display)}
+.numeral{font-family:var(--font-display);font-size:var(--text-numeral);letter-spacing:var(--track-numeral);color:var(--accent);line-height:1}
+.body{font-size:var(--text-body);line-height:var(--leading-body);color:var(--ink-muted);max-width:var(--measure)}
+.body-s{font-size:var(--text-body-s);line-height:1.75;color:var(--ink-muted)}
+.italic{font-family:var(--font-editorial);font-style:italic;font-weight:300}
+.measure{max-width:var(--measure)}
+.measure-narrow{max-width:var(--measure-narrow)}
+
+/* Scroll reveal: a 700ms fade with an 8px rise, once, nothing else. */
+.reveal{opacity:0;transform:translateY(8px);transition:opacity var(--dur-reveal) var(--ease-editorial),transform var(--dur-reveal) var(--ease-editorial)}
+.reveal.is-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+html.no-js .reveal{opacity:1;transform:none}
+
+/* Breakpoints: ≤640 single column; 641–1024 eight columns; ≥1025 the full asymmetric twelve. */
+@media (max-width:1024px){
+  .grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:minmax(0,1fr);row-gap:var(--space-5)}
+}

@@ -1,0 +1,39 @@
+---
+/* One story in a grid: brass numeral, captioned plate, kicker, Zodiak title, one-line dek.
+   Two links (image, title) to the same place; the image link is hidden from the
+   accessibility tree so the story is announced once. Hover: image to 86%, meta rule darkens. */
+import Plate from './Plate.astro';
+import type { Post } from '@/lib/sanity';
+import { kicker } from '@/lib/sanity';
+
+interface Props { post: Post; index?: number; sizes?: string; headingLevel?: 'h2' | 'h3' }
+const { post, index, sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw', headingLevel: H = 'h3' } = Astro.props;
+const href = `/journal/${post.slug}/`;
+---
+<article class="card">
+  {typeof index === 'number' && <span class="numeral card__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>}
+  <a class="card__img" href={href} tabindex="-1" aria-hidden="true">
+    <Plate image={post.leadImage} ratio={post.ratio} sizes={sizes} caption={false} />
+  </a>
+  <div class="card__meta">
+    <div class="rule card__rule"></div>
+    <p class="eyebrow card__kicker">{kicker(post)}</p>
+    <H class="display-s card__title"><a class="card__link" href={href}>{post.title}</a></H>
+    <p class="body-s card__dek">{post.dek}</p>
+  </div>
+</article>
+
+<style>
+  .card{display:flex;flex-direction:column;gap:var(--space-4);height:100%}
+  .card__num{display:block}
+  .card__img{display:block;border:0;text-decoration:none;transition:opacity var(--dur-base) var(--ease-editorial)}
+  .card:hover .card__img{opacity:.86}
+  .card__rule{transition:background var(--dur-base) var(--ease-editorial)}
+  .card:hover .card__rule{background:var(--rule-strong)}
+  .card__meta{display:flex;flex-direction:column;gap:var(--space-3);padding-top:var(--space-3)}
+  .card__kicker{margin:0}
+  .card__title{margin:0;max-width:22ch}
+  .card__link{color:var(--ink);text-decoration:none;border:0;background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-size:0 var(--hairline);background-position:0 100%;transition:background-size var(--dur-base) var(--ease-rule)}
+  .card__link:hover,.card__link:focus-visible{background-size:100% var(--hairline)}
+  .card__dek{margin:0;max-width:34ch}
+</style>

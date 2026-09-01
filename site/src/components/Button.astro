@@ -1,0 +1,30 @@
+---
+/* Rectangular CTA. No radius, no icon. 'accent' is the one filled brass button per screen —
+   filled with --accent-strong, because white on --accent is only 3.9:1. */
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit';
+  variant?: 'outline' | 'solid' | 'accent';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  name?: string;
+  value?: string;
+  'aria-controls'?: string;
+  'aria-expanded'?: 'true' | 'false';
+}
+const { href, type = 'button', variant = 'outline', size = 'md', class: cls = '', ...rest } = Astro.props;
+const Tag = href ? 'a' : 'button';
+---
+<Tag href={href} type={href ? undefined : type} class:list={['btn', `btn--${variant}`, `btn--${size}`, cls]} {...rest}><slot /></Tag>
+
+<style>
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font-family:var(--font-label);font-size:var(--text-label-l);font-weight:400;letter-spacing:var(--track-label);text-transform:uppercase;line-height:1;text-decoration:none;border-radius:0;cursor:pointer;background:transparent;border:var(--hairline) solid var(--rule-strong);color:var(--ink);padding:14px 28px;transition:background var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial),border-color var(--dur-base) var(--ease-editorial)}
+  .btn--sm{padding:10px 18px;font-size:var(--text-label)}
+  .btn--lg{padding:18px 40px}
+  .btn--outline:hover{background:var(--ink);color:var(--ink-inverse);border-color:var(--ink)}
+  .btn--solid{background:var(--ink);color:var(--ink-inverse);border-color:var(--ink)}
+  .btn--solid:hover{background:var(--ink-700);border-color:var(--ink-700)}
+  .btn--accent{background:var(--accent-strong);color:#fff;border-color:var(--accent-strong)}
+  .btn--accent:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+  .btn:active{background:var(--ink-700);border-color:var(--ink-700);color:#fff}
+</style>

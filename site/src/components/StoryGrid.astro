@@ -1,0 +1,45 @@
+---
+/* Section opener (black rule, eyebrow, optional right-hand link) and up to three
+   stories across, columns divided by hairlines. Ratios vary per story so the row
+   stays uneven — the AD front page, not a card grid. */
+import StoryCard from './StoryCard.astro';
+import TextLink from './TextLink.astro';
+import type { Post } from '@/lib/sanity';
+
+interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3' }
+const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3' } = Astro.props;
+---
+<section class="wrap sg" id={id}>
+  <div class="rule-black"></div>
+  <div class="sg__head">
+    <h2 class="eyebrow eyebrow--ink sg__title">{title}</h2>
+    {moreHref && <TextLink href={moreHref}>{moreLabel}</TextLink>}
+  </div>
+  <ul class="sg__row" data-reveal-group>
+    {posts.map((p, i) => (
+      <li class="sg__cell reveal" style={`--i:${i}`}>
+        <StoryCard post={p} index={numbered ? i : undefined} headingLevel={headingLevel} />
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .sg{padding-top:var(--section-y-tight)}
+  .sg__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding:var(--space-4) 0 var(--space-6)}
+  .sg__title{margin:0;font-size:var(--text-label);font-weight:400}
+  .sg__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:0}
+  .sg__cell{padding-right:var(--column-gap)}
+  .sg__cell + .sg__cell{border-left:var(--hairline) solid var(--rule);padding-left:var(--column-gap)}
+  .sg__cell:last-child{padding-right:0}
+  .reveal{transition-delay:calc(var(--i,0) * 90ms)}
+  @media (max-width:1024px){
+    .sg__row{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:var(--space-8)}
+    .sg__cell:nth-child(3){border-left:0;padding-left:0;border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6);grid-column:1 / -1}
+  }
+  @media (max-width:640px){
+    .sg__row{grid-template-columns:1fr;row-gap:var(--space-7)}
+    .sg__cell{padding:0 !important;border-left:0 !important}
+    .sg__cell + .sg__cell{border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6) !important}
+  }
+</style>

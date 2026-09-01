@@ -1,0 +1,7 @@
+---
+import type { BlockProps } from 'astro-portabletext/types';
+type Props = BlockProps;
+const { node } = Astro.props;
+const style = node.style ?? 'normal';
+---
+{style === 'h2' || style === 'h3' ? <h2><slot /></h2> : style === 'blockquote' ? <blockquote><slot /></blockquote> : <p><slot /></p>}

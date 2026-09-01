@@ -1,0 +1,22 @@
+---
+/* Wide-tracked uppercase label, 9px. Optional brass numeral and trailing hairline. */
+interface Props {
+  numeral?: string;
+  rule?: boolean;
+  tone?: 'accent' | 'ink' | 'muted';
+  as?: 'div' | 'p' | 'span' | 'h2' | 'h3';
+  class?: string;
+  id?: string;
+}
+const { numeral, rule = false, tone = 'accent', as: Tag = 'div', class: cls = '', id } = Astro.props;
+---
+<Tag class:list={['eb', cls]} id={id}>
+  {numeral && <span class="numeral" aria-hidden="true">{numeral}</span>}
+  <span class:list={['eyebrow', { 'eyebrow--ink': tone === 'ink', 'eyebrow--muted': tone === 'muted' }]}><slot /></span>
+  {rule && <span class="eb__rule" aria-hidden="true"></span>}
+</Tag>
+
+<style>
+  .eb{display:flex;align-items:center;gap:var(--space-3);margin:0;min-width:0}
+  .eb__rule{flex:1;height:var(--hairline);background:var(--rule)}
+</style>
