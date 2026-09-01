@@ -13,7 +13,7 @@ const href = `/journal/${post.slug}/`;
 <section class="wrap lead" aria-labelledby="lead-title">
   <div class="grid lead__grid">
     <a class="lead__img" href={href} tabindex="-1" aria-hidden="true">
-      <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 62vw, 56vw" loading="eager" fetchpriority="high" maxHeight="84vh" />
+      <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 62vw, (max-width: 1700px) 48vw, 40vw" loading="eager" fetchpriority="high" />
     </a>
     <div class="lead__text">
       <p class="eyebrow">{kicker(post)}</p>
@@ -27,8 +27,13 @@ const href = `/journal/${post.slug}/`;
 <style>
   .lead{padding-top:clamp(20px,2.6vw,36px)}
   .lead__grid{align-items:end}
-  .lead__img{grid-column:1 / span 7;display:block;border:0;text-decoration:none}
-  .lead__text{grid-column:8 / span 5;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-6);padding-left:var(--space-4)}
+  /* A true portrait plate — never clamped into a square. Six columns, five on very wide screens. */
+  .lead__img{grid-column:1 / span 6;display:block;border:0;text-decoration:none}
+  .lead__text{grid-column:7 / span 6;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-6);padding-left:var(--space-4)}
+  @media (min-width:1700px){
+    .lead__img{grid-column:1 / span 5}
+    .lead__text{grid-column:6 / span 6}
+  }
   .lead__title{margin:0;max-width:14ch;text-wrap:balance;font-size:clamp(2.5rem,4.6vw,4.5rem)}
   .lead__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
   .lead__link:hover{color:var(--ink-700)}
