@@ -15,7 +15,7 @@ interface Env {
 const MAX = { name: 120, email: 200, phone: 40, interest: 40, message: 4000 } as const;
 const INTERESTS = new Set(['Interior design', 'Personal styling', 'Both']);
 
-const clean = (v: FormDataEntryValue | null, max: number) =>
+const clean = (v: unknown, max: number) =>
   typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, max) : '';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {

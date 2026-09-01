@@ -11,12 +11,12 @@ const { home } = Astro.props;
 <section class="wrap iq section-tight" id="inquire" aria-labelledby="iq-title">
   <div class="rule-black"></div>
   <div class="grid iq__grid">
-    <div class="iq__intro reveal">
+    <div class="iq__intro">
       <p class="eyebrow">{home.inquiryEyebrow}</p>
       <h2 id="iq-title" class="display-m iq__title">{home.inquiryHeadline}</h2>
       {home.inquiryIntro && <p class="body-s iq__lede">{home.inquiryIntro}</p>}
     </div>
-    <form class="iq__form reveal" method="post" action="/api/inquiry" data-inquiry novalidate>
+    <form class="iq__form" method="post" action="/api/inquiry" data-inquiry novalidate>
       <p class="iq__status iq__status--sent" role="status" hidden data-sent>
         <span class="display-s">Thank you.</span>
         <span class="body-s">Your inquiry has reached us. We will reply personally within two business days.</span>
