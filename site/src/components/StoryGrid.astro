@@ -6,8 +6,8 @@ import StoryCard from './StoryCard.astro';
 import TextLink from './TextLink.astro';
 import type { Post } from '@/lib/sanity';
 
-interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; stagger?: boolean }
-const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', stagger = false } = Astro.props;
+interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; stagger?: boolean; uniform?: boolean }
+const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', stagger = false, uniform = false } = Astro.props;
 ---
 <section class:list={['wrap', 'sg', { 'sg--stagger': stagger }]} id={id}>
   <div class="rule-black"></div>
@@ -18,7 +18,7 @@ const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, 
   <ul class="sg__row" data-reveal-group>
     {posts.map((p, i) => (
       <li class="sg__cell reveal" style={`--i:${i}`}>
-        <StoryCard post={p} index={numbered ? i : undefined} headingLevel={headingLevel} />
+        <StoryCard post={p} index={numbered ? i : undefined} headingLevel={headingLevel} ratio={uniform ? "4:5" : undefined} />
       </li>
     ))}
   </ul>

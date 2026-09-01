@@ -32,7 +32,7 @@ export type BodyNode = Block | ImageBlock | QuoteBlock | ServiceCallout;
 
 export interface ServicePackage {
   _id: string; line: 'interiors' | 'styling'; numeral: string; title: string;
-  items: string[]; price: string; priceNote?: string; note?: string;
+  items: string[]; price: string; priceNote?: string; note?: string; image?: Img | null;
 }
 export interface Testimonial { _id: string; quote: string; attribution: string; role?: string }
 export interface Post {

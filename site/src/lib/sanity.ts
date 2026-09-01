@@ -31,7 +31,7 @@ const IMG = `{
   "lqip": asset->metadata.lqip,
   alt, caption
 }`;
-const PKG = `{ _id, line, numeral, title, items, price, priceNote, note }`;
+const PKG = `{ _id, line, numeral, title, items, price, priceNote, note, "image": image ${IMG} }`;
 const CARD = `{
   _id, title, "slug": slug.current, category, location, publishedAt, standfirst, dek, ratio, photoCredit, draftNote,
   "leadImage": leadImage ${IMG}
@@ -103,7 +103,8 @@ export function getHome() {
     const settings: SiteSettings = { ...local.siteSettings, ...stripNulls(r.settings) };
     if (!settings.nav?.length) settings.nav = local.siteSettings.nav;
     if (!settings.footerColumns?.length) settings.footerColumns = local.siteSettings.footerColumns;
-    return { home, settings, packages: r.packages?.length ? r.packages : local.servicePackages };
+    const packages: ServicePackage[] = r.packages?.length ? r.packages.map((p: any) => ({ ...p, image: cleanImg(p.image) })) : local.servicePackages;
+    return { home, settings, packages };
   })();
   return homeMemo;
 }

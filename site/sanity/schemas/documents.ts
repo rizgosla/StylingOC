@@ -46,6 +46,7 @@ export const servicePackage = defineType({
     defineField({ name: 'price', type: 'string', description: 'Stated plainly and completely: "$500 per hour", "$20,000 – $40,000".', validation: (r) => r.required() }),
     defineField({ name: 'priceNote', type: 'string', description: 'Qualifier, e.g. "Depending on square footage and design considerations."' }),
     defineField({ name: 'note', title: 'Benefit line', type: 'string', description: 'One italic line, e.g. "A focused refresh designed to make your existing wardrobe work beautifully."' }),
+    defineField({ name: 'image', title: 'Photograph', type: 'picture', description: 'Shown in the interiors menu. Leave empty for a "Photograph to come" frame.' }),
   ],
   orderings: [{ title: 'Menu order', name: 'menu', by: [{ field: 'line', direction: 'asc' }, { field: 'numeral', direction: 'asc' }] }],
   preview: {

@@ -3,17 +3,17 @@
    Two links (image, title) to the same place; the image link is hidden from the
    accessibility tree so the story is announced once. Hover: image to 86%, meta rule darkens. */
 import Plate from './Plate.astro';
-import type { Post } from '@/lib/sanity';
+import type { Post, Ratio } from '@/lib/sanity';
 import { kicker } from '@/lib/sanity';
 
-interface Props { post: Post; index?: number; sizes?: string; headingLevel?: 'h2' | 'h3' }
-const { post, index, sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw', headingLevel: H = 'h3' } = Astro.props;
+interface Props { post: Post; index?: number; sizes?: string; headingLevel?: 'h2' | 'h3'; ratio?: Ratio }
+const { post, index, sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw', headingLevel: H = 'h3', ratio } = Astro.props;
 const href = `/journal/${post.slug}/`;
 ---
 <article class="card">
   {typeof index === 'number' && <span class="numeral card__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>}
   <a class="card__img" href={href} tabindex="-1" aria-hidden="true">
-    <Plate image={post.leadImage} ratio={post.ratio} sizes={sizes} caption={false} />
+    <Plate image={post.leadImage} ratio={ratio ?? post.ratio} sizes={sizes} caption={false} />
   </a>
   <div class="card__meta">
     <div class="rule card__rule"></div>

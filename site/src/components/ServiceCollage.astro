@@ -1,0 +1,127 @@
+---
+/* The interiors menu as a horizontal contact sheet: numbered plates at staggered
+   heights and slightly different sizes, scrolling sideways past the right edge of the
+   page, each with the package title and its price in full beneath. Photographs are
+   placeholders until the studio's project photography arrives. Scrolls with the
+   trackpad, the keyboard (the track is focusable) or the two text buttons. */
+import Plate from './Plate.astro';
+import TextLink from './TextLink.astro';
+import type { ServicePackage } from '@/lib/sanity';
+
+interface Props { id: string; eyebrow: string; headline: string; intro: string; packages: ServicePackage[] }
+const { id, eyebrow, headline, intro, packages } = Astro.props;
+
+/* Three shapes cycle through the row: tall, short-and-wide, square — offsets vary too. */
+const shapes = [
+  { ratio: '3:4', w: 'clamp(220px,20vw,320px)', offset: '0px' },
+  { ratio: '4:5', w: 'clamp(180px,16vw,260px)', offset: 'clamp(48px,6vw,112px)' },
+  { ratio: '1:1', w: 'clamp(240px,22vw,360px)', offset: 'clamp(16px,2.5vw,48px)' },
+] as const;
+---
+<section class="wrap sc section-tight" id={id} aria-labelledby={`${id}-title`}>
+  <div class="rule-black"></div>
+  <header class="grid sc__head">
+    <div class="sc__intro">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={`${id}-title`} class="display-m sc__title">{headline}</h2>
+    </div>
+    <div class="sc__lede">
+      <p class="body">{intro}</p>
+      <TextLink href="/#inquire">Begin an inquiry</TextLink>
+    </div>
+  </header>
+
+  <div class="sc__scroller" data-collage>
+    <ol class="sc__track" tabindex="0" aria-label="Interior design packages, scroll sideways">
+      {packages.map((p, i) => {
+        const s = shapes[i % shapes.length];
+        return (
+          <li class="sc__item reveal" style={`--w:${s.w};--offset:${s.offset};--i:${i}`}>
+            <span class="numeral sc__num" aria-hidden="true">{p.numeral}</span>
+            <div class="sc__plate">
+              <Plate image={p.image ?? null} ratio={s.ratio} sizes="(max-width: 640px) 70vw, 22vw" caption={false} />
+            </div>
+            <h3 class="sc__name">{p.title}</h3>
+            <p class="sc__price"><span class="label">{p.price}</span>{p.priceNote && <span class="sc__pn">{p.priceNote}</span>}</p>
+            <p class="body-s sc__desc">{p.items.join(' ')}</p>
+          </li>
+        );
+      })}
+    </ol>
+    <div class="sc__foot">
+      <div class="rule"></div>
+      <div class="sc__nav">
+        <span class="eyebrow eyebrow--muted sc__count" data-collage-count>01 / {String(packages.length).padStart(2, '0')}</span>
+        <div class="sc__btns">
+          <button type="button" class="sc__btn" data-collage-prev aria-label="Previous packages">Previous</button>
+          <button type="button" class="sc__btn" data-collage-next aria-label="Next packages">Next <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sc{scroll-margin-top:72px}
+  .sc__head{padding:var(--space-6) 0 var(--space-8);align-items:end}
+  .sc__intro{grid-column:1 / span 6;display:flex;flex-direction:column;gap:var(--space-4)}
+  .sc__lede{grid-column:8 / span 5;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-2)}
+  .sc__lede .body{margin:0;max-width:40ch}
+  .eyebrow{margin:0}
+  .sc__title{margin:0;max-width:14ch;text-wrap:balance}
+
+  /* The track runs to the right edge of the screen; the left edge stays on the grid. */
+  .sc__scroller{margin-right:calc(-1 * var(--gutter))}
+  .sc__track{display:flex;align-items:flex-start;gap:clamp(24px,3vw,56px);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding:0 var(--gutter) var(--space-7) 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .sc__track::-webkit-scrollbar{display:none}
+  .sc__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:6px}
+  .sc__item{flex:0 0 var(--w);width:var(--w);padding-top:var(--offset);scroll-snap-align:start;display:flex;flex-direction:column;gap:var(--space-3);transition-delay:calc(var(--i,0) * 70ms)}
+  .sc__num{display:block;margin-bottom:var(--space-1)}
+  .sc__plate{width:100%}
+  .sc__name{margin:var(--space-3) 0 0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-title);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);max-width:18ch}
+  .sc__price{margin:0;display:flex;flex-direction:column;gap:2px;color:var(--ink)}
+  .sc__pn{font-size:0.75rem;line-height:1.5;color:var(--ink-muted);max-width:26ch}
+  .sc__desc{margin:var(--space-2) 0 0;max-width:30ch}
+  .sc__foot{padding-right:var(--gutter)}
+  .sc__nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-5);padding-top:var(--space-4)}
+  .sc__count{margin:0;font-variant-numeric:tabular-nums}
+  .sc__btns{display:flex;gap:var(--space-6)}
+  .sc__btn{font-family:var(--font-label);font-size:var(--text-label-l);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ink);min-height:44px;padding:0 2px;border-bottom:var(--hairline) solid transparent;transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
+  .sc__btn:hover{border-bottom-color:var(--accent);color:var(--accent-strong)}
+  .sc__btn[disabled]{opacity:.35;cursor:default;border-bottom-color:transparent;color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){.sc__track{scroll-behavior:auto}}
+  @media (max-width:1024px){
+    .sc__intro{grid-column:1 / span 5}
+    .sc__lede{grid-column:6 / span 3}
+  }
+  @media (max-width:640px){
+    .sc__intro,.sc__lede{grid-column:1 / -1}
+    .sc__item{--w:68vw;padding-top:calc(var(--offset) * .4)}
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-collage]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.sc__track')!;
+    const prev = root.querySelector<HTMLButtonElement>('[data-collage-prev]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-collage-next]')!;
+    const count = root.querySelector<HTMLElement>('[data-collage-count]');
+    const items = Array.from(track.querySelectorAll<HTMLElement>('.sc__item'));
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const step = () => Math.max(240, track.clientWidth * 0.6);
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+      if (count && items.length) {
+        const first = items.findIndex((el) => el.offsetLeft + el.offsetWidth * 0.5 > track.scrollLeft);
+        count.textContent = `${String(Math.max(0, first) + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+      }
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: smooth ? 'smooth' : 'auto' }));
+    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: smooth ? 'smooth' : 'auto' }));
+    track.addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+  });
+</script>
