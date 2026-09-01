@@ -10,7 +10,7 @@
    the screen (the printed collateral stopped at 1560px) and sections get a little more air. */
 :root{
   --max-page:none;
-  --gutter:clamp(18px,4vw,96px);
+  --gutter:clamp(18px,6.5vw,150px);
   --grid-gap:clamp(14px,1.6vw,30px);
   --section-y:clamp(64px,8vw,144px);
   --section-y-tight:clamp(44px,5vw,88px);
