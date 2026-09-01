@@ -12,15 +12,16 @@ import { getHome, getPosts } from '@/lib/sanity';
 
 const { home, settings, packages } = await getHome();
 const latest = home.latest.slice(0, 3);
+const interiors = packages.filter((p) => p.line === 'interiors');
+const styling = packages.filter((p) => p.line === 'styling');
 // Rail for the wide-screen hero: real photographs from elsewhere on the site, newest stories first.
 const posts = await getPosts();
 const rail = [
+  ...interiors.map((p) => p.image ?? null),
   ...posts.filter((p) => p._id !== home.leadStory._id).map((p) => p.leadImage),
   ...posts.flatMap((p) => p.body.filter((n: any) => n._type === 'imageBlock').map((n: any) => n.image)),
   home.studioPortrait,
 ].filter((i): i is NonNullable<typeof i> => Boolean(i));
-const interiors = packages.filter((p) => p.line === 'interiors');
-const styling = packages.filter((p) => p.line === 'styling');
 ---
 <Base settings={settings} image={home.leadStory.leadImage ?? home.studioPortrait}>
   <LeadStory post={home.leadStory} rail={rail} />
