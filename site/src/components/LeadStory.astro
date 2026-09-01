@@ -58,12 +58,7 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
     .lead__rail{display:block;grid-column:11 / span 2;align-self:stretch;position:relative;overflow:hidden;border-left:var(--hairline) solid var(--rule);padding-left:var(--grid-gap)}
     .lead__rail-track{position:absolute;inset:0 0 auto calc(var(--grid-gap) + var(--hairline));display:flex;flex-direction:column;gap:var(--grid-gap)}
     .lead__rail-item{width:100%}
-    @supports (animation-timeline: scroll()){
-      .lead__rail-track{animation:rail-drift linear both;animation-timeline:scroll(root);animation-range:0 120vh}
-    }
-    @media (prefers-reduced-motion:reduce){.lead__rail-track{animation:none}}
   }
-  @keyframes rail-drift{from{transform:translateY(0)}to{transform:translateY(-38%)}}
 
   @media (max-width:1024px){
     .lead__img{grid-column:1 / span 5}
@@ -73,5 +68,23 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
     .lead__img,.lead__text{grid-column:1 / -1}
     .lead__text{padding:var(--space-2) 0 0}
     .lead__title{max-width:none}
+  }
+</style>
+
+<!-- Kept out of the CSS pipeline on purpose: the minifier folds these longhands into the
+     animation shorthand with a timeline inside it, which browsers reject. -->
+<style is:inline>
+  @keyframes soc-rail-drift { from { transform: translateY(0); } to { transform: translateY(-38%); } }
+  @supports (animation-timeline: scroll()) {
+    @media (min-width: 1680px) and (prefers-reduced-motion: no-preference) {
+      .lead__rail-track {
+        animation-name: soc-rail-drift;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-duration: auto;
+        animation-timeline: scroll(root);
+        animation-range: 0 120vh;
+      }
+    }
   }
 </style>
