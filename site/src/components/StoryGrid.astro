@@ -6,10 +6,10 @@ import StoryCard from './StoryCard.astro';
 import TextLink from './TextLink.astro';
 import type { Post } from '@/lib/sanity';
 
-interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3' }
-const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3' } = Astro.props;
+interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; stagger?: boolean }
+const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', stagger = false } = Astro.props;
 ---
-<section class="wrap sg" id={id}>
+<section class:list={['wrap', 'sg', { 'sg--stagger': stagger }]} id={id}>
   <div class="rule-black"></div>
   <div class="sg__head">
     <h2 class="eyebrow eyebrow--ink sg__title">{title}</h2>
@@ -32,8 +32,12 @@ const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, 
   .sg__cell{padding-right:var(--column-gap)}
   .sg__cell + .sg__cell{border-left:var(--hairline) solid var(--rule);padding-left:var(--column-gap)}
   .sg__cell:last-child{padding-right:0}
+  /* Numbered plates at staggered heights — the editorial contact-sheet, not a card row. */
+  .sg--stagger .sg__cell:nth-child(2){padding-top:clamp(40px,6vw,104px)}
+  .sg--stagger .sg__cell:nth-child(3){padding-top:clamp(16px,2.6vw,44px)}
   .reveal{transition-delay:calc(var(--i,0) * 90ms)}
   @media (max-width:1024px){
+    .sg--stagger .sg__cell{padding-top:0}
     .sg__row{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:var(--space-8)}
     .sg__cell:nth-child(3){border-left:0;padding-left:0;border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6);grid-column:1 / -1}
   }

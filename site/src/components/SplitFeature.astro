@@ -1,6 +1,7 @@
 ---
-/* Feature story: 4:5 plate in the left five columns, text offset down in the right
-   six, with the opening paragraph set under a Zodiak drop cap. */
+/* Feature story: a 4:5 plate in columns two to six, the text vertically centred beside
+   it in columns seven to eleven — headline, the opening paragraph under a Zodiak drop
+   cap, one link — and the last column left empty on purpose. */
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { Post } from '@/lib/sanity';
@@ -14,32 +15,33 @@ const para = firstParagraph(post);
 <section class="wrap sf section" aria-labelledby="sf-title">
   <div class="grid sf__grid">
     <a class="sf__img reveal" href={href} tabindex="-1" aria-hidden="true">
-      <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw" />
+      <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 36vw" />
     </a>
     <div class="sf__text reveal">
       <p class="eyebrow eyebrow--ink sf__eyebrow">{eyebrow} · {kicker(post)}</p>
-      <h2 id="sf-title" class="display-m sf__title"><a class="sf__link" href={href}>{post.title}</a></h2>
-      <p class="body sf__para dropcap">{para}</p>
+      <h2 id="sf-title" class="display-l sf__title"><a class="sf__link" href={href}>{post.title}</a></h2>
+      <p class="sf__para dropcap">{para}</p>
       <TextLink href={href}>Read the story</TextLink>
     </div>
   </div>
 </section>
 
 <style>
-  .sf__img{grid-column:1 / span 5;display:block;border:0}
-  .sf__text{grid-column:7 / span 6;display:flex;flex-direction:column;gap:var(--space-5);padding-top:clamp(24px,6vw,96px)}
+  .sf__grid{align-items:center}
+  .sf__img{grid-column:2 / span 5;display:block;border:0}
+  .sf__text{grid-column:7 / span 5;display:flex;flex-direction:column;gap:var(--space-6);padding-left:clamp(0px,2vw,32px)}
   .sf__eyebrow{margin:0}
-  .sf__title{margin:0;max-width:18ch;text-wrap:balance}
+  .sf__title{margin:0;max-width:14ch;text-wrap:balance;font-size:clamp(2.25rem,3.6vw,3.75rem)}
   .sf__link{color:var(--ink);text-decoration:none;border:0}
   .sf__link:hover{color:var(--ink-700)}
-  .sf__para{margin:0;max-width:52ch}
-  .dropcap::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:3.9em;line-height:.82;float:left;padding:.08em .12em 0 0;color:var(--ink)}
+  .sf__para{margin:0;max-width:44ch;font-size:var(--text-title);line-height:1.6;color:var(--ink-muted);font-weight:var(--weight-body)}
+  .dropcap::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:3.6em;line-height:.82;float:left;padding:.08em .12em 0 0;color:var(--ink)}
   @media (max-width:1024px){
     .sf__img{grid-column:1 / span 4}
-    .sf__text{grid-column:5 / span 4;padding-top:var(--space-6)}
+    .sf__text{grid-column:5 / span 4;padding-left:0}
+    .sf__para{font-size:var(--text-body)}
   }
   @media (max-width:640px){
     .sf__img,.sf__text{grid-column:1 / -1}
-    .sf__text{padding-top:0}
   }
 </style>

@@ -1,0 +1,58 @@
+---
+/* One service line: eyebrow, headline and a short introduction in the left third,
+   the menu as a ruled price list in the right two-thirds. Prices are copy, stated
+   plainly and completely. Two of these stack, one per line. */
+import TextLink from './TextLink.astro';
+import type { ServicePackage } from '@/lib/sanity';
+
+interface Props { id: string; eyebrow: string; headline: string; intro: string; packages: ServicePackage[] }
+const { id, eyebrow, headline, intro, packages } = Astro.props;
+---
+<section class="wrap sl section-tight" id={id} aria-labelledby={`${id}-title`}>
+  <div class="rule-black"></div>
+  <div class="grid sl__grid">
+    <div class="sl__intro reveal">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={`${id}-title`} class="display-m sl__title">{headline}</h2>
+      <p class="body sl__lede">{intro}</p>
+      <TextLink href="/#inquire">Begin an inquiry</TextLink>
+    </div>
+    <dl class="sl__menu reveal">
+      {packages.map((p) => (
+        <div class="sl__row">
+          <dt class="sl__name"><span class="numeral sl__num" aria-hidden="true">{p.numeral}</span><span class="label">{p.title}</span></dt>
+          <dd class="sl__price">
+            <span class="label">{p.price}</span>
+            {p.priceNote && <span class="body-s sl__note">{p.priceNote}</span>}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .sl{scroll-margin-top:72px}
+  .sl__grid{padding-top:var(--space-6);align-items:start}
+  .sl__intro{grid-column:1 / span 4;display:flex;flex-direction:column;gap:var(--space-5);position:sticky;top:88px}
+  .eyebrow{margin:0}
+  .sl__title{margin:0;max-width:14ch;text-wrap:balance}
+  .sl__lede{margin:0;max-width:38ch}
+  .sl__menu{grid-column:6 / span 7;margin:0;border-top:var(--hairline) solid var(--rule-black)}
+  .sl__row{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--space-6);align-items:baseline;padding:var(--space-5) 0;border-bottom:var(--hairline) solid var(--rule)}
+  .sl__name{display:flex;align-items:baseline;gap:var(--space-4);margin:0;color:var(--ink)}
+  .sl__num{font-size:1.125rem}
+  .sl__price{margin:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px;color:var(--ink)}
+  .sl__note{max-width:26ch;text-align:right;font-size:0.75rem;line-height:1.5}
+  .label{font-size:var(--text-label-l)}
+  @media (max-width:1024px){
+    .sl__intro{grid-column:1 / span 3;position:static}
+    .sl__menu{grid-column:4 / span 5}
+  }
+  @media (max-width:640px){
+    .sl__intro,.sl__menu{grid-column:1 / -1}
+    .sl__row{grid-template-columns:1fr;row-gap:var(--space-2)}
+    .sl__price{align-items:flex-start;text-align:left;padding-left:calc(1.125rem + var(--space-4))}
+    .sl__note{text-align:left}
+  }
+</style>

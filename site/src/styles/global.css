@@ -6,6 +6,12 @@
 @import "./tokens/motion.css";
 @import "./tokens/elements.css";
 
+/* Sections get a little more air than the printed collateral the tokens describe. */
+:root{
+  --section-y:clamp(64px,8vw,144px);
+  --section-y-tight:clamp(44px,5vw,88px);
+}
+
 /* ------------------------------------------------------------------
    Layout primitives. The page is white, dense and ruled — not boxed.
    ------------------------------------------------------------------ */
