@@ -1,15 +1,15 @@
 ---
 /* Section opener (black rule, eyebrow, optional right-hand link) and up to three
-   stories across, columns divided by hairlines. Ratios vary per story so the row
-   stays uneven — the AD front page, not a card grid. */
+   stories across, equal columns divided by hairlines drawn in the gaps so every
+   plate is exactly the same width. */
 import StoryCard from './StoryCard.astro';
 import TextLink from './TextLink.astro';
 import type { Post } from '@/lib/sanity';
 
-interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; stagger?: boolean; uniform?: boolean }
-const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', stagger = false, uniform = false } = Astro.props;
+interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; uniform?: boolean }
+const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', uniform = false } = Astro.props;
 ---
-<section class:list={['wrap', 'sg', { 'sg--stagger': stagger }]} id={id}>
+<section class="wrap sg" id={id}>
   <div class="rule-black"></div>
   <div class="sg__head">
     <h2 class="eyebrow eyebrow--ink sg__title">{title}</h2>
@@ -18,7 +18,7 @@ const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, 
   <ul class="sg__row" data-reveal-group>
     {posts.map((p, i) => (
       <li class="sg__cell reveal" style={`--i:${i}`}>
-        <StoryCard post={p} index={numbered ? i : undefined} headingLevel={headingLevel} ratio={uniform ? "4:5" : undefined} />
+        <StoryCard post={p} index={numbered ? i : undefined} headingLevel={headingLevel} ratio={uniform ? '4:5' : undefined} />
       </li>
     ))}
   </ul>
@@ -28,22 +28,18 @@ const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, 
   .sg{padding-top:var(--section-y-tight)}
   .sg__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding:var(--space-4) 0 var(--space-6)}
   .sg__title{margin:0;font-size:var(--text-label);font-weight:400}
-  .sg__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:0}
-  .sg__cell{padding-right:var(--column-gap)}
-  .sg__cell + .sg__cell{border-left:var(--hairline) solid var(--rule);padding-left:var(--column-gap)}
-  .sg__cell:last-child{padding-right:0}
-  /* Numbered plates at staggered heights — the editorial contact-sheet, not a card row. */
-  .sg--stagger .sg__cell:nth-child(2){padding-top:clamp(40px,6vw,104px)}
-  .sg--stagger .sg__cell:nth-child(3){padding-top:clamp(16px,2.6vw,44px)}
+  .sg__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2)}
+  .sg__cell{position:relative;min-width:0}
+  .sg__cell + .sg__cell::before{content:"";position:absolute;top:0;bottom:0;left:calc(-1 * var(--column-gap));width:var(--hairline);background:var(--rule)}
   .reveal{transition-delay:calc(var(--i,0) * 90ms)}
   @media (max-width:1024px){
-    .sg--stagger .sg__cell{padding-top:0}
     .sg__row{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:var(--space-8)}
-    .sg__cell:nth-child(3){border-left:0;padding-left:0;border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6);grid-column:1 / -1}
+    .sg__cell:nth-child(3){grid-column:1 / -1;padding-top:var(--space-6);border-top:var(--hairline) solid var(--rule)}
+    .sg__cell:nth-child(3)::before{display:none}
   }
   @media (max-width:640px){
     .sg__row{grid-template-columns:1fr;row-gap:var(--space-7)}
-    .sg__cell{padding:0 !important;border-left:0 !important}
-    .sg__cell + .sg__cell{border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6) !important}
+    .sg__cell::before{display:none}
+    .sg__cell + .sg__cell{border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6)}
   }
 </style>
