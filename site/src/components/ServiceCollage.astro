@@ -16,6 +16,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
 const ratios = ['4:5', '3:4'] as const;
 ---
 <section class="col" id={id} aria-labelledby={`${id}-title`} data-collage style={`--n:${packages.length}`}>
+  <div class="rule-black" aria-hidden="true"></div>
   <div class="col__pin">
     <div class="col__frame">
       <ol class="col__track" tabindex="0" aria-label="Interior design packages; scroll to move sideways">
@@ -67,7 +68,7 @@ const ratios = ['4:5', '3:4'] as const;
   /* Pinned mode (wide screens, motion allowed). */
   @media (min-width:1025px) and (prefers-reduced-motion:no-preference){
     .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100vw + 100vh)}
-    .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
+    .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-bottom:var(--hairline) solid var(--rule)}
     .col__track{height:100vh;will-change:transform}
     /* Content sits around the vertical centre of the frame whatever the window height;
        the stagger comes from asymmetric padding, so short windows have no dead band. */
@@ -80,7 +81,7 @@ const ratios = ['4:5', '3:4'] as const;
   /* Row mode (narrow screens, or reduced motion): native sideways scroll. */
   @media (max-width:1024px), (prefers-reduced-motion:reduce){
     .col{padding-block:var(--section-y-tight)}
-    .col__pin{border-top:var(--hairline) solid var(--rule-black)}
+    .col__pin{border-top:0}
     .col__frame{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
     .col__frame::-webkit-scrollbar{display:none}
     .col__track{padding-top:var(--space-7);padding-right:var(--gutter);padding-bottom:var(--space-8)}
