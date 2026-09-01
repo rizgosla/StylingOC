@@ -5,13 +5,13 @@
    no JavaScript, and it stands still under prefers-reduced-motion). */
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
-import type { Post } from '@/lib/sanity';
+import type { Img, Post } from '@/lib/sanity';
 import { kicker } from '@/lib/sanity';
 
-interface Props { post: Post; rail?: Post[] }
+interface Props { post: Post; rail?: Img[] }
 const { post, rail = [] } = Astro.props;
 const href = `/journal/${post.slug}/`;
-const railPosts = rail.filter((p) => p._id !== post._id && p.leadImage).slice(0, 3);
+const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter((i, n, a) => a.findIndex((x) => x.src === i.src) === n).slice(0, 3);
 ---
 <section class="wrap lead" aria-labelledby="lead-title">
   <div class="grid lead__grid">
@@ -24,12 +24,12 @@ const railPosts = rail.filter((p) => p._id !== post._id && p.leadImage).slice(0,
       <p class="standfirst lead__standfirst">{post.standfirst}</p>
       <TextLink href={href}>Read the story</TextLink>
     </div>
-    {railPosts.length >= 2 && (
+    {railImages.length >= 2 && (
       <div class="lead__rail" aria-hidden="true">
         <div class="lead__rail-track">
-          {railPosts.map((p) => (
+          {railImages.map((img) => (
             <div class="lead__rail-item">
-              <Plate image={p.leadImage} ratio="3:4" sizes="14vw" caption={false} placeholder="To come" />
+              <Plate image={img} ratio="3:4" sizes="14vw" caption={false} />
             </div>
           ))}
         </div>
