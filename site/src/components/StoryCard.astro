@@ -30,9 +30,9 @@ const href = `/journal/${post.slug}/`;
   .card:hover .card__img{opacity:.86}
   .card__rule{transition:background var(--dur-base) var(--ease-editorial)}
   .card:hover .card__rule{background:var(--rule-strong)}
-  .card__meta{display:flex;flex-direction:column;gap:var(--space-3);padding-top:var(--space-3)}
+  .card__meta{display:flex;flex-direction:column;gap:var(--space-3);padding-top:var(--space-3);padding-right:var(--column-gap)}
   .card__kicker{margin:0}
-  .card__title{margin:0;max-width:22ch}
+  .card__title{margin:0;font-size:clamp(1.375rem,1.7vw,1.625rem);max-width:18ch;text-wrap:balance}
   .card__link{color:var(--ink);text-decoration:none;border:0;background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-size:0 var(--hairline);background-position:0 100%;transition:background-size var(--dur-base) var(--ease-rule)}
   .card__link:hover,.card__link:focus-visible{background-size:100% var(--hairline)}
   .card__dek{margin:0;max-width:34ch}

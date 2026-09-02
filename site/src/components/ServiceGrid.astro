@@ -41,8 +41,8 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
 <style>
   .sgd{scroll-margin-top:72px}
   .sgd__kicker{margin:0 0 var(--space-5);text-align:center}
-  .sgd__body{padding:var(--space-8) 0 var(--space-9);align-items:start}
-  .sgd__desc{grid-column:1 / span 4;display:flex;flex-direction:column;gap:var(--space-5);padding-right:var(--column-gap);position:sticky;top:88px}
+  .sgd__body{padding:var(--space-8) 0 var(--space-9);align-items:center}
+  .sgd__desc{grid-column:1 / span 4;display:flex;flex-direction:column;gap:var(--space-5);padding-right:var(--column-gap)}
   .sgd__title{margin:0;max-width:12ch;text-wrap:balance;font-size:clamp(2.5rem,3.5vw,4.25rem);line-height:1.05}
   .sgd__lede{margin:0;max-width:36ch;font-size:var(--text-title);line-height:1.65}
   .sgd__items{grid-column:5 / span 8;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2);margin:0}

@@ -75,6 +75,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
     /* Staggered like the reference — alternating heights — but every plate the same
        size; the plate's height cap keeps numeral, photograph and text inside the frame. */
     .col__panel{--off:6vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
+    .col__panel--intro{justify-content:center;padding-top:var(--bar);padding-bottom:var(--bar)}
     .col__panel--high{--off:3vh}
     .col__panel--low{--off:14vh}
     /* Every plate capped by the same worst-case offset, so they are all exactly the same size. */
