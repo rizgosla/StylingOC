@@ -212,7 +212,7 @@ export const siteSettings: SiteSettings = {
 
 export const homePage: HomePage = {
   leadStory: post('post-a-living-room-reconsidered'),
-  heroHeadline: 'Empowering the home and the person',
+  heroHeadline: 'Empowering the Home and the Person',
   latest: [post('post-the-art-of-personal-style'), post('post-a-living-room-reconsidered'), post('post-meet-emily')],
   featuredPost: post('post-the-art-of-personal-style'),
   interiorsEyebrow: 'Interior design',
