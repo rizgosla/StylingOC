@@ -23,7 +23,7 @@ const rail = [
 ].filter((i): i is NonNullable<typeof i> => Boolean(i));
 ---
 <Base settings={settings} image={home.leadStory.leadImage ?? home.studioPortrait}>
-  <LeadStory post={home.leadStory} headline={home.heroHeadline} rail={rail} />
+  <LeadStory post={home.leadStory} headline={home.heroHeadline} eyebrow={home.heroEyebrow} rail={rail} />
   <StoryGrid posts={latest} title="The latest" moreHref="/journal/" uniform closing />
   <ServiceCollage id="interiors" eyebrow={home.interiorsEyebrow} headline={home.interiorsHeadline} intro={home.interiorsIntro} packages={interiors} />
   <ServiceGrid id="styling" eyebrow={home.stylingEyebrow} headline={home.stylingHeadline} intro={home.stylingIntro} packages={styling} />

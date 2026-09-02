@@ -47,7 +47,7 @@ export interface SiteSettings {
   nav: NavLink[]; footerColumns: FooterColumn[]; email?: string; phone?: string; instagram?: string; location: string;
 }
 export interface HomePage {
-  leadStory: Post; heroHeadline?: string; latest: Post[]; featuredPost: Post;
+  leadStory: Post; heroHeadline?: string; heroEyebrow?: string; latest: Post[]; featuredPost: Post;
   interiorsEyebrow: string; interiorsHeadline: string; interiorsIntro: string;
   stylingEyebrow: string; stylingHeadline: string; stylingIntro: string;
   testimonial: Testimonial;
@@ -213,6 +213,7 @@ export const siteSettings: SiteSettings = {
 export const homePage: HomePage = {
   leadStory: post('post-a-living-room-reconsidered'),
   heroHeadline: 'Empowering the Home and the Person',
+  heroEyebrow: 'Interior and Personal Makeovers · Orange County',
   latest: [post('post-the-art-of-personal-style'), post('post-a-living-room-reconsidered'), post('post-meet-emily')],
   featuredPost: post('post-the-art-of-personal-style'),
   interiorsEyebrow: 'Interior design',

@@ -74,6 +74,7 @@ export const homePage = defineType({
   fields: [
     defineField({ name: 'leadStory', title: 'Lead story', type: 'reference', to: [{ type: 'post' }], group: 'stories', validation: (r) => r.required() }),
     defineField({ name: 'heroHeadline', title: 'Hero headline', type: 'string', description: 'Shown as the hero headline instead of the lead story title. Leave empty to use the title.' }),
+    defineField({ name: 'heroEyebrow', title: 'Hero eyebrow', type: 'string', description: 'Small line above the hero headline. Leave empty to use the lead story category and place.' }),
     defineField({ name: 'latest', title: 'The latest (three stories)', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'post' }] })], group: 'stories', description: 'Leave empty to show the three newest posts automatically.', validation: (r) => r.max(3) }),
     defineField({ name: 'featuredPost', title: 'Feature story', type: 'reference', to: [{ type: 'post' }], group: 'stories', description: 'The story shown large with a drop cap, lower on the page.' }),
     defineField({ name: 'interiorsEyebrow', type: 'string', group: 'services', initialValue: 'Interior design' }),
