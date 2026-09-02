@@ -41,20 +41,24 @@ is set, everything is read from Sanity and the Studio appears at `/studio`.
    three Journal posts, Home and Site settings. Safe to re-run.
 5. `npm run dev` → open `http://localhost:4321/studio` and log in.
 
-## Deploy on Cloudflare Pages
+## Deploy on Cloudflare
 
-Create a Pages project from this repository:
+The dashboard's default flow (Workers & Pages → Create → connect a Git repository) creates a
+**Worker**. `wrangler.jsonc` in this folder is set up for it: the Astro build in `dist/` is
+served as static assets and `worker/index.ts` handles `POST /api/inquiry`.
 
 | Setting | Value |
 | --- | --- |
-| Root directory | `site` |
+| Path (root directory) | `site` |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
-| Environment variables | `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, `PUBLIC_SITE_URL=https://<your-domain>`, `SANITY_WRITE_TOKEN` (encrypt it — used only by the inquiry function) |
+| Deploy command | `npx wrangler deploy` |
+| Variables and secrets | `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET=production`, `PUBLIC_SITE_URL=https://<your-domain>`, `SANITY_WRITE_TOKEN` (encrypt it — used only by the inquiry function) |
 
-The `functions/` folder is picked up automatically: `POST /api/inquiry` becomes a Pages
-Function. It validates the form, stores an `inquiry` document in Sanity (visible under
-**Inquiries** in the Studio) and redirects back to `/?inquiry=sent#inquire`.
+The same repository also works as a classic **Pages** project (root `site`, build
+`npm run build`, output `dist`): there the `functions/` folder is picked up automatically and
+`POST /api/inquiry` becomes a Pages Function. Either way the form validates, stores an
+`inquiry` document in Sanity (visible under **Inquiries** in the Studio) and redirects back to
+`/?inquiry=sent#inquire`.
 
 ### Rebuild when the client publishes
 
