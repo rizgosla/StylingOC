@@ -1,6 +1,5 @@
 ---
-/* The founders: portrait plate in the first four columns; eyebrow, headline, the
-   pillars row, two short paragraphs and a link in the remaining seven. */
+/* The founders: text on the left, vertically centred against the portrait plate on the right. */
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { HomePage } from '@/lib/sanity';
@@ -33,7 +32,7 @@ const { home } = Astro.props;
 </section>
 
 <style>
-  .st__grid{padding-top:var(--space-6);align-items:start}
+  .st__grid{padding-top:var(--space-6);align-items:center}
   .st__img{grid-column:1 / span 4}
   .st__text{grid-column:6 / span 7;display:flex;flex-direction:column;gap:var(--space-5);padding-top:var(--space-4)}
   .eyebrow{margin:0}
@@ -45,8 +44,8 @@ const { home } = Astro.props;
   .st__body p{margin:0}
   .st__lede{font-size:var(--text-title);line-height:1.5;color:var(--ink)}
   @media (max-width:1024px){
-    .st__img{grid-column:1 / span 4}
-    .st__text{grid-column:5 / span 4;padding-top:0}
+    .st__img{grid-column:5 / span 4}
+    .st__text{grid-column:1 / span 4}
   }
   @media (max-width:640px){
     .st__img,.st__text{grid-column:1 / -1}
