@@ -43,10 +43,10 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
   .lead__grid{align-items:end}
   .lead__img{grid-column:1 / span 6;display:block;border:0;text-decoration:none}
   .lead__text{grid-column:7 / span 6;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-6);padding-left:var(--space-4)}
-  .lead__title{margin:0;text-wrap:balance;font-size:clamp(2.75rem,5.4vw,6rem);line-height:1.02}
+  .lead__title{margin:0;text-wrap:balance;font-size:clamp(2.75rem,5.6vw,7rem);line-height:1.02}
   .lead__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
   .lead__link:hover{color:var(--ink-700)}
-  .lead__standfirst{margin:0;max-width:40ch}
+  .lead__standfirst{margin:0;max-width:46ch;font-size:var(--text-lede)}
   .eyebrow{margin:0}
   .lead__rail{display:none}
 
@@ -55,7 +55,7 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
   @media (min-width:1680px){
     .lead__img{grid-column:1 / span 5}
     .lead__text{grid-column:6 / span 5}
-    .lead__title{font-size:clamp(3rem,4.5vw,5.5rem)}
+    .lead__title{font-size:clamp(3rem,4.9vw,6.5rem)}
     .lead__rail{display:block;grid-column:11 / span 2;align-self:stretch;position:relative;overflow:hidden;border-left:var(--hairline) solid var(--rule);padding-left:var(--grid-gap)}
     .lead__rail-track{position:absolute;inset:0 0 auto calc(var(--grid-gap) + var(--hairline));display:flex;flex-direction:column;gap:var(--grid-gap)}
     .lead__rail-item{width:100%}
