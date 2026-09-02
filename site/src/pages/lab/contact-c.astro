@@ -1,0 +1,16 @@
+---
+/* Prototype page: Variant C2 — "Sign-off". Studio block above so the seam into the
+   strip is visible; the real site footer is suppressed. Not indexed, not linked. */
+import Base from '@/layouts/Base.astro';
+import StudioBlock from '@/components/StudioBlock.astro';
+import InquiryC from '@/components/lab/InquiryC.astro';
+import FooterC from '@/components/lab/FooterC.astro';
+import { getHome } from '@/lib/sanity';
+
+const { home, settings } = await getHome();
+---
+<Base settings={settings} title="Lab: contact C" noindex footer={false}>
+  <StudioBlock home={home} />
+  <InquiryC home={home} email={settings.email} phone={settings.phone} />
+  <FooterC settings={settings} />
+</Base>
