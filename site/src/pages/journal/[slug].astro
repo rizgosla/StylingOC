@@ -45,7 +45,7 @@ const portrait = Boolean(post.leadImage && post.leadImage.height > post.leadImag
     </div>
   </article>
 
-  {related.length > 0 && <StoryGrid posts={related} title="More stories" moreHref="/journal/" numbered={false} />}
+  {related.length > 0 && <StoryGrid posts={related} title="More stories" moreHref="/journal/" numbered={false} closing />}
   <InquiryForm home={home} email={settings.email} phone={settings.phone} />
 </Base>
 

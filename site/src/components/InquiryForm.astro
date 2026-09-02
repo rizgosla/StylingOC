@@ -58,7 +58,7 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
         </div>
         <div class="iq__field iq__field--message">
           <label for="iq-message" class="eyebrow eyebrow--muted">Tell us about the project <span class="iq__req" aria-hidden="true">*</span></label>
-          <textarea id="iq-message" name="message" rows="3" required maxlength="4000"></textarea>
+          <textarea id="iq-message" name="message" rows="3" required maxlength="4000" aria-describedby="iq-hint"></textarea>
         </div>
         <div class="iq__hp" aria-hidden="true">
           <label for="iq-company">Company</label>
@@ -66,7 +66,7 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
         </div>
       </div>
       <div class="iq__actions">
-        {note && <span class="eyebrow eyebrow--muted iq__note">{note}</span>}
+        {note && <span id="iq-hint" class="eyebrow eyebrow--muted iq__note">{note}</span>}
         <button type="submit" class="iq__submit"><span class="iq__submit-label">Send inquiry</span></button>
       </div>
     </form>
@@ -74,8 +74,8 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
 </section>
 
 <style>
-  .iq{scroll-margin-top:72px;padding-top:0}
-  .iq__grid{padding-top:var(--space-8);padding-bottom:var(--space-8);align-items:start}
+  .iq{scroll-margin-top:72px}
+  .iq__grid{padding-top:var(--section-y-tight);padding-bottom:var(--space-8);align-items:start}
   .iq__intro{grid-column:1 / span 4;display:flex;flex-direction:column}
   .iq__eyebrow{margin:0 0 var(--space-4)}
   .iq__title{margin:0 0 var(--space-4);max-width:12ch;text-wrap:balance;line-height:var(--leading-display-loose)}
@@ -113,7 +113,7 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
     .iq__intro{grid-column:1 / span 3}
     .iq__form{grid-column:4 / span 5}
     .iq__fields{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .iq__field--interest{grid-column:1 / span 1}
+    .iq__field--interest{grid-column:auto}
     .iq__field--message{grid-column:1 / -1}
   }
   @media (max-width:640px){

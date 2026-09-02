@@ -6,10 +6,10 @@ import StoryCard from './StoryCard.astro';
 import TextLink from './TextLink.astro';
 import type { Post } from '@/lib/sanity';
 
-interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; uniform?: boolean }
-const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', uniform = false } = Astro.props;
+interface Props { posts: Post[]; title: string; moreHref?: string; moreLabel?: string; numbered?: boolean; id?: string; headingLevel?: 'h2' | 'h3'; uniform?: boolean; closing?: boolean }
+const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, headingLevel = 'h3', uniform = false, closing = false } = Astro.props;
 ---
-<section class="wrap sg" id={id}>
+<section class:list={["wrap", "sg", closing && "sg--closing"]} id={id}>
   <div class="rule-black"></div>
   <div class="sg__head">
     <h2 class="eyebrow eyebrow--ink sg__title">{title}</h2>
@@ -26,6 +26,9 @@ const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, 
 
 <style>
   .sg{padding-top:var(--section-y-tight)}
+  /* Only when the grid closes a page: the home page follows it with the pinned
+     interiors section, which brings its own leading space. */
+  .sg--closing{padding-bottom:var(--section-y-tight)}
   .sg__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding:var(--section-y-tight) 0 var(--space-6)}
   .sg__title{margin:0;font-size:var(--text-label);font-weight:400}
   .sg__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2)}
