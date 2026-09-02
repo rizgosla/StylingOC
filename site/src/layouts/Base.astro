@@ -12,8 +12,9 @@ interface Props {
   image?: Img | null;
   type?: 'website' | 'article';
   noindex?: boolean;
+  footer?: boolean;
 }
-const { settings, title, description = settings.description, image, type = 'website', noindex = false } = Astro.props;
+const { settings, title, description = settings.description, image, type = 'website', noindex = false, footer = true } = Astro.props;
 const pageTitle = title ? `${title} — ${settings.title}` : `${settings.title} — Interior design and personal styling, Orange County`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = image ? picture(image, '3:2') : null;
@@ -49,7 +50,7 @@ const ogUrl = og ? (og.src.startsWith('http') ? og.src : new URL(og.src, Astro.s
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <SiteFooter settings={settings} />
+    {footer && <SiteFooter settings={settings} />}
     <script>
       // Reveal: a 700ms fade with an 8px rise, once per element, on entering the viewport.
       const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
