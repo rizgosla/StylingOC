@@ -1,69 +1,56 @@
 ---
-/* Black top rule, three hairline-divided columns, the stacked "Styling / OC" lockup
-   from the brand sheets, and the tagline in wide caps along the bottom. */
+/* End matter, part two: a colophon. Black top rule, one baseline row — wordmark,
+   links, copyright — then the house mark set oversized and cropped by the bottom
+   of the page, the way a magazine ends on its own name. */
 import type { SiteSettings } from '@/lib/sanity';
 interface Props { settings: SiteSettings }
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
-const contact = [
-  settings.email && { label: settings.email, href: `mailto:${settings.email}` },
-  settings.phone && { label: settings.phone, href: `tel:${settings.phone.replace(/[^\d+]/g, '')}` },
-  settings.instagram && { label: 'Instagram', href: settings.instagram },
-].filter(Boolean) as { label: string; href: string }[];
-const columns = settings.footerColumns.map((c, i) =>
-  i === settings.footerColumns.length - 1 && /contact/i.test(c.title) ? { ...c, items: [...c.items, ...contact] } : c,
-);
+const links = [
+  ...settings.footerColumns.flatMap((c) => c.items.filter((it) => Boolean(it.href))),
+  ...(settings.instagram ? [{ label: 'Instagram', href: settings.instagram }] : []),
+] as { label: string; href: string }[];
 ---
 <footer class="ft">
   <div class="wrap">
     <div class="rule-black"></div>
-    <div class="ft__grid">
-      <div class="ft__lockup" aria-hidden="true">
-        <span class="ft__l1">Styling</span>
-        <span class="ft__l2">OC</span>
-      </div>
-      {columns.map((c) => (
-        <div class="ft__col">
-          <h2 class="eyebrow ft__title">{c.title}</h2>
-          <ul class="ft__list">
-            {c.items.map((it) =>
-              it.href ? <li><a class="ft__link" href={it.href}>{it.label}</a></li> : <li class="ft__text">{it.label}</li>,
-            )}
-          </ul>
-        </div>
-      ))}
+    <div class="grid ft__top">
+      <a class="ft__mark" href="/">Styling OC</a>
+      <nav class="ft__links" aria-label="Footer">
+        {links.map((it) => <a class="ft__link" href={it.href}>{it.label}</a>)}
+      </nav>
+      <p class="ft__note">© {year} Styling OC · Orange County, California</p>
     </div>
     <div class="rule"></div>
-    <div class="ft__bottom">
-      <p class="ft__tagline">{settings.footerTagline}</p>
-      <p class="ft__note">© {year} Styling OC · Orange County, California</p>
+    <div class="ft__end">
+      {settings.footerTagline && <p class="eyebrow eyebrow--muted ft__tagline">{settings.footerTagline}</p>}
+      <div class="ft__big" aria-hidden="true">Styling OC</div>
     </div>
   </div>
 </footer>
 
 <style>
-  .ft{background:var(--surface);margin-top:var(--section-y)}
-  .ft__grid{display:grid;grid-template-columns:minmax(0,4fr) repeat(3,minmax(0,2fr));column-gap:var(--column-gap);padding:var(--space-7) 0 var(--space-8)}
-  .ft__lockup{display:flex;flex-direction:column;font-family:var(--font-display);font-weight:var(--weight-display);letter-spacing:-.01em;line-height:.9;color:var(--ink)}
-  .ft__l1{font-size:clamp(2.4rem,4vw,3.6rem)}
-  .ft__l2{font-size:clamp(3.2rem,5.6vw,5.2rem);margin-top:.04em}
-  .ft__col{border-left:var(--hairline) solid var(--rule);padding-left:var(--column-gap)}
-  .ft__title{margin:0 0 var(--space-5);font-size:var(--text-label);font-weight:400;line-height:var(--leading-label)}
-  .ft__list{display:flex;flex-direction:column;gap:var(--space-2)}
-  .ft__link{font-size:var(--text-body-s);color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid transparent;transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial);line-height:1.7;display:inline-block}
-  .ft__link:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
-  .ft__text{font-size:var(--text-body-s);color:var(--ink-muted);line-height:1.7}
-  .ft__bottom{display:flex;flex-wrap:wrap;gap:var(--space-4) var(--space-6);align-items:baseline;justify-content:space-between;padding:var(--space-5) 0 var(--space-6)}
-  .ft__tagline{margin:0;font-family:var(--font-label);font-size:var(--text-label);letter-spacing:var(--track-label-wide);text-transform:uppercase;color:var(--ink)}
-  .ft__note{margin:0;font-family:var(--font-label);font-size:var(--text-label);letter-spacing:.1em;color:var(--ink-muted)}
+  .ft{background:var(--surface);margin-top:var(--section-y);overflow:hidden}
+  .ft__top{align-items:baseline;padding:var(--space-6) 0;row-gap:var(--space-4)}
+  .ft__mark{grid-column:1 / span 3;font-family:var(--font-display);font-weight:var(--weight-display);font-size:1.125rem;letter-spacing:.06em;text-transform:uppercase;line-height:1.2;color:var(--ink);text-decoration:none;border:0;justify-self:start}
+  .ft__mark:hover{color:var(--accent-strong)}
+  .ft__links{grid-column:4 / span 5;display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-4) var(--space-6)}
+  /* The TextLink underline, kept local: label-width hairline, brass on hover. */
+  .ft__link{position:relative;display:inline-block;font-family:var(--font-label);font-size:var(--text-label);font-weight:var(--weight-label);letter-spacing:var(--track-label);text-transform:uppercase;line-height:var(--leading-label);color:var(--ink);text-decoration:none;border:0;padding-bottom:5px;min-height:24px;transition:color var(--dur-base) var(--ease-editorial)}
+  .ft__link::before,.ft__link::after{content:"";position:absolute;left:0;bottom:0;height:var(--hairline)}
+  .ft__link::before{width:100%;background:currentColor;opacity:.24}
+  .ft__link::after{width:0;background:var(--accent);transition:width var(--dur-base) var(--ease-rule)}
+  .ft__link:hover::after,.ft__link:focus-visible::after{width:100%}
+  .ft__link:hover{color:var(--accent-strong)}
+  .ft__note{grid-column:9 / span 4;margin:0;text-align:right;font-family:var(--font-label);font-size:var(--text-label);letter-spacing:.1em;color:var(--ink-muted)}
+  .ft__end{padding-top:var(--space-6)}
+  .ft__tagline{margin:0 0 var(--space-4)}
+  .ft__big{font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(4rem,12vw,13rem);line-height:.85;letter-spacing:-.02em;color:var(--ink);white-space:nowrap;margin-bottom:-0.3em;user-select:none}
   @media (max-width:1024px){
-    .ft__grid{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:var(--space-7)}
-    .ft__lockup{grid-column:1 / -1}
-    .ft__col:first-of-type{border-left:0;padding-left:0}
+    .ft__top{display:flex;flex-direction:column;align-items:stretch;gap:var(--space-4)}
+    .ft__note{text-align:left}
   }
   @media (max-width:640px){
-    .ft__grid{grid-template-columns:1fr;row-gap:0}
-    .ft__col{border-left:0;padding:var(--space-5) 0;border-top:var(--hairline) solid var(--rule)}
-    .ft__lockup{padding-bottom:var(--space-6)}
+    .ft__links{gap:var(--space-3) var(--space-5)}
   }
 </style>
