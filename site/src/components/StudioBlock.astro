@@ -25,7 +25,7 @@ const { home } = Astro.props;
         {home.studioBody.map((para, i) => (
           i === 0 ? (
             <p class="body st__lede italic">
-              {para.split(/(?<=\.)\s+/).map((sentence, j) => (
+              {para.split(/(?<=\.)\s+/).filter(Boolean).map((sentence, j) => (
                 <>{j > 0 && ' '}<span class="st__sent">{sentence}</span></>
               ))}
             </p>

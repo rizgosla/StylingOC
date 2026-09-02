@@ -7,7 +7,7 @@ interface Props { settings: SiteSettings }
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
 const links = [
-  ...settings.footerColumns.flatMap((c) => c.items.filter((it) => Boolean(it.href))),
+  ...(settings.footerColumns[0]?.items ?? []).filter((it) => Boolean(it.href)),
   ...(settings.instagram ? [{ label: 'Instagram', href: settings.instagram }] : []),
 ] as { label: string; href: string }[];
 ---
