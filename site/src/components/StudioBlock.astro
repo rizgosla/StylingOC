@@ -23,7 +23,15 @@ const { home } = Astro.props;
       </ul>
       <div class="st__body">
         {home.studioBody.map((para, i) => (
-          <p class:list={['body', { 'st__lede italic': i === 0 }]}>{para}</p>
+          i === 0 ? (
+            <p class="body st__lede italic">
+              {para.split(/(?<=\.)\s+/).map((sentence, j) => (
+                <>{j > 0 && ' '}<span class="st__sent">{sentence}</span></>
+              ))}
+            </p>
+          ) : (
+            <p class="body">{para}</p>
+          )
         ))}
       </div>
       <TextLink href="/journal/">Read the journal</TextLink>
@@ -34,7 +42,7 @@ const { home } = Astro.props;
 <style>
   .st__grid{padding-top:var(--space-6);align-items:center}
   .st__img{grid-column:7 / span 5;order:2}
-  .st__text{grid-column:4 / span 3;order:1;display:flex;flex-direction:column;gap:var(--space-5);padding-right:clamp(0px,2vw,32px)}
+  .st__text{grid-column:3 / span 4;order:1;display:flex;flex-direction:column;gap:var(--space-5);padding-right:clamp(0px,2vw,32px)}
   .eyebrow{margin:0}
   .st__title{margin:0;font-size:clamp(2.25rem,3.6vw,3.75rem);line-height:1.05}
   .st__pillars{display:flex;flex-wrap:wrap;gap:var(--space-3)}
@@ -42,7 +50,8 @@ const { home } = Astro.props;
   .st__dot{color:var(--accent-strong)}
   .st__body{display:flex;flex-direction:column;gap:var(--space-4)}
   .st__body p{margin:0}
-  .st__lede{max-width:30ch;text-wrap:balance;font-size:var(--text-title);line-height:1.55;color:var(--ink)}
+  .st__lede{font-size:var(--text-title);line-height:1.55;color:var(--ink)}
+  .st__sent{display:inline-block}
   @media (max-width:1024px){
     .st__img{grid-column:5 / span 4}
     .st__text{grid-column:1 / span 4}
