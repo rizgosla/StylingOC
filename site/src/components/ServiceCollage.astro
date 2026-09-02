@@ -4,7 +4,7 @@
    drives the row sideways (a CSS scroll-driven animation; a small script does the same
    where the browser lacks it). The heading and introduction are the first panel; each
    package is a panel behind a full-height hairline: a large thin numeral, the plate,
-   the title and the price in full. Panels alternate between two heights.
+   the title and the price in full. Panels sit level.
    Below 1025px, and under prefers-reduced-motion, it is an ordinary sideways-scrolling
    row instead of a pinned one. */
 import Plate from './Plate.astro';
@@ -22,14 +22,14 @@ const ratios = ['4:5', '3:4'] as const;
         <li class="col__panel col__panel--intro">
           <div class="col__introin">
             <p class="eyebrow">{eyebrow}</p>
-            <h2 id={`${id}-title`} class="display-m col__title">{headline}</h2>
+            <h2 id={`${id}-title`} class="display-l col__title">{headline}</h2>
             <p class="body col__lede">{intro}</p>
             <TextLink href="/#inquire">Begin an inquiry</TextLink>
             <p class="eyebrow eyebrow--muted col__hint" aria-hidden="true">Scroll <span class="col__arrow">→</span></p>
           </div>
         </li>
         {packages.map((p, i) => (
-          <li class:list={['col__panel', i % 2 ? 'col__panel--high' : 'col__panel--low']}>
+          <li class="col__panel">
             <span class="col__num" aria-hidden="true">{p.numeral}</span>
             <div class="col__plate">
               <Plate image={p.image ?? null} ratio={ratios[i % 2]} sizes="(max-width: 1024px) 60vw, 19vw" caption={false} />
@@ -56,10 +56,10 @@ const ratios = ['4:5', '3:4'] as const;
   .col__track{display:flex;align-items:stretch;margin:0;padding:0;width:max-content}
   .col__panel{flex:0 0 var(--panel-w);width:var(--panel-w);display:flex;flex-direction:column;gap:var(--space-4);padding:0 clamp(20px,2.4vw,44px);border-left:var(--hairline) solid var(--rule);min-width:0}
   .col__panel--intro{flex-basis:var(--intro-w);width:var(--intro-w);border-left:0;padding-left:var(--gutter);padding-right:clamp(32px,4vw,80px);justify-content:center}
-  .col__introin{display:flex;flex-direction:column;gap:var(--space-5);max-width:40ch}
+  .col__introin{display:flex;flex-direction:column;gap:var(--space-6);max-width:44ch}
   .eyebrow{margin:0}
   .col__title{margin:0;max-width:14ch;text-wrap:balance}
-  .col__lede{margin:0}
+  .col__lede{margin:0;font-size:var(--text-title);line-height:1.65}
   .col__hint{margin-top:var(--space-8)}
   .col__arrow{display:inline-block;margin-left:.4em}
   .col__num{font-family:var(--font-display);font-weight:300;font-size:clamp(2.5rem,4.8vw,5.75rem);line-height:.9;letter-spacing:-.02em;color:var(--accent);margin:0 0 var(--space-3)}
@@ -73,11 +73,9 @@ const ratios = ['4:5', '3:4'] as const;
     .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100cqw + 100vh)}
     .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
     .col__track{height:100vh;will-change:transform}
-    /* Anchored below the bar with a staggered offset; the plate's height is capped so
+    /* Anchored below the bar, all panels level; the plate's height is capped so
        numeral, photograph and text always fit inside the frame — nothing clips. */
-    .col__panel{--off:6vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
-    .col__panel--high{--off:3vh}
-    .col__panel--low{--off:15vh}
+    .col__panel{--off:7vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
     .col__panel :global(.plate__frame){max-height:calc(100vh - var(--bar) - var(--off) - 310px)}
     .col__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:-6px}
   }
@@ -90,8 +88,7 @@ const ratios = ['4:5', '3:4'] as const;
     .col__frame::-webkit-scrollbar{display:none}
     .col__track{padding-top:var(--space-7);padding-right:var(--gutter);padding-bottom:var(--space-8)}
     .col__panel{scroll-snap-align:start;padding-top:var(--space-4)}
-    .col__panel--low{padding-top:clamp(40px,8vw,96px)}
-    .col__panel{--panel-w:clamp(280px,42vw,400px)}
+        .col__panel{--panel-w:clamp(280px,42vw,400px)}
     .col__panel--intro{--intro-w:min(88vw,480px);padding-left:var(--gutter);justify-content:flex-start}
     .col__hint{display:none}
   }

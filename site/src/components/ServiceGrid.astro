@@ -15,7 +15,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
   <div class="rule-black"></div>
   <div class="grid sgd__body">
     <div class="sgd__desc reveal">
-      <h2 id={`${id}-title`} class="display-m sgd__title">{headline}</h2>
+      <h2 id={`${id}-title`} class="display-l sgd__title">{headline}</h2>
       <p class="body sgd__lede">{intro}</p>
       <TextLink href="/#inquire">Begin an inquiry</TextLink>
     </div>
@@ -41,22 +41,23 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
 <style>
   .sgd{scroll-margin-top:72px}
   .sgd__kicker{margin:0 0 var(--space-5);text-align:center}
-  .sgd__body{padding:var(--space-7) 0;align-items:start}
+  .sgd__body{padding:var(--space-8) 0 var(--space-9);align-items:start}
   .sgd__desc{grid-column:1 / span 3;display:flex;flex-direction:column;gap:var(--space-5);padding-right:var(--column-gap);position:sticky;top:88px}
   .sgd__title{margin:0;max-width:12ch;text-wrap:balance}
-  .sgd__lede{margin:0;max-width:34ch}
+  .sgd__lede{margin:0;max-width:36ch;font-size:var(--text-title);line-height:1.65}
   .sgd__items{grid-column:4 / span 9;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2);margin:0}
   .sgd__item{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-2);min-width:0;transition-delay:calc(var(--i,0) * 90ms)}
   /* Numeral above the slot, set like the interiors spread so the two menus read as one family. */
   .sgd__num{align-self:flex-start;font-family:var(--font-display);font-weight:300;font-size:clamp(1.5rem,2.6vw,2.875rem);line-height:.9;letter-spacing:-.02em;color:var(--accent);margin:0 0 var(--space-4)}
   /* A grey square with the photograph centred inside it, as a product would be shown. */
   .sgd__slot{width:100%;aspect-ratio:1;background:var(--paper-100);display:grid;place-items:center;margin-bottom:var(--space-5)}
-  .sgd__inner{width:58%}
+  .sgd__inner{width:64%}
   .sgd__inner :global(.plate__empty){background:var(--surface)}
   .sgd__item + .sgd__item::before{content:"";position:absolute;top:0;bottom:0;left:calc(-1 * var(--column-gap));width:var(--hairline);background:var(--rule)}
-  .sgd__name{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);max-width:14ch;text-wrap:balance}
-  .sgd__price{margin:var(--space-1) 0 0;color:var(--accent-strong)}
-  .sgd__note{margin:var(--space-3) 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-body);line-height:1.5;color:var(--ink-muted);max-width:26ch}
+  .sgd__name{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(1.75rem,2.4vw,2.5rem);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);max-width:14ch;text-wrap:balance}
+  .sgd__price{margin:var(--space-2) 0 0;color:var(--accent-strong)}
+  .sgd__price .label{font-size:var(--text-lede)}
+  .sgd__note{margin:var(--space-4) 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-title);line-height:1.55;color:var(--ink-muted);max-width:26ch}
   @media (max-width:1024px){
     .sgd__desc{grid-column:1 / -1;position:static;padding-right:0;padding-bottom:var(--space-6);border-bottom:var(--hairline) solid var(--rule)}
     .sgd__items{grid-column:1 / -1}
