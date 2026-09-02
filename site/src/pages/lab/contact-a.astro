@@ -1,0 +1,15 @@
+---
+/* Prototype page: variant A2, "Colophon, set tight". Temporary — noindex, no real footer. */
+import Base from '@/layouts/Base.astro';
+import StudioBlock from '@/components/StudioBlock.astro';
+import InquiryA from '@/components/lab/InquiryA.astro';
+import FooterA from '@/components/lab/FooterA.astro';
+import { getHome } from '@/lib/sanity';
+
+const { home, settings } = await getHome();
+---
+<Base settings={settings} title="Lab: contact A" noindex footer={false}>
+  <StudioBlock home={home} />
+  <InquiryA home={home} email={settings.email} phone={settings.phone} />
+  <FooterA settings={settings} />
+</Base>
