@@ -206,6 +206,7 @@ export const siteSettings: SiteSettings = {
     { title: 'Services', items: [{ label: 'Interior design', href: '/#interiors' }, { label: 'Personal styling', href: '/#styling' }, { label: 'Evening design consultation', href: '/#interiors' }] },
     { title: 'Contact', items: [{ label: 'Orange County, California', href: '' }] },
   ],
+  email: 'hello@stylingoc.com',
   location: 'Orange County, California',
 };
 
@@ -230,6 +231,6 @@ export const homePage: HomePage = {
   pillars: ['Vision', 'Intention', 'Beauty', 'Balance'],
   inquiryEyebrow: 'Inquiries',
   inquiryHeadline: 'Tell us about your space.',
-  inquiryIntro: 'Or your wardrobe. A few lines is enough — we will reply personally and arrange a first conversation.',
+  inquiryIntro: 'Or your wardrobe. A few lines is enough.',
   inquiryNote: 'We reply within two business days.',
 };

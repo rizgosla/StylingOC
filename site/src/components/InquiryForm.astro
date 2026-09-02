@@ -1,12 +1,14 @@
 ---
-/* Underline-only fields with real labels, one filled brass submit — the single filled
-   CTA on the page. Posts to the Cloudflare function without any JavaScript; the
-   thank-you / error state is read from the ?inquiry= query the function redirects to. */
-import Button from './Button.astro';
+/* End matter, part one: a two-column editorial spread. The intro sits in the left
+   column, the fields in the right, and the submit is a text link rather than a
+   filled block — nothing on this page is a button-shaped object. Posts to the
+   Cloudflare function without any JavaScript; the thank-you / error state is read
+   from the ?inquiry= query the function redirects to. */
+import TextLink from './TextLink.astro';
 import type { HomePage } from '@/lib/sanity';
 
-interface Props { home: HomePage }
-const { home } = Astro.props;
+interface Props { home: HomePage; email?: string }
+const { home, email } = Astro.props;
 ---
 <section class="wrap iq section-tight" id="inquire" aria-labelledby="iq-title">
   <div class="rule-black"></div>
@@ -14,7 +16,12 @@ const { home } = Astro.props;
     <div class="iq__intro">
       <p class="eyebrow">{home.inquiryEyebrow}</p>
       <h2 id="iq-title" class="display-m iq__title">{home.inquiryHeadline}</h2>
-      {home.inquiryIntro && <p class="body-s iq__lede">{home.inquiryIntro}</p>}
+      {home.inquiryIntro && <p class="italic iq__lede">{home.inquiryIntro}</p>}
+      {email && (
+        <p class="body-s iq__write">
+          Or write to <TextLink href={`mailto:${email}`} caps={false}>{email}</TextLink>
+        </p>
+      )}
     </div>
     <form class="iq__form" method="post" action="/api/inquiry" data-inquiry novalidate>
       <p class="iq__status iq__status--sent" role="status" tabindex="-1" hidden data-sent>
@@ -48,6 +55,7 @@ const { home } = Astro.props;
         <div class="iq__field iq__field--wide">
           <label for="iq-message" class="eyebrow eyebrow--muted">Tell us a little about the project <span class="iq__req" aria-hidden="true">*</span></label>
           <textarea id="iq-message" name="message" rows="4" required maxlength="4000"></textarea>
+          <p class="body-s iq__hint">Location, scope and any drawings or photos help.</p>
         </div>
         <div class="iq__hp" aria-hidden="true">
           <label for="iq-company">Company</label>
@@ -55,8 +63,8 @@ const { home } = Astro.props;
         </div>
       </div>
       <div class="iq__actions">
-        <Button type="submit" variant="accent">Begin an inquiry</Button>
         {home.inquiryNote && <span class="eyebrow eyebrow--muted iq__note">{home.inquiryNote}</span>}
+        <button type="submit" class="iq__submit">Begin an inquiry</button>
       </div>
     </form>
   </div>
@@ -65,11 +73,12 @@ const { home } = Astro.props;
 <style>
   .iq{scroll-margin-top:72px}
   .iq__grid{padding-top:var(--space-6);align-items:start}
-  .iq__intro{grid-column:1 / span 4;display:flex;flex-direction:column;gap:var(--space-4)}
+  .iq__intro{grid-column:1 / span 5;display:flex;flex-direction:column;gap:var(--space-4)}
   .eyebrow{margin:0}
-  .iq__title{margin:0;max-width:14ch}
-  .iq__lede{margin:0;max-width:var(--measure-narrow)}
-  .iq__form{grid-column:6 / span 7}
+  .iq__title{margin:0;max-width:12ch}
+  .iq__lede{margin:0;max-width:var(--measure-narrow);font-size:var(--text-title);line-height:var(--leading-title);color:var(--ink)}
+  .iq__write{margin:var(--space-2) 0 0;color:var(--ink-muted)}
+  .iq__form{grid-column:7 / span 6}
   .iq__fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6) var(--column-gap)}
   .iq__field{display:flex;flex-direction:column;gap:var(--space-2)}
   .iq__field--wide{grid-column:1 / -1}
@@ -80,9 +89,17 @@ const { home } = Astro.props;
   .iq__field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 9px) 55%,calc(100% - 4px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:24px;cursor:pointer}
   .iq__field input:focus,.iq__field select:focus,.iq__field textarea:focus{outline:none;border-bottom-color:var(--accent-strong)}
   .iq__field input:focus-visible,.iq__field select:focus-visible,.iq__field textarea:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:3px}
+  .iq__hint{margin:var(--space-2) 0 0;color:var(--ink-muted)}
   .iq__hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
-  .iq__actions{margin-top:var(--space-7);display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
+  .iq__actions{margin-top:var(--space-7);display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:var(--space-4) var(--space-6)}
   .iq__note{margin:0}
+  /* The TextLink underline, on a real button: no fill, no border, no padding. */
+  .iq__submit{position:relative;display:inline-block;border:0;background:none;padding:0 0 5px;margin:0;min-height:44px;color:var(--ink);font-family:var(--font-label);font-size:var(--text-label-l);font-weight:400;letter-spacing:var(--track-label);text-transform:uppercase;line-height:1.4;cursor:pointer;transition:color var(--dur-base) var(--ease-editorial)}
+  .iq__submit::before,.iq__submit::after{content:"";position:absolute;left:0;bottom:0;height:var(--hairline)}
+  .iq__submit::before{width:100%;background:currentColor;opacity:.24}
+  .iq__submit::after{width:0;background:var(--accent);transition:width var(--dur-base) var(--ease-rule)}
+  .iq__submit:hover::after,.iq__submit:focus-visible::after{width:100%}
+  .iq__submit:hover{color:var(--accent-strong)}
   .iq__status{margin:0 0 var(--space-6);display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-5) 0;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
   .iq__status--error{border-top-color:var(--accent-strong)}
   .iq__status:focus{outline:none}
@@ -94,6 +111,7 @@ const { home } = Astro.props;
   @media (max-width:640px){
     .iq__intro,.iq__form{grid-column:1 / -1}
     .iq__fields{grid-template-columns:1fr}
+    .iq__actions{justify-content:flex-start}
   }
 </style>
 
