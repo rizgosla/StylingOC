@@ -20,7 +20,16 @@ const clean = (v: unknown, max: number) =>
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
-  const back = (state: 'sent' | 'error') => Response.redirect(`${url.origin}/?inquiry=${state}#inquire`, 303);
+  // Send people back to the page they inquired from, not always the home page.
+  let path = '/';
+  const referer = request.headers.get('referer');
+  if (referer) {
+    try {
+      const from = new URL(referer);
+      if (from.origin === url.origin) path = from.pathname;
+    } catch { /* malformed referer: fall back to the home page */ }
+  }
+  const back = (state: 'sent' | 'error') => Response.redirect(`${url.origin}${path}?inquiry=${state}#inquire`, 303);
 
   let form: FormData;
   try {

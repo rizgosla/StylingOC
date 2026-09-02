@@ -100,7 +100,7 @@ const { home, email, phone } = Astro.props;
   .iq__note{margin:0}
   /* The TextLink underline, on a real button: no fill, no border, no padding. */
   .iq__submit{display:inline-flex;align-items:center;border:0;background:none;padding:0;margin:0;min-height:44px;color:var(--ink);cursor:pointer;transition:color var(--dur-base) var(--ease-editorial)}
-  .iq__submit-label{position:relative;display:inline-block;padding-bottom:5px;font-family:var(--font-label);font-size:var(--text-label-l);font-weight:400;letter-spacing:var(--track-label);text-transform:uppercase;line-height:1.4}
+  .iq__submit-label{position:relative;display:inline-block;padding-bottom:5px;font-family:var(--font-label);font-size:var(--text-label-l);font-weight:var(--weight-label);letter-spacing:var(--track-label);text-transform:uppercase;line-height:1.4}
   .iq__submit-label::before,.iq__submit-label::after{content:"";position:absolute;left:0;bottom:0;height:var(--hairline)}
   .iq__submit-label::before{width:100%;background:currentColor;opacity:.24}
   .iq__submit-label::after{width:0;background:var(--accent);transition:width var(--dur-base) var(--ease-rule)}

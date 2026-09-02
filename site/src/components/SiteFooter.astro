@@ -6,6 +6,7 @@ import type { SiteSettings } from '@/lib/sanity';
 interface Props { settings: SiteSettings }
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
+const place = settings.location || 'Orange County, California';
 const links = [
   ...(settings.footerColumns[0]?.items ?? []).filter((it) => Boolean(it.href)),
   ...(settings.instagram ? [{ label: 'Instagram', href: settings.instagram }] : []),
@@ -19,7 +20,7 @@ const links = [
       <nav class="ft__links" aria-label="Footer">
         {links.map((it) => <a class="ft__link" href={it.href}>{it.label}</a>)}
       </nav>
-      <p class="ft__note">© {year} Styling OC · Orange County, California</p>
+      <p class="ft__note">© {year} Styling OC · {place}</p>
     </div>
     <div class="rule"></div>
     <div class="ft__end">
