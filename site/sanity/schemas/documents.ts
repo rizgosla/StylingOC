@@ -105,7 +105,7 @@ export const siteSettings = defineType({
     defineField({ name: 'nav', title: 'Navigation', type: 'array', of: [defineArrayMember({ type: 'navLink' })], validation: (r) => r.max(6) }),
     defineField({
       name: 'footerColumns', type: 'array', validation: (r) => r.max(1),
-      description: 'Only the first column is shown, as a single row of links beside the wordmark.',
+      description: 'Unused. The footer now lists the site navigation above, plus the Instagram link.',
       of: [defineArrayMember({ type: 'object', name: 'footerColumn', fields: [
         defineField({ name: 'title', type: 'string' }),
         defineField({ name: 'items', type: 'array', of: [defineArrayMember({ type: 'navLink' })] }),
