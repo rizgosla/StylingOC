@@ -18,7 +18,7 @@ const href = `/journal/${post.slug}/`;
   <div class="card__meta">
     <div class="rule card__rule"></div>
     <p class="eyebrow card__kicker">{kicker(post)}</p>
-    <H class="display-s card__title"><a class="card__link" href={href}>{post.title}</a></H>
+    <H class="display-s card__title" style={`--chars:${post.title.length}`}><a class="card__link" href={href}>{post.title}</a></H>
     <p class="body-s card__dek">{post.dek}</p>
   </div>
 </article>
@@ -30,9 +30,9 @@ const href = `/journal/${post.slug}/`;
   .card:hover .card__img{opacity:.86}
   .card__rule{transition:background var(--dur-base) var(--ease-editorial)}
   .card:hover .card__rule{background:var(--rule-strong)}
-  .card__meta{display:flex;flex-direction:column;gap:var(--space-3);padding-top:var(--space-3);padding-right:var(--column-gap)}
+  .card__meta{display:flex;flex-direction:column;gap:var(--space-3);padding-top:var(--space-3)}
   .card__kicker{margin:0}
-  .card__title{margin:0;font-size:clamp(1.375rem,1.7vw,1.625rem);max-width:18ch;text-wrap:balance}
+  .card__title{margin:0;max-width:none;white-space:nowrap;text-wrap:initial;font-size:min(clamp(1.375rem,1.7vw,1.625rem), calc(100cqw / (var(--chars) * 0.5)))}
   .card__link{color:var(--ink);text-decoration:none;border:0;background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-size:0 var(--hairline);background-position:0 100%;transition:background-size var(--dur-base) var(--ease-rule)}
   .card__link:hover,.card__link:focus-visible{background-size:100% var(--hairline)}
   .card__dek{margin:0;max-width:34ch}

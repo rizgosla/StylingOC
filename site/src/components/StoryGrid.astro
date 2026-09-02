@@ -26,10 +26,10 @@ const { posts, title, moreHref, moreLabel = 'All stories', numbered = true, id, 
 
 <style>
   .sg{padding-top:var(--section-y-tight)}
-  .sg__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding:var(--space-4) 0 var(--space-6)}
+  .sg__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding:var(--section-y-tight) 0 var(--space-6)}
   .sg__title{margin:0;font-size:var(--text-label);font-weight:400}
   .sg__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2)}
-  .sg__cell{position:relative;min-width:0}
+  .sg__cell{position:relative;min-width:0;container-type:inline-size}
   .sg__cell + .sg__cell::before{content:"";position:absolute;top:0;bottom:0;left:calc(-1 * var(--column-gap));width:var(--hairline);background:var(--rule)}
   .reveal{transition-delay:calc(var(--i,0) * 90ms)}
   @media (max-width:1024px){
