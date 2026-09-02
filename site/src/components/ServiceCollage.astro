@@ -78,7 +78,8 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
     .col__panel{--off:6vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
     .col__panel--high{--off:3vh}
     .col__panel--low{--off:14vh}
-    .col__panel :global(.plate__frame){max-height:calc(100vh - var(--bar) - var(--off) - 310px)}
+    /* Every plate capped by the same worst-case offset, so they are all exactly the same size. */
+    .col__panel :global(.plate__frame){max-height:calc(100vh - var(--bar) - 14vh - 310px)}
     .col__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:-6px}
   }
 
