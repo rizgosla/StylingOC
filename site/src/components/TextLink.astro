@@ -13,7 +13,7 @@ const { href, caps = true, tone = 'ink', class: cls = '', ...rest } = Astro.prop
 <a href={href} class:list={['tl', { 'tl--caps': caps, 'tl--accent': tone === 'accent' }, cls]} {...rest}><slot /></a>
 
 <style>
-  .tl{position:relative;display:inline-block;color:var(--ink);text-decoration:none;border:0;padding-bottom:5px;min-height:24px}
+  .tl{position:relative;display:inline-block;align-self:flex-start;color:var(--ink);text-decoration:none;border:0;padding-bottom:5px;min-height:24px}
   .tl--caps{font-family:var(--font-label);font-size:var(--text-label-l);font-weight:400;letter-spacing:var(--track-label);text-transform:uppercase;line-height:1.4}
   .tl--accent{color:var(--accent-strong)}
   .tl::before,.tl::after{content:"";position:absolute;left:0;bottom:0;height:var(--hairline)}
