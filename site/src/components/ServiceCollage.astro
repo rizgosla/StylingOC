@@ -47,11 +47,10 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
   /* Geometry shared by both modes: the intro panel and the package panels have fixed
      viewport widths so the row's length — and therefore the pinned scroll distance —
      is known in CSS: intro 34vw + n × 24vw. */
-  /* The panel geometry is derived from the story grid above, so the vertical hairlines run
-     in one straight line from the stories down through the menu: the intro panel ends on the
-     grid's first divider and every package panel spans exactly one grid column plus its gaps.
-     100cqw is the section's own width (the scrollbar already excluded). */
-  .col{--sgcol:calc((100cqw - 2 * var(--gutter) - 4 * var(--column-gap)) / 3);--intro-w:calc(var(--gutter) + var(--sgcol) + var(--column-gap));--panel-w:calc(var(--sgcol) + 2 * var(--column-gap));--bar:64px;container-type:inline-size;position:relative;scroll-margin-top:0}
+  /* The intro panel ends exactly on the story grid's first divider, so that one vertical
+     line runs straight down from the stories into the menu; the package panels then keep
+     their own narrower rhythm. 100cqw is the section's own width (scrollbar excluded). */
+  .col{--sgcol:calc((100cqw - 2 * var(--gutter) - 4 * var(--column-gap)) / 3);--intro-w:calc(var(--gutter) + var(--sgcol) + var(--column-gap));--panel-w:max(24cqw,300px);--bar:64px;container-type:inline-size;position:relative;scroll-margin-top:0}
   /* The row starts on the page's left gutter and runs off the right edge of the screen. */
   .col__track{display:flex;align-items:stretch;margin:0;padding:0;width:max-content}
   .col__panel{flex:0 0 var(--panel-w);width:var(--panel-w);display:flex;flex-direction:column;gap:var(--space-4);padding:0 clamp(20px,2.4vw,44px);border-left:var(--hairline) solid var(--rule);min-width:0}
