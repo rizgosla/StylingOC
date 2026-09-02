@@ -1,0 +1,17 @@
+---
+/* Temporary preview page: variant B2, "Closing masthead". A stand-in studio block
+   above the pair so the seam is visible. Not linked, noindex, and the real footer
+   is switched off so only the variant's footer closes the page. */
+import Base from '@/layouts/Base.astro';
+import StudioBlock from '@/components/StudioBlock.astro';
+import InquiryB from '@/components/lab/InquiryB.astro';
+import FooterB from '@/components/lab/FooterB.astro';
+import { getHome } from '@/lib/sanity';
+
+const { home, settings } = await getHome();
+---
+<Base settings={settings} title="Lab: contact B" noindex footer={false}>
+  <StudioBlock home={home} />
+  <InquiryB home={home} email={settings.email} phone={settings.phone} />
+  <FooterB settings={settings} />
+</Base>
