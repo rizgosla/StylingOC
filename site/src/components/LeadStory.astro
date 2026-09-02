@@ -1,8 +1,7 @@
 ---
 /* The front-page lead. Tall plate on the left, headline block bottom-aligned beside it,
-   all on white. On wide screens a rail of the next stories' photographs runs down the
-   right edge and drifts upward as the reader scrolls (a CSS scroll-driven animation:
-   no JavaScript, and it stands still under prefers-reduced-motion). */
+   all on white. On wide screens a rail of three equal photographs from other stories
+   runs down the right edge, sharing the plate's height. */
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { Img, Post } from '@/lib/sanity';
@@ -57,8 +56,12 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
     .lead__text{grid-column:6 / span 5}
     .lead__title{font-size:clamp(3rem,4.9vw,6.5rem)}
     .lead__rail{display:block;grid-column:11 / span 2;align-self:stretch;position:relative;overflow:hidden;border-left:var(--hairline) solid var(--rule);padding-left:var(--grid-gap)}
-    .lead__rail-track{position:absolute;inset:0 0 auto calc(var(--grid-gap) + var(--hairline));display:flex;flex-direction:column;gap:var(--grid-gap)}
-    .lead__rail-item{width:100%}
+    /* Three equal thumbnails share the column's height: each row is a third, the plate keeps
+       its 3:4 ratio inside it, so all three are the same size and none is cut off. */
+    .lead__rail-track{position:absolute;inset:0 0 0 calc(var(--grid-gap) + var(--hairline));display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:var(--grid-gap)}
+    .lead__rail-item{min-height:0;display:flex;align-items:start}
+    .lead__rail-item :global(.plate){height:100%;margin:0;max-width:100%}
+    .lead__rail-item :global(.plate__frame){height:100%;width:auto;max-width:100%;aspect-ratio:3 / 4}
   }
 
   @media (max-width:1024px){
@@ -69,23 +72,5 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
     .lead__img,.lead__text{grid-column:1 / -1}
     .lead__text{padding:var(--space-2) 0 0}
     .lead__title{max-width:none}
-  }
-</style>
-
-<!-- Kept out of the CSS pipeline on purpose: the minifier folds these longhands into the
-     animation shorthand with a timeline inside it, which browsers reject. -->
-<style is:inline>
-  @keyframes soc-rail-drift { from { transform: translateY(0); } to { transform: translateY(-38%); } }
-  @supports (animation-timeline: scroll()) {
-    @media (min-width: 1680px) and (prefers-reduced-motion: no-preference) {
-      .lead__rail-track {
-        animation-name: soc-rail-drift;
-        animation-timing-function: linear;
-        animation-fill-mode: both;
-        animation-duration: auto;
-        animation-timeline: scroll(root);
-        animation-range: 0 120vh;
-      }
-    }
   }
 </style>
