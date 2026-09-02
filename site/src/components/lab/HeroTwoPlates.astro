@@ -1,0 +1,69 @@
+---
+/* Hero variants A and E — "Two plates". The tall 4:5 plate stays on the left. On the
+   right, a second, wide photograph takes exactly the height the headline block does not:
+   the frame is a flex fill, so the pair always lands on the same baseline and there is
+   no white above the text at any width. `order="image-first"` (A) puts the wide plate
+   above the headline; `order="text-first"` (E) puts the headline at the top and the
+   plate beneath it. The wide photograph is decorative and comes from the rail. */
+import Plate from '../Plate.astro';
+import TextLink from '../TextLink.astro';
+import type { Img, Post } from '@/lib/sanity';
+import { kicker } from '@/lib/sanity';
+import { landscapeFirst, unique } from './heroImages';
+
+interface Props { post: Post; rail?: Img[]; headline?: string; eyebrow?: string; order?: 'image-first' | 'text-first' }
+const { post, rail = [], headline, eyebrow, order = 'image-first' } = Astro.props;
+const title = headline?.trim() || post.title;
+const label = eyebrow?.trim() || kicker(post);
+const href = `/journal/${post.slug}/`;
+const wide = landscapeFirst(unique(rail, post.leadImage))[0] ?? null;
+---
+<section class="wrap lead" aria-labelledby="lead-title">
+  <div class="grid lead__grid">
+    <a class="lead__img" href={href} tabindex="-1" aria-hidden="true">
+      <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 62vw, 50vw" loading="eager" fetchpriority="high" />
+    </a>
+    <div class:list={['lead__side', `lead__side--${order}`]}>
+      <div class="lead__fill" aria-hidden="true">
+        <Plate image={wide} ratio="3:2" sizes="(max-width: 1024px) 36vw, 44vw" caption={false} loading="eager" />
+      </div>
+      <div class="lead__text">
+        <p class="eyebrow">{label}</p>
+        <h1 id="lead-title" class="display-l lead__title"><a href={href} class="lead__link">{title}</a></h1>
+        <p class="standfirst lead__standfirst">{post.standfirst}</p>
+        <TextLink href={href}>Read the story</TextLink>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lead{padding-top:clamp(20px,2.6vw,36px)}
+  .lead__grid{align-items:stretch}
+  .lead__img{grid-column:1 / span 6;display:block;border:0;text-decoration:none}
+  .lead__side{grid-column:7 / span 6;display:flex;flex-direction:column;gap:var(--space-6);padding-left:var(--space-4);min-height:0}
+  .lead__side--text-first{flex-direction:column-reverse}
+  /* The wide plate fills whatever height is left beside the tall one; the image crops to cover. */
+  .lead__fill{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .lead__fill :global(.plate){flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .lead__fill :global(.plate__frame){flex:1 1 auto;min-height:clamp(120px,14vw,240px);aspect-ratio:auto !important}
+  .lead__text{display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-6)}
+  .lead__side--text-first .lead__text{padding-bottom:0;padding-top:var(--space-2)}
+  .lead__title{margin:0;text-wrap:balance;font-size:clamp(2.75rem,5.2vw,6.5rem);line-height:1.02}
+  .lead__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
+  .lead__link:hover{color:var(--ink-700)}
+  .lead__standfirst{margin:0;max-width:46ch;font-size:var(--text-lede)}
+  .eyebrow{margin:0}
+
+  @media (max-width:1024px){
+    .lead__img{grid-column:1 / span 5}
+    .lead__side{grid-column:6 / span 3;padding-left:0}
+    .lead__title{font-size:clamp(2.25rem,4.6vw,3.5rem)}
+  }
+  @media (max-width:640px){
+    .lead__img,.lead__side{grid-column:1 / -1}
+    .lead__side{flex-direction:column;padding:var(--space-2) 0 0}
+    .lead__fill{display:none}
+    .lead__text{padding:0}
+  }
+</style>

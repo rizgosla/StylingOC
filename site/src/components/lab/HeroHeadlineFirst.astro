@@ -1,0 +1,68 @@
+---
+/* Hero variant D — "Headline first". The eyebrow and headline run across the page
+   straight under the masthead, the way a cover line does, and the photographs come
+   after: the tall 4:5 plate in five columns, and beside it a wide plate that fills the
+   height above the standfirst and link. The words are the first thing on the page, so
+   nothing waits below empty space. */
+import Plate from '../Plate.astro';
+import TextLink from '../TextLink.astro';
+import type { Img, Post } from '@/lib/sanity';
+import { kicker } from '@/lib/sanity';
+import { landscapeFirst, unique } from './heroImages';
+
+interface Props { post: Post; rail?: Img[]; headline?: string; eyebrow?: string }
+const { post, rail = [], headline, eyebrow } = Astro.props;
+const title = headline?.trim() || post.title;
+const label = eyebrow?.trim() || kicker(post);
+const href = `/journal/${post.slug}/`;
+const wide = landscapeFirst(unique(rail, post.leadImage))[0] ?? null;
+---
+<section class="wrap hf" aria-labelledby="lead-title">
+  <div class="hf__head">
+    <p class="eyebrow">{label}</p>
+    <h1 id="lead-title" class="hf__title"><a href={href} class="hf__link">{title}</a></h1>
+  </div>
+  <div class="grid hf__row">
+    <a class="hf__img" href={href} tabindex="-1" aria-hidden="true">
+      <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 62vw, 42vw" loading="eager" fetchpriority="high" />
+    </a>
+    <div class="hf__side">
+      <div class="hf__fill" aria-hidden="true">
+        <Plate image={wide} ratio="3:2" sizes="(max-width: 1024px) 36vw, 56vw" caption={false} loading="eager" />
+      </div>
+      <div class="hf__text">
+        <p class="standfirst hf__standfirst">{post.standfirst}</p>
+        <TextLink href={href}>Read the story</TextLink>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hf{padding-top:clamp(20px,2.6vw,36px)}
+  .hf__head{display:flex;flex-direction:column;gap:var(--space-4);padding-bottom:var(--space-7)}
+  .hf__title{margin:0;max-width:24ch;text-wrap:balance;font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(3rem,6.6vw,7.5rem);line-height:0.98;letter-spacing:var(--track-display)}
+  .hf__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
+  .hf__link:hover{color:var(--ink-700)}
+  .hf__row{align-items:stretch}
+  .hf__img{grid-column:1 / span 5;display:block;border:0;text-decoration:none}
+  .hf__side{grid-column:6 / span 7;display:flex;flex-direction:column;gap:var(--space-6);min-height:0}
+  .hf__fill{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .hf__fill :global(.plate){flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .hf__fill :global(.plate__frame){flex:1 1 auto;min-height:clamp(120px,14vw,240px);aspect-ratio:auto !important}
+  .hf__text{display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-3)}
+  .hf__standfirst{margin:0;max-width:56ch}
+  .eyebrow{margin:0}
+
+  @media (max-width:1024px){
+    .hf__title{font-size:clamp(2.5rem,7vw,4.5rem)}
+    .hf__img{grid-column:1 / span 5}
+    .hf__side{grid-column:6 / span 3}
+  }
+  @media (max-width:640px){
+    .hf__head{padding-bottom:var(--space-5)}
+    .hf__img,.hf__side{grid-column:1 / -1}
+    .hf__fill{display:none}
+    .hf__text{padding:0}
+  }
+</style>

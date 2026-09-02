@@ -1,0 +1,24 @@
+---
+/* A thin strip at the top of every lab page so the variants can be flipped through
+   without going back to the index. Lab only; never on the real site. */
+interface Props { current: string; variants: { key: string; name: string }[] }
+const { current, variants } = Astro.props;
+---
+<nav class="wrap lab" aria-label="Lab variants">
+  <a class="lab__home" href="/lab/">Lab · Hero</a>
+  <ul class="lab__list">
+    {variants.map((v) => (
+      <li><a href={`/lab/hero-${v.key}/`} class:list={['lab__link', { 'is-on': v.key === current }]} aria-current={v.key === current ? 'page' : undefined}>{v.key.toUpperCase()} <span class="lab__name">{v.name}</span></a></li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .lab{display:flex;align-items:center;justify-content:space-between;gap:var(--space-5);flex-wrap:wrap;min-height:40px;border-bottom:var(--hairline) solid var(--rule);font-family:var(--font-label);font-size:var(--text-label);letter-spacing:var(--track-label);text-transform:uppercase;line-height:var(--leading-label)}
+  .lab__home{color:var(--accent-strong);text-decoration:none;border:0}
+  .lab__list{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-5)}
+  .lab__link{display:inline-flex;align-items:center;gap:.6em;min-height:40px;color:var(--ink-muted);text-decoration:none;border:0;border-bottom:var(--hairline) solid transparent}
+  .lab__link:hover,.lab__link:focus-visible{border-bottom-color:var(--accent)}
+  .lab__link.is-on{color:var(--ink);border-bottom-color:var(--rule-black)}
+  @media (max-width:640px){.lab__name{display:none}}
+</style>
