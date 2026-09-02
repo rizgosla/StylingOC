@@ -50,7 +50,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
   /* The intro panel ends exactly on the story grid's first divider, so that one vertical
      line runs straight down from the stories into the menu; the package panels then keep
      their own narrower rhythm. 100cqw is the section's own width (scrollbar excluded). */
-  .col{--sgcol:calc((100cqw - 2 * var(--gutter) - 4 * var(--column-gap)) / 3);--intro-w:calc(var(--gutter) + var(--sgcol) + var(--column-gap));--panel-w:max(24cqw,300px);--bar:64px;container-type:inline-size;position:relative;scroll-margin-top:0}
+  .col{--sgcol:calc((100cqw - 2 * var(--gutter) - 4 * var(--column-gap)) / 3);--intro-w:calc(var(--gutter) + var(--sgcol) + var(--column-gap));--panel-w:max(24cqw,420px);--bar:64px;container-type:inline-size;position:relative;scroll-margin-top:0}
   /* The row starts on the page's left gutter and runs off the right edge of the screen. */
   .col__track{display:flex;align-items:stretch;margin:0;padding:0;width:max-content}
   .col__panel{flex:0 0 var(--panel-w);width:var(--panel-w);display:flex;flex-direction:column;gap:var(--space-4);padding:0 clamp(20px,2.4vw,44px);border-left:var(--hairline) solid var(--rule);min-width:0}
@@ -72,14 +72,12 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
     .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100cqw + 100vh)}
     .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
     .col__track{height:100vh;will-change:transform}
-    /* Staggered like the reference — alternating heights — but every plate the same
-       size; the plate's height cap keeps numeral, photograph and text inside the frame. */
-    .col__panel{--off:6vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
+    /* Panels centre in the pinned viewport and stagger around that centre; the plate keeps
+       its full panel width at every viewport height, so its size never changes. */
+    .col__panel{--stagger:min(9vh,80px);justify-content:center;padding-top:var(--bar);padding-bottom:0}
     .col__panel--intro{justify-content:center;padding-top:var(--bar);padding-bottom:var(--bar)}
-    .col__panel--high{--off:3vh}
-    .col__panel--low{--off:14vh}
-    /* Every plate capped by the same worst-case offset, so they are all exactly the same size. */
-    .col__panel :global(.plate__frame){max-height:calc(100vh - var(--bar) - 14vh - 310px)}
+    .col__panel--high{padding-bottom:calc(2 * var(--stagger))}
+    .col__panel--low{padding-top:calc(var(--bar) + 2 * var(--stagger))}
     .col__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:-6px}
   }
 
