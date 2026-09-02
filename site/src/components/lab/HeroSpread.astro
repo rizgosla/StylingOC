@@ -1,0 +1,57 @@
+---
+/* Hero variant C — "The spread". One wide plate across the page, its height held to
+   a little over half the screen, and the words beneath it on white the way the magazine
+   sets a lead: eyebrow and headline in the first eight columns, standfirst and link in
+   the last four, both sitting on the same baseline. Nothing floats, so there is no gap
+   to fill. A landscape photograph reads best here; if the lead story's is a portrait,
+   the first landscape one on the rail stands in. */
+import Plate from '../Plate.astro';
+import TextLink from '../TextLink.astro';
+import type { Img, Post } from '@/lib/sanity';
+import { kicker } from '@/lib/sanity';
+import { isLandscape, landscapeFirst, unique } from './heroImages';
+
+interface Props { post: Post; rail?: Img[]; headline?: string; eyebrow?: string }
+const { post, rail = [], headline, eyebrow } = Astro.props;
+const title = headline?.trim() || post.title;
+const label = eyebrow?.trim() || kicker(post);
+const href = `/journal/${post.slug}/`;
+const plate = post.leadImage && isLandscape(post.leadImage) ? post.leadImage : landscapeFirst(unique(rail))[0] ?? post.leadImage;
+---
+<section class="wrap spread" aria-labelledby="lead-title">
+  <a class="spread__img" href={href} tabindex="-1" aria-hidden="true">
+    <Plate image={plate} ratio="3:2" maxHeight="58vh" sizes="100vw" loading="eager" fetchpriority="high" />
+  </a>
+  <div class="grid spread__words">
+    <div class="spread__head">
+      <p class="eyebrow">{label}</p>
+      <h1 id="lead-title" class="display-l spread__title"><a href={href} class="spread__link">{title}</a></h1>
+    </div>
+    <div class="spread__aside">
+      <p class="standfirst spread__standfirst">{post.standfirst}</p>
+      <TextLink href={href}>Read the story</TextLink>
+    </div>
+  </div>
+</section>
+
+<style>
+  .spread{padding-top:clamp(20px,2.6vw,36px)}
+  .spread__img{display:block;border:0;text-decoration:none}
+  .spread__words{margin-top:var(--space-6);align-items:end}
+  .spread__head{grid-column:1 / span 8;display:flex;flex-direction:column;gap:var(--space-4)}
+  .spread__title{margin:0;max-width:16ch;text-wrap:balance;font-size:clamp(2.75rem,5.2vw,6.25rem);line-height:1.02}
+  .spread__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
+  .spread__link:hover{color:var(--ink-700)}
+  .spread__aside{grid-column:9 / span 4;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:.35em}
+  .spread__standfirst{margin:0;max-width:40ch}
+  .eyebrow{margin:0}
+
+  @media (max-width:1024px){
+    .spread__head{grid-column:1 / span 5}
+    .spread__aside{grid-column:6 / span 3}
+  }
+  @media (max-width:640px){
+    .spread__head,.spread__aside{grid-column:1 / -1}
+    .spread__aside{padding-bottom:0}
+  }
+</style>

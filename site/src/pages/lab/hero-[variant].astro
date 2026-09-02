@@ -1,0 +1,52 @@
+---
+/* Prototype page: the full home page with one of the lab heroes in place of the lead.
+   Not indexed, not linked from the site. */
+import Base from '@/layouts/Base.astro';
+import LabBar from '@/components/lab/LabBar.astro';
+import HeroTwoPlates from '@/components/lab/HeroTwoPlates.astro';
+import HeroStage from '@/components/lab/HeroStage.astro';
+import HeroSpread from '@/components/lab/HeroSpread.astro';
+import HeroHeadlineFirst from '@/components/lab/HeroHeadlineFirst.astro';
+import StoryGrid from '@/components/StoryGrid.astro';
+import ServiceGrid from '@/components/ServiceGrid.astro';
+import ServiceCollage from '@/components/ServiceCollage.astro';
+import SplitFeature from '@/components/SplitFeature.astro';
+import StudioBlock from '@/components/StudioBlock.astro';
+import InquiryForm from '@/components/InquiryForm.astro';
+import { getHome, getPosts } from '@/lib/sanity';
+import { heroVariants, type HeroVariant } from '@/lib/labHero';
+
+export function getStaticPaths() {
+  return heroVariants.map((v) => ({ params: { variant: v.key } }));
+}
+const variant = Astro.params.variant as HeroVariant;
+const name = heroVariants.find((v) => v.key === variant)!.name;
+
+const { home, settings, packages } = await getHome();
+const latest = home.latest.slice(0, 3);
+const interiors = packages.filter((p) => p.line === 'interiors');
+const styling = packages.filter((p) => p.line === 'styling');
+// Same rail as the home page: real photographs from elsewhere on the site.
+const posts = await getPosts();
+const rail = [
+  ...interiors.map((p) => p.image ?? null),
+  ...posts.filter((p) => p._id !== home.leadStory._id).map((p) => p.leadImage),
+  ...posts.flatMap((p) => p.body.filter((n: any) => n._type === 'imageBlock').map((n: any) => n.image)),
+  home.studioPortrait,
+].filter((i): i is NonNullable<typeof i> => Boolean(i));
+const hero = { post: home.leadStory, headline: home.heroHeadline, eyebrow: home.heroEyebrow, rail };
+---
+<Base settings={settings} title={`Lab: hero ${variant.toUpperCase()}, ${name}`} noindex image={home.leadStory.leadImage ?? home.studioPortrait}>
+  <LabBar current={variant} variants={heroVariants} />
+  {variant === 'a' && <HeroTwoPlates {...hero} order="image-first" />}
+  {variant === 'b' && <HeroStage {...hero} />}
+  {variant === 'c' && <HeroSpread {...hero} />}
+  {variant === 'd' && <HeroHeadlineFirst {...hero} />}
+  {variant === 'e' && <HeroTwoPlates {...hero} order="text-first" />}
+  <StoryGrid posts={latest} title="The latest" moreHref="/journal/" uniform closing />
+  <ServiceCollage id="interiors" eyebrow={home.interiorsEyebrow} headline={home.interiorsHeadline} intro={home.interiorsIntro} packages={interiors} />
+  <ServiceGrid id="styling" eyebrow={home.stylingEyebrow} headline={home.stylingHeadline} intro={home.stylingIntro} packages={styling} />
+  <SplitFeature post={home.featuredPost} />
+  <StudioBlock home={home} />
+  <InquiryForm home={home} email={settings.email} phone={settings.phone} />
+</Base>

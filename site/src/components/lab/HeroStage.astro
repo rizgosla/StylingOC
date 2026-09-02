@@ -1,0 +1,110 @@
+---
+/* Hero variant B — "The stage". One wide 16:9 plate in the middle of the page, three
+   portrait plates down each side sharing its height, and the headline on a white card
+   at its centre, one line. The wide frame is built to take a film later: pass `video`
+   and a muted, looping <video> replaces the photograph, which stays as its poster.
+   Six-up geometry: with c the stage width and g the grid gap, each side rail is
+   (9c/16 − 2g)/3 tall and, at 3:4, 9c/64 − g/2 wide, so c = 32(W − g)/41 of the row. */
+import Plate from '../Plate.astro';
+import TextLink from '../TextLink.astro';
+import type { Img, Post } from '@/lib/sanity';
+import { kicker, picture } from '@/lib/sanity';
+import { landscapeFirst, portraitFirst, unique } from './heroImages';
+
+interface Props {
+  post: Post; rail?: Img[]; headline?: string; eyebrow?: string;
+  /** Optional film for the stage. The photograph becomes the poster. */
+  video?: { src: string; type?: string } | null;
+}
+const { post, rail = [], headline, eyebrow, video = null } = Astro.props;
+const title = headline?.trim() || post.title;
+const label = eyebrow?.trim() || kicker(post);
+const href = `/journal/${post.slug}/`;
+
+const pool = unique([post.leadImage, ...rail]);
+const stage = landscapeFirst(pool)[0] ?? null;
+const sides = portraitFirst(unique(pool, stage)).slice(0, 6);
+const left = sides.slice(0, 3);
+const right = sides.slice(3, 6);
+const shot = stage ? picture(stage) : null;
+---
+<section class="wrap stage" aria-labelledby="lead-title">
+  <div class="stage__grid">
+    <div class="stage__rail stage__rail--left" aria-hidden="true">
+      {left.map((img) => <div class="stage__cell"><Plate image={img} ratio="3:4" sizes="(max-width: 640px) 33vw, 12vw" caption={false} loading="eager" /></div>)}
+    </div>
+
+    <div class="stage__main">
+      <figure class="stage__plate">
+        <a class="stage__frame" href={href} tabindex="-1" aria-hidden="true">
+          {video && shot ? (
+            <video class="stage__media" autoplay muted loop playsinline preload="metadata" poster={shot.src} data-stage-video>
+              <source src={video.src} type={video.type ?? 'video/mp4'} />
+            </video>
+          ) : shot ? (
+            <img class="stage__media" src={shot.src} srcset={shot.srcset} sizes={shot.srcset ? '(max-width: 640px) 100vw, 78vw' : undefined} width={shot.width} height={shot.height} alt="" loading="eager" fetchpriority="high" decoding="async" style={shot.objectPosition ? `object-position:${shot.objectPosition}` : undefined} />
+          ) : (
+            <span class="stage__empty"><span class="caption">Photograph to come</span></span>
+          )}
+        </a>
+      </figure>
+      <div class="stage__card">
+        <p class="eyebrow">{label}</p>
+        <h1 id="lead-title" class="stage__title"><a href={href} class="stage__link">{title}</a></h1>
+      </div>
+    </div>
+
+    <div class="stage__rail stage__rail--right" aria-hidden="true">
+      {right.map((img) => <div class="stage__cell"><Plate image={img} ratio="3:4" sizes="(max-width: 640px) 33vw, 12vw" caption={false} loading="eager" /></div>)}
+    </div>
+  </div>
+  <div class="stage__foot">
+    <p class="caption stage__caption">{stage?.caption ?? post.standfirst}</p>
+    <TextLink href={href}>Read the story</TextLink>
+  </div>
+</section>
+
+<style>
+  .stage{padding-top:clamp(20px,2.6vw,36px)}
+  .stage__grid{--g:var(--grid-gap);--c:calc((100% - var(--g)) * 32 / 41);display:grid;grid-template-columns:minmax(0,1fr) var(--c) minmax(0,1fr);column-gap:var(--g);align-items:stretch}
+  /* Side rails: three cells share the stage's height; each plate fills its cell. */
+  .stage__rail{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));row-gap:var(--g);min-height:0}
+  .stage__cell{min-height:0}
+  .stage__cell :global(.plate){height:100%}
+  .stage__cell :global(.plate__frame){height:100%;aspect-ratio:auto !important}
+
+  .stage__main{position:relative;min-width:0}
+  .stage__plate{margin:0}
+  .stage__frame{position:relative;display:block;aspect-ratio:16 / 9;overflow:hidden;background:var(--surface-sunken);border:0;text-decoration:none}
+  .stage__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .stage__empty{position:absolute;inset:0;display:grid;place-items:center;background:var(--paper-100);box-shadow:inset 0 0 0 var(--hairline) var(--rule)}
+
+  /* The title card: white, square, centred on the stage. Type on white, never on the photograph. */
+  .stage__card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:var(--space-3);padding:clamp(20px,2.2vw,32px) clamp(28px,3.4vw,56px);background:var(--surface);max-width:calc(100% - 2 * var(--space-6));text-align:center}
+  .stage__title{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(1.5rem,2.4vw,2.75rem);line-height:1.05;letter-spacing:var(--track-display);white-space:nowrap}
+  .stage__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
+  .stage__link:hover{color:var(--ink-700)}
+  .eyebrow{margin:0}
+
+  .stage__foot{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding-top:var(--space-3)}
+  .stage__caption{margin:0}
+
+  @media (max-width:640px){
+    .stage__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--g)}
+    .stage__main{order:1}
+    .stage__rail--left{order:2;grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--g)}
+    .stage__rail--right{display:none}
+    .stage__cell :global(.plate__frame){height:auto;aspect-ratio:3 / 4 !important}
+    /* On a phone the card would cover the photograph, so it sits beneath it in flow. */
+    .stage__card{position:static;transform:none;padding:var(--space-4) 0 0;align-items:flex-start;text-align:left;max-width:none}
+    .stage__title{white-space:normal;text-wrap:balance;font-size:var(--text-display-s)}
+    .stage__foot{flex-direction:column;align-items:flex-start;gap:var(--space-3)}
+  }
+</style>
+
+<script>
+  // A film on the stage holds still for readers who asked for reduced motion.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('[data-stage-video]').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
+  }
+</script>
