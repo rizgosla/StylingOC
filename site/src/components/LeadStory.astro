@@ -7,8 +7,9 @@ import TextLink from './TextLink.astro';
 import type { Img, Post } from '@/lib/sanity';
 import { kicker } from '@/lib/sanity';
 
-interface Props { post: Post; rail?: Img[] }
-const { post, rail = [] } = Astro.props;
+interface Props { post: Post; rail?: Img[]; headline?: string }
+const { post, rail = [], headline } = Astro.props;
+const title = headline?.trim() || post.title;
 const href = `/journal/${post.slug}/`;
 const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter((i, n, a) => a.findIndex((x) => x.src === i.src) === n).slice(0, 3);
 ---
@@ -19,7 +20,7 @@ const railImages = rail.filter((i) => i && i.src !== post.leadImage?.src).filter
     </a>
     <div class="lead__text">
       <p class="eyebrow">{kicker(post)}</p>
-      <h1 id="lead-title" class="display-l lead__title"><a href={href} class="lead__link">{post.title}</a></h1>
+      <h1 id="lead-title" class="display-l lead__title"><a href={href} class="lead__link">{title}</a></h1>
       <p class="standfirst lead__standfirst">{post.standfirst}</p>
       <TextLink href={href}>Read the story</TextLink>
     </div>
