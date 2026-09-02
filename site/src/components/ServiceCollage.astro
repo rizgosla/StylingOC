@@ -4,7 +4,7 @@
    drives the row sideways (a CSS scroll-driven animation; a small script does the same
    where the browser lacks it). The heading and introduction are the first panel; each
    package is a panel behind a full-height hairline: a large thin numeral, the plate,
-   the title and the price in full. Panels sit level.
+   the title and the price in full. Panels alternate between two heights; the plates are all the same size.
    Below 1025px, and under prefers-reduced-motion, it is an ordinary sideways-scrolling
    row instead of a pinned one. */
 import Plate from './Plate.astro';
@@ -13,7 +13,7 @@ import type { ServicePackage } from '@/lib/sanity';
 
 interface Props { id: string; eyebrow: string; headline: string; intro: string; packages: ServicePackage[] }
 const { id, eyebrow, headline, intro, packages } = Astro.props;
-const ratios = ['4:5', '3:4'] as const;
+
 ---
 <section class="col" id={id} aria-labelledby={`${id}-title`} data-collage style={`--n:${packages.length}`}>
   <div class="col__pin">
@@ -29,10 +29,10 @@ const ratios = ['4:5', '3:4'] as const;
           </div>
         </li>
         {packages.map((p, i) => (
-          <li class="col__panel">
+          <li class:list={['col__panel', i % 2 ? 'col__panel--high' : 'col__panel--low']}>
             <span class="col__num" aria-hidden="true">{p.numeral}</span>
             <div class="col__plate">
-              <Plate image={p.image ?? null} ratio={ratios[i % 2]} sizes="(max-width: 1024px) 60vw, 19vw" caption={false} />
+              <Plate image={p.image ?? null} ratio="4:5" sizes="(max-width: 1024px) 60vw, 19vw" caption={false} />
             </div>
             <h3 class="col__name">{p.title}</h3>
             <p class="col__price"><span class="label">{p.price}</span>{p.priceNote && <span class="col__pn">{p.priceNote}</span>}</p>
@@ -73,9 +73,11 @@ const ratios = ['4:5', '3:4'] as const;
     .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100cqw + 100vh)}
     .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
     .col__track{height:100vh;will-change:transform}
-    /* Anchored below the bar, all panels level; the plate's height is capped so
-       numeral, photograph and text always fit inside the frame — nothing clips. */
-    .col__panel{--off:7vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
+    /* Staggered like the reference — alternating heights — but every plate the same
+       size; the plate's height cap keeps numeral, photograph and text inside the frame. */
+    .col__panel{--off:6vh;justify-content:flex-start;padding-top:calc(var(--bar) + var(--off));padding-bottom:var(--space-6)}
+    .col__panel--high{--off:3vh}
+    .col__panel--low{--off:14vh}
     .col__panel :global(.plate__frame){max-height:calc(100vh - var(--bar) - var(--off) - 310px)}
     .col__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:-6px}
   }
