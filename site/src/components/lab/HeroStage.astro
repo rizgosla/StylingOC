@@ -1,7 +1,7 @@
 ---
 /* Hero variant B — "The stage". One wide 16:9 plate in the middle of the page, three
-   portrait plates down each side sharing its height, and the headline on a white card
-   at its centre, one line. The wide frame is built to take a film later: pass `video`
+   portrait plates down each side sharing its height, and the eyebrow and headline
+   centred beneath the stage, one line. The wide frame is built to take a film later: pass `video`
    and a muted, looping <video> replaces the photograph, which stays as its poster.
    Six-up geometry: with c the stage width and g the grid gap, each side rail is
    (9c/16 − 2g)/3 tall and, at 3:4, 9c/64 − g/2 wide, so c = 32(W − g)/41 of the row. */
@@ -48,30 +48,31 @@ const shot = stage ? picture(stage) : null;
           )}
         </a>
       </figure>
-      <div class="stage__card">
-        <p class="eyebrow">{label}</p>
-        <h1 id="lead-title" class="stage__title"><a href={href} class="stage__link">{title}</a></h1>
-      </div>
     </div>
 
     <div class="stage__rail stage__rail--right" aria-hidden="true">
       {right.map((img) => <div class="stage__cell"><Plate image={img} ratio="3:4" sizes="(max-width: 640px) 33vw, 12vw" caption={false} loading="eager" /></div>)}
     </div>
   </div>
-  <div class="stage__foot">
-    <p class="caption stage__caption">{stage?.caption ?? post.standfirst}</p>
-    <TextLink href={href}>Read the story</TextLink>
+  <div class="stage__text">
+    <p class="eyebrow">{label}</p>
+    <h1 id="lead-title" class="stage__title"><a href={href} class="stage__link">{title}</a></h1>
+    <p class="standfirst stage__standfirst">{post.standfirst}</p>
+    <TextLink href={href} class="stage__more">Read the story</TextLink>
   </div>
 </section>
 
 <style>
   .stage{padding-top:clamp(20px,2.6vw,36px)}
-  .stage__grid{--g:var(--grid-gap);--c:calc((100% - var(--g)) * 32 / 41);display:grid;grid-template-columns:minmax(0,1fr) var(--c) minmax(0,1fr);column-gap:var(--g);align-items:stretch}
-  /* Side rails: three cells share the stage's height; each plate fills its cell. */
+  /* The stage is held to half the viewport so the words beneath it clear the fold;
+     its width follows from that at 16:9, never wider than the six-up geometry allows. */
+  .stage__grid{--g:var(--grid-gap);--fit:calc((100% - var(--g)) * 32 / 41);--cap:calc(50vh * 16 / 9);--c:min(var(--fit),var(--cap));display:grid;grid-template-columns:minmax(0,1fr) var(--c) minmax(0,1fr);column-gap:var(--g);align-items:stretch}
+  /* Side rails: three 3:4 cells share the stage's height and keep to the page's outer edges. */
   .stage__rail{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));row-gap:var(--g);min-height:0}
-  .stage__cell{min-height:0}
-  .stage__cell :global(.plate){height:100%}
-  .stage__cell :global(.plate__frame){height:100%;aspect-ratio:auto !important}
+  .stage__cell{min-height:0;display:flex}
+  .stage__rail--right .stage__cell{justify-content:flex-end}
+  .stage__cell :global(.plate){height:100%;max-width:100%}
+  .stage__cell :global(.plate__frame){height:100%;width:auto;max-width:100%;aspect-ratio:3 / 4 !important}
 
   .stage__main{position:relative;min-width:0}
   .stage__plate{margin:0}
@@ -79,15 +80,16 @@ const shot = stage ? picture(stage) : null;
   .stage__media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
   .stage__empty{position:absolute;inset:0;display:grid;place-items:center;background:var(--paper-100);box-shadow:inset 0 0 0 var(--hairline) var(--rule)}
 
-  /* The title card: white, square, centred on the stage. Type on white, never on the photograph. */
-  .stage__card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:var(--space-3);padding:clamp(20px,2.2vw,32px) clamp(28px,3.4vw,56px);background:var(--surface);max-width:calc(100% - 2 * var(--space-6));text-align:center}
-  .stage__title{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(1.5rem,2.4vw,2.75rem);line-height:1.05;letter-spacing:var(--track-display);white-space:nowrap}
+  /* The words: one centred column beneath the stage, the same set as the other leads
+     (eyebrow, headline, standfirst, link), on one axis with even spacing. */
+  .stage__text{display:flex;flex-direction:column;align-items:center;gap:var(--space-4);margin:0 auto;padding:clamp(28px,3vw,48px) 0 var(--space-4);max-width:calc((100% - var(--grid-gap)) * 32 / 41);text-align:center}
+  .stage__title{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(2rem,3.4vw,4rem);line-height:1.04;letter-spacing:var(--track-display);text-wrap:balance}
   .stage__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
   .stage__link:hover{color:var(--ink-700)}
+  .stage__standfirst{margin:0;max-width:52ch;font-size:var(--text-lede);text-wrap:pretty}
   .eyebrow{margin:0}
-
-  .stage__foot{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-5);padding-top:var(--space-3)}
-  .stage__caption{margin:0}
+  .stage__text :global(.stage__more){align-self:center}
+  @media (max-width:640px){.stage__text :global(.stage__more){align-self:flex-start}}
 
   @media (max-width:640px){
     .stage__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--g)}
@@ -95,10 +97,8 @@ const shot = stage ? picture(stage) : null;
     .stage__rail--left{order:2;grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--g)}
     .stage__rail--right{display:none}
     .stage__cell :global(.plate__frame){height:auto;aspect-ratio:3 / 4 !important}
-    /* On a phone the card would cover the photograph, so it sits beneath it in flow. */
-    .stage__card{position:static;transform:none;padding:var(--space-4) 0 0;align-items:flex-start;text-align:left;max-width:none}
-    .stage__title{white-space:normal;text-wrap:balance;font-size:var(--text-display-s)}
-    .stage__foot{flex-direction:column;align-items:flex-start;gap:var(--space-3)}
+    .stage__text{padding:var(--space-4) 0 0;max-width:none;align-items:flex-start;text-align:left}
+    .stage__title{font-size:var(--text-display-s)}
   }
 </style>
 

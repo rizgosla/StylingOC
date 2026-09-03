@@ -5,8 +5,6 @@ import Base from '@/layouts/Base.astro';
 import LabBar from '@/components/lab/LabBar.astro';
 import HeroTwoPlates from '@/components/lab/HeroTwoPlates.astro';
 import HeroStage from '@/components/lab/HeroStage.astro';
-import HeroSpread from '@/components/lab/HeroSpread.astro';
-import HeroHeadlineFirst from '@/components/lab/HeroHeadlineFirst.astro';
 import StoryGrid from '@/components/StoryGrid.astro';
 import ServiceGrid from '@/components/ServiceGrid.astro';
 import ServiceCollage from '@/components/ServiceCollage.astro';
@@ -40,9 +38,6 @@ const hero = { post: home.leadStory, headline: home.heroHeadline, eyebrow: home.
   <LabBar current={variant} variants={heroVariants} />
   {variant === 'a' && <HeroTwoPlates {...hero} order="image-first" />}
   {variant === 'b' && <HeroStage {...hero} />}
-  {variant === 'c' && <HeroSpread {...hero} />}
-  {variant === 'd' && <HeroHeadlineFirst {...hero} />}
-  {variant === 'e' && <HeroTwoPlates {...hero} order="text-first" />}
   <StoryGrid posts={latest} title="The latest" moreHref="/journal/" uniform closing />
   <ServiceCollage id="interiors" eyebrow={home.interiorsEyebrow} headline={home.interiorsHeadline} intro={home.interiorsIntro} packages={interiors} />
   <ServiceGrid id="styling" eyebrow={home.stylingEyebrow} headline={home.stylingHeadline} intro={home.stylingIntro} packages={styling} />

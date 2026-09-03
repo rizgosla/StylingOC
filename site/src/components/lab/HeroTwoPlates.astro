@@ -4,19 +4,23 @@
    the frame is a flex fill, so the pair always lands on the same baseline and there is
    no white above the text at any width. `order="image-first"` (A) puts the wide plate
    above the headline; `order="text-first"` (E) puts the headline at the top and the
-   plate beneath it. The wide photograph is decorative and comes from the rail. */
+   plate beneath it. The wide photograph is decorative and comes from the rail.
+   Down the right edge, as on the original lead, a rail of three equal portraits shares
+   the tall plate's height; the tall plate takes five columns to make room for it. */
 import Plate from '../Plate.astro';
 import TextLink from '../TextLink.astro';
 import type { Img, Post } from '@/lib/sanity';
 import { kicker } from '@/lib/sanity';
-import { landscapeFirst, unique } from './heroImages';
+import { landscapeFirst, portraitFirst, unique } from './heroImages';
 
 interface Props { post: Post; rail?: Img[]; headline?: string; eyebrow?: string; order?: 'image-first' | 'text-first' }
 const { post, rail = [], headline, eyebrow, order = 'image-first' } = Astro.props;
 const title = headline?.trim() || post.title;
 const label = eyebrow?.trim() || kicker(post);
 const href = `/journal/${post.slug}/`;
-const wide = landscapeFirst(unique(rail, post.leadImage))[0] ?? null;
+const pool = unique(rail, post.leadImage);
+const wide = landscapeFirst(pool)[0] ?? null;
+const railImages = portraitFirst(unique(pool, wide)).slice(0, 3);
 ---
 <section class="wrap lead" aria-labelledby="lead-title">
   <div class="grid lead__grid">
@@ -34,14 +38,31 @@ const wide = landscapeFirst(unique(rail, post.leadImage))[0] ?? null;
         <TextLink href={href}>Read the story</TextLink>
       </div>
     </div>
+    {railImages.length >= 2 && (
+      <div class="lead__rail" aria-hidden="true">
+        <div class="lead__rail-track">
+          {railImages.map((img) => (
+            <div class="lead__rail-item">
+              <Plate image={img} ratio="3:4" sizes="14vw" caption={false} loading="eager" />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
   </div>
 </section>
 
 <style>
   .lead{padding-top:clamp(20px,2.6vw,36px)}
   .lead__grid{align-items:stretch}
-  .lead__img{grid-column:1 / span 6;display:block;border:0;text-decoration:none}
-  .lead__side{grid-column:7 / span 6;display:flex;flex-direction:column;gap:var(--space-6);padding-left:var(--space-4);min-height:0}
+  .lead__img{grid-column:1 / span 5;display:block;border:0;text-decoration:none}
+  .lead__side{grid-column:6 / span 5;display:flex;flex-direction:column;gap:var(--space-6);padding-left:var(--space-4);min-height:0}
+  /* The rail: three equal 3:4 thumbnails share the tall plate's height in the last two columns. */
+  .lead__rail{grid-column:11 / span 2;align-self:stretch;position:relative;overflow:hidden;border-left:var(--hairline) solid var(--rule);padding-left:var(--grid-gap)}
+  .lead__rail-track{position:absolute;inset:0 0 0 calc(var(--grid-gap) + var(--hairline));display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:var(--grid-gap)}
+  .lead__rail-item{min-height:0;display:flex;align-items:start}
+  .lead__rail-item :global(.plate){height:100%;margin:0;max-width:100%}
+  .lead__rail-item :global(.plate__frame){height:100%;width:auto;max-width:100%;aspect-ratio:3 / 4}
   .lead__side--text-first{flex-direction:column-reverse}
   /* The wide plate fills whatever height is left beside the tall one; the image crops to cover. */
   .lead__fill{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
@@ -58,6 +79,7 @@ const wide = landscapeFirst(unique(rail, post.leadImage))[0] ?? null;
   @media (max-width:1024px){
     .lead__img{grid-column:1 / span 5}
     .lead__side{grid-column:6 / span 3;padding-left:0}
+    .lead__rail{display:none}
     .lead__title{font-size:clamp(2.25rem,4.6vw,3.5rem)}
   }
   @media (max-width:640px){
