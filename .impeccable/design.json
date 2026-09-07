@@ -1,0 +1,511 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-07T17:38:13.606Z",
+  "title": "Design System: Styling OC",
+  "extensions": {
+    "colorMeta": {
+      "antique-brass": {
+        "role": "primary",
+        "displayName": "Antique Brass",
+        "canonical": "oklch(60.6% 0.078 77.6)",
+        "tonalRamp": [
+          "oklch(15.0% 0.078 77.6)",
+          "oklch(26.0% 0.078 77.6)",
+          "oklch(38.0% 0.078 77.6)",
+          "oklch(50.0% 0.078 77.6)",
+          "oklch(62.0% 0.078 77.6)",
+          "oklch(74.0% 0.078 77.6)",
+          "oklch(85.0% 0.078 77.6)",
+          "oklch(95.0% 0.078 77.6)"
+        ]
+      },
+      "brass-strong": {
+        "role": "primary",
+        "displayName": "Brass Strong",
+        "canonical": "oklch(51.5% 0.069 76.4)",
+        "tonalRamp": [
+          "oklch(15.0% 0.069 76.4)",
+          "oklch(26.0% 0.069 76.4)",
+          "oklch(38.0% 0.069 76.4)",
+          "oklch(50.0% 0.069 76.4)",
+          "oklch(62.0% 0.069 76.4)",
+          "oklch(74.0% 0.069 76.4)",
+          "oklch(85.0% 0.069 76.4)",
+          "oklch(95.0% 0.069 76.4)"
+        ]
+      },
+      "brass-deep": {
+        "role": "primary",
+        "displayName": "Brass Deep",
+        "canonical": "oklch(44.5% 0.056 77.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.056 77.9)",
+          "oklch(26.0% 0.056 77.9)",
+          "oklch(38.0% 0.056 77.9)",
+          "oklch(50.0% 0.056 77.9)",
+          "oklch(62.0% 0.056 77.9)",
+          "oklch(74.0% 0.056 77.9)",
+          "oklch(85.0% 0.056 77.9)",
+          "oklch(95.0% 0.056 77.9)"
+        ]
+      },
+      "brass-lift": {
+        "role": "primary",
+        "displayName": "Brass Lift",
+        "canonical": "oklch(72.5% 0.088 82.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.088 82.0)",
+          "oklch(26.0% 0.088 82.0)",
+          "oklch(38.0% 0.088 82.0)",
+          "oklch(50.0% 0.088 82.0)",
+          "oklch(62.0% 0.088 82.0)",
+          "oklch(74.0% 0.088 82.0)",
+          "oklch(85.0% 0.088 82.0)",
+          "oklch(95.0% 0.088 82.0)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(25.8% 0.005 67.6)",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 67.6)",
+          "oklch(26.0% 0.005 67.6)",
+          "oklch(38.0% 0.005 67.6)",
+          "oklch(50.0% 0.005 67.6)",
+          "oklch(62.0% 0.005 67.6)",
+          "oklch(74.0% 0.005 67.6)",
+          "oklch(85.0% 0.005 67.6)",
+          "oklch(95.0% 0.005 67.6)"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "oklch(35.0% 0.008 75.3)",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 75.3)",
+          "oklch(26.0% 0.008 75.3)",
+          "oklch(38.0% 0.008 75.3)",
+          "oklch(50.0% 0.008 75.3)",
+          "oklch(62.0% 0.008 75.3)",
+          "oklch(74.0% 0.008 75.3)",
+          "oklch(85.0% 0.008 75.3)",
+          "oklch(95.0% 0.008 75.3)"
+        ]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Ink Faint",
+        "canonical": "oklch(63.5% 0.010 78.3)",
+        "tonalRamp": [
+          "oklch(15.0% 0.010 78.3)",
+          "oklch(26.0% 0.010 78.3)",
+          "oklch(38.0% 0.010 78.3)",
+          "oklch(50.0% 0.010 78.3)",
+          "oklch(62.0% 0.010 78.3)",
+          "oklch(74.0% 0.010 78.3)",
+          "oklch(85.0% 0.010 78.3)",
+          "oklch(95.0% 0.010 78.3)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 84.6)",
+          "oklch(26.0% 0.006 84.6)",
+          "oklch(38.0% 0.006 84.6)",
+          "oklch(50.0% 0.006 84.6)",
+          "oklch(62.0% 0.006 84.6)",
+          "oklch(74.0% 0.006 84.6)",
+          "oklch(85.0% 0.006 84.6)",
+          "oklch(95.0% 0.006 84.6)"
+        ]
+      },
+      "paper-50": {
+        "role": "neutral",
+        "displayName": "Paper 50",
+        "canonical": "oklch(98.2% 0.003 84.6)",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 84.6)",
+          "oklch(26.0% 0.003 84.6)",
+          "oklch(38.0% 0.003 84.6)",
+          "oklch(50.0% 0.003 84.6)",
+          "oklch(62.0% 0.003 84.6)",
+          "oklch(74.0% 0.003 84.6)",
+          "oklch(85.0% 0.003 84.6)",
+          "oklch(95.0% 0.003 84.6)"
+        ]
+      },
+      "paper-100": {
+        "role": "neutral",
+        "displayName": "Paper 100",
+        "canonical": "oklch(95.6% 0.006 84.6)",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 84.6)",
+          "oklch(26.0% 0.006 84.6)",
+          "oklch(38.0% 0.006 84.6)",
+          "oklch(50.0% 0.006 84.6)",
+          "oklch(62.0% 0.006 84.6)",
+          "oklch(74.0% 0.006 84.6)",
+          "oklch(85.0% 0.006 84.6)",
+          "oklch(95.0% 0.006 84.6)"
+        ]
+      },
+      "paper-200": {
+        "role": "neutral",
+        "displayName": "Paper 200",
+        "canonical": "oklch(92.0% 0.009 84.6)",
+        "tonalRamp": [
+          "oklch(15.0% 0.009 84.6)",
+          "oklch(26.0% 0.009 84.6)",
+          "oklch(38.0% 0.009 84.6)",
+          "oklch(50.0% 0.009 84.6)",
+          "oklch(62.0% 0.009 84.6)",
+          "oklch(74.0% 0.009 84.6)",
+          "oklch(85.0% 0.009 84.6)",
+          "oklch(95.0% 0.009 84.6)"
+        ]
+      },
+      "rule-hairline": {
+        "role": "neutral",
+        "displayName": "Rule Hairline",
+        "canonical": "rgba(37,35,33,0.18)",
+        "tonalRamp": [
+          "oklch(15.0% 0.002 67.8)",
+          "oklch(26.0% 0.002 67.8)",
+          "oklch(38.0% 0.002 67.8)",
+          "oklch(50.0% 0.002 67.8)",
+          "oklch(62.0% 0.002 67.8)",
+          "oklch(74.0% 0.002 67.8)",
+          "oklch(85.0% 0.002 67.8)",
+          "oklch(95.0% 0.002 67.8)"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Rule Strong",
+        "canonical": "rgba(37,35,33,0.45)",
+        "tonalRamp": [
+          "oklch(15.0% 0.002 67.8)",
+          "oklch(26.0% 0.002 67.8)",
+          "oklch(38.0% 0.002 67.8)",
+          "oklch(50.0% 0.002 67.8)",
+          "oklch(62.0% 0.002 67.8)",
+          "oklch(74.0% 0.002 67.8)",
+          "oklch(85.0% 0.002 67.8)",
+          "oklch(95.0% 0.002 67.8)"
+        ]
+      },
+      "night-ground": {
+        "role": "neutral",
+        "displayName": "Night Ground",
+        "canonical": "oklch(19.1% 0.000 89.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.0% 0.000 89.9)",
+          "oklch(38.0% 0.000 89.9)",
+          "oklch(50.0% 0.000 89.9)",
+          "oklch(62.0% 0.000 89.9)",
+          "oklch(74.0% 0.000 89.9)",
+          "oklch(85.0% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "oklch(96.5% 0.006 84.6)",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 84.6)",
+          "oklch(26.0% 0.006 84.6)",
+          "oklch(38.0% 0.006 84.6)",
+          "oklch(50.0% 0.006 84.6)",
+          "oklch(62.0% 0.006 84.6)",
+          "oklch(74.0% 0.006 84.6)",
+          "oklch(85.0% 0.006 84.6)",
+          "oklch(95.0% 0.006 84.6)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-xl": {
+        "displayName": "Display XL",
+        "purpose": "The masthead register, up to 136px. Reserved for page-scale statements; the shipped home page uses Display L and below."
+      },
+      "display-l": {
+        "displayName": "Display L",
+        "purpose": "Section headlines (styling menu, feature story) and the footer wordmark at weight 500 with 0.1em tracking, uppercase."
+      },
+      "display-m": {
+        "displayName": "Display M",
+        "purpose": "Studio and inquiry headlines, the large pull quote, and the masthead wordmark at weight 500, 0.1em tracking, uppercase."
+      },
+      "display-s": {
+        "displayName": "Display S",
+        "purpose": "Story-card titles, small-screen menu items, the confirmation line."
+      },
+      "title": {
+        "displayName": "Title (lede)",
+        "purpose": "The lede paragraph beside a feature plate or under a menu title, Archivo 300, often under a floated Zodiak drop cap at 3.6em."
+      },
+      "italic": {
+        "displayName": "Italic voice",
+        "purpose": "Zodiak Italic 300 (font-style: italic) for the studio lede, service benefit lines and testimonials; pull quotes scale it to Display M and S."
+      },
+      "standfirst": {
+        "displayName": "Standfirst",
+        "purpose": "The AD line under a serif headline: all-caps sans at 13px and 0.06em, weight 300, uppercase. Also the price label size."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy in Ink Muted at 15px, weight 300, leading 1.8, measure 64ch (narrow 40ch). Body S is 13px at 1.75 for deks."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows, captions, taglines (0.42em) and the compact-bar nav: 9px, uppercase, 0.34em tracking."
+      },
+      "label-l": {
+        "displayName": "Label L",
+        "purpose": "Navigation, buttons, text links and the Menu button: 11px, uppercase, 0.34em tracking."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Two-digit brass numerals (\"01\") above story cards and beside menu items; the service menu enlarges the face to clamp(1.5rem, 2.6vw, 2.875rem) at weight 300."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-editorial",
+        "value": "cubic-bezier(.22,.61,.36,1)",
+        "purpose": "Default ease for reveals, colour, fill and border transitions, and the compact bar slide."
+      },
+      {
+        "name": "ease-rule",
+        "value": "cubic-bezier(.65,0,.35,1)",
+        "purpose": "The left-to-right draw of a brass underline."
+      },
+      {
+        "name": "dur-fast",
+        "value": "160ms",
+        "purpose": "Tokenised fast step; 0ms under prefers-reduced-motion."
+      },
+      {
+        "name": "dur-base",
+        "value": "280ms",
+        "purpose": "State transitions: colour, fill, border, underline draw, plate opacity to 86%."
+      },
+      {
+        "name": "dur-slow",
+        "value": "560ms",
+        "purpose": "The compact fixed bar sliding in after the masthead scrolls away."
+      },
+      {
+        "name": "dur-reveal",
+        "value": "700ms",
+        "purpose": "Scroll reveal: fade from 0 with an 8px rise, once, staggered 90ms per grid item."
+      },
+      {
+        "name": "parallax-shift",
+        "value": "0%",
+        "purpose": "Parallax is removed; fades only."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "640px",
+        "purpose": "At or below: single column, Menu button and full-height white panel, stage rails collapse, hairlines become border-top."
+      },
+      {
+        "name": "mid",
+        "value": "1024px",
+        "purpose": "At or below: 8-column grid, halved offsets, two-across grids with the third item full width under a hairline."
+      },
+      {
+        "name": "full",
+        "value": "1025px",
+        "purpose": "And up: the full asymmetric 12-column grid, three-across menus."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The default button: transparent with a 45% rule border; hover inverts to an ink fill. Square, 44px, 11px uppercase label.",
+      "html": "<button class=\"ds-btn-outline\">See how we work</button>",
+      "css": ".ds-btn-outline{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label-l,0.6875rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1;text-decoration:none;border-radius:0;cursor:pointer;padding:14px 28px;transition:background 280ms cubic-bezier(.22,.61,.36,1),color 280ms cubic-bezier(.22,.61,.36,1),border-color 280ms cubic-bezier(.22,.61,.36,1);background:transparent;border:1px solid var(--rule-strong,rgba(37,35,33,.45));color:var(--ink,#252321);}.ds-btn-outline:hover{background:var(--ink,#252321);color:var(--ink-inverse,#FFFFFF);border-color:var(--ink,#252321);}.ds-btn-outline:active{background:var(--ink-700,#3D3A36);border-color:var(--ink-700,#3D3A36);color:#fff;}.ds-btn-outline:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}"
+    },
+    {
+      "name": "Solid Button",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "Ink-filled button with white label; hover deepens to Ink Muted. Same square 44px geometry as the outline.",
+      "html": "<button class=\"ds-btn-solid\">Begin an inquiry</button>",
+      "css": ".ds-btn-solid{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label-l,0.6875rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1;text-decoration:none;border-radius:0;cursor:pointer;padding:14px 28px;transition:background 280ms cubic-bezier(.22,.61,.36,1),color 280ms cubic-bezier(.22,.61,.36,1),border-color 280ms cubic-bezier(.22,.61,.36,1);background:var(--ink,#252321);color:var(--ink-inverse,#FFFFFF);border:1px solid var(--ink,#252321);}.ds-btn-solid:hover{background:var(--ink-700,#3D3A36);border-color:var(--ink-700,#3D3A36);}.ds-btn-solid:active{background:var(--ink-700,#3D3A36);border-color:var(--ink-700,#3D3A36);color:#fff;}.ds-btn-solid:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "The one filled brass CTA a screen may carry. Filled with Brass Strong (Antique Brass would be 3.9:1); hover deepens to Brass Deep.",
+      "html": "<button class=\"ds-btn-accent\">Begin an inquiry</button>",
+      "css": ".ds-btn-accent{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label-l,0.6875rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1;text-decoration:none;border-radius:0;cursor:pointer;padding:14px 28px;transition:background 280ms cubic-bezier(.22,.61,.36,1),color 280ms cubic-bezier(.22,.61,.36,1),border-color 280ms cubic-bezier(.22,.61,.36,1);background:var(--accent-strong,#7E6238);color:#fff;border:1px solid var(--accent-strong,#7E6238);}.ds-btn-accent:hover{background:var(--accent-deep,#65502F);border-color:var(--accent-deep,#65502F);}.ds-btn-accent:active{background:var(--ink-700,#3D3A36);border-color:var(--ink-700,#3D3A36);color:#fff;}.ds-btn-accent:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "The default call to action: an 11px uppercase label on a 24%-opacity hairline; a brass hairline draws left to right on hover and focus and the label turns Brass Strong.",
+      "html": "<a class=\"ds-text-link\" href=\"#\">Read the story</a>",
+      "css": ".ds-text-link{position:relative;display:inline-block;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label-l,0.6875rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1.4;color:var(--ink,#252321);text-decoration:none;padding-bottom:5px;min-height:24px;background:none;border:0;cursor:pointer;transition:color 280ms cubic-bezier(.22,.61,.36,1);}.ds-text-link::before,.ds-text-link::after{content:\"\";position:absolute;left:0;bottom:0;height:1px;}.ds-text-link::before{width:100%;background:currentColor;opacity:.24;}.ds-text-link::after{width:0;background:var(--accent,#9C7C4A);transition:width 280ms cubic-bezier(.65,0,.35,1);}.ds-text-link:hover::after,.ds-text-link:focus-visible::after{width:100%;}.ds-text-link:hover{color:var(--accent-strong,#7E6238);}.ds-text-link:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}"
+    },
+    {
+      "name": "Underline Input",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "A muted 9px eyebrow label over a field with no box: transparent, a single 45% bottom rule that turns Brass Strong on focus. Required marks are a Brass Strong asterisk.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field__label\" for=\"ds-name\">Name <span class=\"ds-field__req\" aria-hidden=\"true\">*</span></label><input class=\"ds-input\" id=\"ds-name\" type=\"text\" autocomplete=\"name\" required /></div>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;max-width:320px;}.ds-field__label{display:block;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label,0.5625rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1.35;color:var(--ink-muted,#3D3A36);}.ds-field__req{color:var(--accent-strong,#7E6238);}.ds-input{width:100%;min-height:44px;border:0;border-bottom:1px solid var(--rule-strong,rgba(37,35,33,.45));border-radius:0;background:transparent;padding:10px 0;color:var(--ink,#252321);font-family:var(--font-body,'Archivo Variable',Archivo,Helvetica,Arial,sans-serif);font-weight:300;font-size:var(--text-body,0.9375rem);line-height:1.5;transition:border-color 280ms cubic-bezier(.22,.61,.36,1);}.ds-input:focus{outline:none;border-bottom-color:var(--accent-strong,#7E6238);}.ds-input:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}"
+    },
+    {
+      "name": "Eyebrow",
+      "kind": "chip",
+      "refersTo": "eyebrow",
+      "description": "The 9px wide-tracked uppercase label that opens a text stack, in Brass Strong by default; optional brass numeral before it and a hairline that fills the rest of the line.",
+      "html": "<div class=\"ds-eb\"><span class=\"ds-eb__num\" aria-hidden=\"true\">01</span><span class=\"ds-eyebrow\">Interiors</span><span class=\"ds-eb__rule\" aria-hidden=\"true\"></span></div>",
+      "css": ".ds-eb{display:flex;align-items:center;gap:12px;margin:0;min-width:240px;}.ds-eyebrow{font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label,0.5625rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1.35;color:var(--accent-strong,#7E6238);margin:0;}.ds-eyebrow--ink{color:var(--ink,#252321);}.ds-eyebrow--muted{color:var(--ink-muted,#3D3A36);}.ds-eb__num{font-family:var(--font-display, Zodiak, Didot, 'Times New Roman', serif);font-size:var(--text-numeral,1.625rem);letter-spacing:0.02em;color:var(--accent,#9C7C4A);line-height:1;}.ds-eb__rule{flex:1;height:1px;background:var(--rule,rgba(37,35,33,.18));}"
+    },
+    {
+      "name": "Plate with Caption",
+      "kind": "card",
+      "refersTo": "caption",
+      "description": "A photograph as the page’s plate: square-cornered, full column width at a fixed ratio, Paper 100 ground while loading, a 9px caption in Ink Muted 12px beneath. Never carries text on top. Shown here in its empty state.",
+      "html": "<figure class=\"ds-plate\"><div class=\"ds-plate__frame\"><div class=\"ds-plate__empty\" role=\"img\" aria-label=\"Photograph to come\"><span class=\"ds-plate__empty-label\" aria-hidden=\"true\">Photograph to come</span></div></div><figcaption class=\"ds-caption\">Newport Coast living room · N Meads project</figcaption></figure>",
+      "css": ".ds-plate{margin:0;max-width:280px;}.ds-plate__frame{position:relative;width:100%;aspect-ratio:4 / 5;overflow:hidden;background:var(--surface-sunken,#F2F0EC);border-radius:0;}.ds-plate__empty{position:absolute;inset:0;display:grid;place-items:center;background:var(--paper-100,#F2F0EC);box-shadow:inset 0 0 0 1px var(--rule,rgba(37,35,33,.18));}.ds-plate__empty-label{font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label,0.5625rem);letter-spacing:var(--track-label-wide,0.42em);text-transform:uppercase;color:var(--ink-muted,#3D3A36);padding:0 16px;text-align:center;}.ds-caption{margin-top:12px;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label,0.5625rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1.35;color:var(--ink-muted,#3D3A36);}"
+    },
+    {
+      "name": "Story Card",
+      "kind": "card",
+      "refersTo": "caption",
+      "description": "Not a boxed card: a stack of brass numeral, plate, 18% rule, Brass Strong kicker, Zodiak title and a small dek. Hover fades the plate to 86%, darkens the rule to 45% and draws a brass underline under the title. Nothing moves.",
+      "html": "<article class=\"ds-story\"><span class=\"ds-story__num\" aria-hidden=\"true\">01</span><a class=\"ds-story__img\" href=\"#\" tabindex=\"-1\" aria-hidden=\"true\"><div class=\"ds-story__frame\"></div></a><div class=\"ds-story__meta\"><div class=\"ds-story__rule\"></div><p class=\"ds-eyebrow\">Interiors</p><h3 class=\"ds-story__title\"><a class=\"ds-story__link\" href=\"#\">A living room that holds the light</a></h3><p class=\"ds-story__dek\">Bouclé, honed marble and white oak in Newport Coast.</p></div></article>",
+      "css": ".ds-story{display:flex;flex-direction:column;gap:16px;max-width:300px;}.ds-story__num{display:block;font-family:var(--font-display, Zodiak, Didot, 'Times New Roman', serif);font-size:var(--text-numeral,1.625rem);letter-spacing:0.02em;color:var(--accent,#9C7C4A);line-height:1;}.ds-story__img{display:block;text-decoration:none;transition:opacity 280ms cubic-bezier(.22,.61,.36,1);}.ds-story:hover .ds-story__img{opacity:.86;}.ds-story__frame{width:100%;aspect-ratio:4 / 5;background:var(--paper-100,#F2F0EC);box-shadow:inset 0 0 0 1px var(--rule,rgba(37,35,33,.18));}.ds-story__meta{display:flex;flex-direction:column;gap:12px;padding-top:12px;}.ds-story__rule{height:1px;background:var(--rule,rgba(37,35,33,.18));transition:background 280ms cubic-bezier(.22,.61,.36,1);}.ds-story:hover .ds-story__rule{background:var(--rule-strong,rgba(37,35,33,.45));}.ds-eyebrow{font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label,0.5625rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;line-height:1.35;color:var(--accent-strong,#7E6238);margin:0;}.ds-eyebrow--ink{color:var(--ink,#252321);}.ds-eyebrow--muted{color:var(--ink-muted,#3D3A36);}.ds-story__title{margin:0;font-family:var(--font-display, Zodiak, Didot, 'Times New Roman', serif);font-weight:400;font-size:var(--text-display-s,clamp(1.5rem,2.2vw,2rem));line-height:1.15;letter-spacing:-0.02em;}.ds-story__link{color:var(--ink,#252321);text-decoration:none;background-image:linear-gradient(var(--accent,#9C7C4A),var(--accent,#9C7C4A));background-repeat:no-repeat;background-size:0 1px;background-position:0 100%;transition:background-size 280ms cubic-bezier(.65,0,.35,1);}.ds-story__link:hover,.ds-story__link:focus-visible{background-size:100% 1px;}.ds-story__link:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}.ds-story__dek{margin:0;font-family:var(--font-body,'Archivo Variable',Archivo,Helvetica,Arial,sans-serif);font-weight:300;font-size:var(--text-body-s,0.8125rem);line-height:1.75;color:var(--ink-muted,#3D3A36);}"
+    },
+    {
+      "name": "Masthead Nav Row",
+      "kind": "nav",
+      "refersTo": "text-link",
+      "description": "The in-flow masthead: black rule, the set-type STYLING OC wordmark in Zodiak 500 at 0.1em, a 9px tagline, a hairline, then a centred row of 11px uppercase links whose bottom rule turns Antique Brass on hover, focus and the current page. The Inquire link alone is Brass Strong.",
+      "html": "<header class=\"ds-mh\"><div class=\"ds-mh__rule-black\"></div><div class=\"ds-mh__stack\"><a class=\"ds-mh__mark\" href=\"#\" aria-label=\"Styling OC, home\">Styling OC</a><p class=\"ds-mh__tag\">Interiors · Personal Styling · Orange County</p></div><div class=\"ds-mh__rule\"></div><nav class=\"ds-mh__nav\" aria-label=\"Primary\"><a class=\"ds-mh__link is-active\" href=\"#\" aria-current=\"page\">Journal</a><a class=\"ds-mh__link\" href=\"#\">Interiors</a><a class=\"ds-mh__link\" href=\"#\">Personal styling</a><a class=\"ds-mh__link\" href=\"#\">The studio</a><a class=\"ds-mh__link ds-mh__link--cta\" href=\"#\">Inquire</a></nav><div class=\"ds-mh__rule\"></div></header>",
+      "css": ".ds-mh{background:var(--surface,#FFFFFF);min-width:520px;}.ds-mh__rule-black{height:1px;background:var(--rule-black,#252321);}.ds-mh__rule{height:1px;background:var(--rule,rgba(37,35,33,.18));}.ds-mh__stack{text-align:center;padding:28px 0 18px;}.ds-mh__mark{display:inline-block;font-family:var(--font-display, Zodiak, Didot, 'Times New Roman', serif);font-weight:500;font-size:var(--text-display-m,clamp(2.25rem,3.8vw,3.5rem));line-height:1;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink,#252321);text-decoration:none;padding-left:.1em;}.ds-mh__mark:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}.ds-mh__tag{margin:16px 0 0;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label,0.5625rem);letter-spacing:var(--track-label-wide,0.42em);text-transform:uppercase;color:var(--ink,#252321);padding-left:.42em;}.ds-mh__nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 32px;min-height:52px;}.ds-mh__link{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-label, 'Archivo Variable', Archivo, Helvetica, Arial, sans-serif);font-size:var(--text-label-l,0.6875rem);font-weight:400;letter-spacing:var(--track-label,0.34em);text-transform:uppercase;color:var(--ink,#252321);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 280ms cubic-bezier(.22,.61,.36,1),color 280ms cubic-bezier(.22,.61,.36,1);}.ds-mh__link:hover,.ds-mh__link:focus-visible,.ds-mh__link.is-active{border-bottom-color:var(--accent,#9C7C4A);}.ds-mh__link:focus-visible{outline:1px solid var(--focus-ring,#7E6238);outline-offset:3px;}.ds-mh__link--cta{color:var(--accent-strong,#7E6238);}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Editorial Spread",
+    "overview": "Styling OC is set like a magazine, not built like a website. The client-set reference is Architectural Digest: a masthead-scale serif on a pure white ground, photographs presented as captioned plates rather than as backdrops, structure carried by hairline rules instead of boxes, and a page that is dense rather than airy. The set-type wordmark \"STYLING OC\" opens every page between a black rule and a hairline, and the same masthead closes it. Everything the reader meets between those two rules is type on white with a photograph beside it.\n\nThe system runs on two families and one accent. Zodiak carries every headline, numeral and the italic voice at a single weight (400, with the wordmark at 500 and the italic at 300); Archivo carries labels, standfirsts, body and every button. Tiny wide-tracked uppercase labels (9px and 11px at 0.34em) do the work that colour and icons would do elsewhere. The one accent, Antique Brass, arrived from the studio’s printed menus and is rationed: numerals, drawn underlines, the required-field asterisk, the one \"Inquire\" item in the nav, and the one filled call to action a screen is allowed. Text-sized brass always steps down to Brass Strong so it clears AA.\n\nConfirmed rejections, all of them visible in the shipped code: no headlines over photographs, no scrims or overlays, no cards or boxes, no shadows, no radius anywhere, no icons or emoji, no parallax. Motion is a slow fade and an 8px rise, once, and nothing else.",
+    "keyCharacteristics": [
+      "Type on white; every photograph is a square-cornered plate with a 9px caption beneath, never a background.",
+      "Masthead-weighted modular type ramp (Zodiak display up to 136px, ratio ~1.32) over a 15px / 300-weight Archivo body.",
+      "Three rule weights carry all structure: black opens, 45% marks inputs and hover, 18% divides.",
+      "One accent, rationed by size: Antique Brass for marks 24px and up, Brass Strong for any text.",
+      "Dense editorial grid: 12 asymmetric columns, hairlines drawn in the gaps, gutters that widen to 150px.",
+      "Flat, unrounded, iconless; hover draws a brass underline and nothing moves."
+    ],
+    "rules": [
+      {
+        "name": "The Type-on-White Rule",
+        "section": "colors",
+        "body": "Text sits on white (or on a paper inset), never on a photograph. There are no scrims, overlays or bands; a headline that needs an image gets a plate beside or above it, not behind it."
+      },
+      {
+        "name": "The Brass-at-Size Rule",
+        "section": "colors",
+        "body": "Antique Brass (#9C7C4A) is for numerals, rules, underlines and marks 24px and larger. Any brass text under 24px, including every eyebrow, label and link, uses Brass Strong (#7E6238) or Brass Deep (#65502F). Brass never fills a section and never carries body copy."
+      },
+      {
+        "name": "The One Filled CTA Rule",
+        "section": "colors",
+        "body": "A screen may carry at most one filled button, and the default call to action is a text link with a drawn underline. On the shipped home page the count is zero: the inquiry submit is a text link, and the only brass in the navigation is the \"Inquire\" label."
+      },
+      {
+        "name": "The Wide-Tracked Tiny Label Rule",
+        "section": "typography",
+        "body": "Labels are 9px or 11px, uppercase, tracked at 0.34em to 0.42em, and never larger. Hierarchy comes from tracking and case, not from size or weight."
+      },
+      {
+        "name": "The Standfirst Rule",
+        "section": "typography",
+        "body": "The line under a serif headline is a small all-caps sans at 13px and 0.06em, never an italic serif subline. The italic is reserved for quotations, ledes and benefit lines."
+      },
+      {
+        "name": "The Hairline-in-the-Gap Rule",
+        "section": "layout",
+        "body": "Column dividers are absolutely positioned hairlines drawn in the grid gap, not borders on the cells. Equal-width plates are the proof."
+      },
+      {
+        "name": "The Dense-Not-Airy Rule",
+        "section": "layout",
+        "body": "Section padding tops out at 144px and row gaps at 28px. Air comes from the gutters and the measure, not from stacking empty space between sections."
+      },
+      {
+        "name": "The Three Rules Rule",
+        "section": "elevation",
+        "body": "Structure is carried by exactly three rule weights, all 1px: a black rule (Ink) opens a section or the masthead; a 45% rule (Rule Strong) marks an input, the outline button’s edge, a hovered card’s meta line and a quotation’s attribution; an 18% hairline (Rule Hairline) divides columns and captions. Where a boundary is needed it is a rule; where separation is needed it is a column division."
+      },
+      {
+        "name": "The Flat Rule",
+        "section": "elevation",
+        "body": "No element casts, receives or fakes a shadow, at rest or on hover. If a state needs emphasis it changes colour or draws a rule."
+      },
+      {
+        "name": "The Nothing-Rounded Rule",
+        "section": "shapes",
+        "body": "Radius is 0px everywhere, including inputs and buttons. A rounded corner is the first sign that a surface has left the system."
+      },
+      {
+        "name": "The Captioned Plate Rule",
+        "section": "shapes",
+        "body": "Every photograph is a full-column, square-cornered plate with a 9px wide-tracked caption in Ink Muted beneath it. A plate never carries text on top, and while the photograph is missing the frame stays: Paper 100 ground, inset hairline, \"Photograph to come\"."
+      },
+      {
+        "name": "The Link-Is-the-Rule Rule",
+        "section": "components",
+        "body": "The default call to action is a text link with a drawn brass underline. Buttons are the exception, and a form’s submit is a link."
+      },
+      {
+        "name": "The Slow-Fade Rule",
+        "section": "components",
+        "body": "Motion is a fade and at most 8px of travel, once, on the editorial ease. No springs, no scale, no rotation, no card lift, no parallax (--parallax-shift: 0%), and everything collapses to zero under prefers-reduced-motion."
+      }
+    ],
+    "dos": [
+      "Do set every headline in Zodiak at weight 400 with -0.02em tracking and 0.98 to 1.15 leading, in sentence case; package names alone take Title Case.",
+      "Do open a section with a 1px black rule and an eyebrow, and divide columns with an 18% hairline drawn in the grid gap.",
+      "Do present every photograph as a square-cornered plate at a fixed ratio with a 9px uppercase caption in Ink Muted 12px beneath it.",
+      "Do use Brass Strong (#7E6238) for any brass text under 24px, and reserve Antique Brass (#9C7C4A) for numerals, underlines, marks and the oversized quotation mark.",
+      "Do make the call to action a text link with the left-to-right brass underline; allow at most one filled button per screen.",
+      "Do keep labels at 9px or 11px, uppercase, tracked 0.34em to 0.42em, and let tracking carry the hierarchy.",
+      "Do keep body copy at 15px, weight 300, leading 1.8, in Ink Muted, on a measure of 64ch or less.",
+      "Do keep every interactive element at 44px minimum hit height with the 1px brass focus outline at 3px offset.",
+      "Do keep motion to a 700ms fade with an 8px rise and 280ms colour and underline transitions, all collapsing to 0ms under reduced motion."
+    ],
+    "donts": [
+      "Don't place a headline, label or any text over a photograph, and don't add a scrim, gradient band or overlay to make it legible; the tokens exist in the stylesheet but the site does not use them.",
+      "Don't draw a card, panel or bordered box; use a rule or a column division instead.",
+      "Don't add a shadow, inner shadow, backdrop blur or lifted hover state anywhere.",
+      "Don't round a corner on any element, buttons and inputs included; radius is 0px.",
+      "Don't add an icon, icon font, SVG glyph set or emoji; the system is built from type, rules and photographs, with mid-dots and em dashes as separators.",
+      "Don't set text under 24px in Antique Brass (#9C7C4A), or fill a section or a whole surface with brass.",
+      "Don't put more than one filled button on a screen, or replace the text-link submit with a filled block.",
+      "Don't tint a whole section with Paper 50, 100 or 200; off-whites are for plate grounds and insets only.",
+      "Don't use parallax, springs, scale, rotation or any travel beyond 8px; don't animate position on hover.",
+      "Don't let the fixed bar or menu panel go transparent over content; both are opaque white with a rule."
+    ]
+  }
+}

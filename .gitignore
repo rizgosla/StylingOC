@@ -8,3 +8,9 @@ dist/
 .DS_Store
 Thumbs.db
 *.zip
+
+# Impeccable live-mode runtime state (config.json and design.json are kept)
+.impeccable/live/sessions/
+.impeccable/live/accept-receipts/
+.impeccable/live/roots.json
+.impeccable/live/inject-journal.json

@@ -80,7 +80,9 @@ const shot = stage ? picture(stage) : null;
 
   /* The words: one centred column beneath the stage, the same set as the other leads
      (eyebrow, headline, standfirst, link), on one axis with even spacing. */
-  .stage__text{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);margin:0 auto;padding:var(--space-4) 0 0;max-width:calc((100% - var(--grid-gap)) * 32 / 41);text-align:center}
+  /* The words sit in the gap between the stage and the next rule: one section-y-tight of
+     space in total, weighted 40% above and 60% below so they stay closer to the photograph. */
+  .stage__text{--above:calc(var(--section-y-tight) * .4);display:flex;flex-direction:column;align-items:center;gap:var(--space-2);margin:0 auto calc(-1 * var(--above));padding:var(--above) 0 0;max-width:calc((100% - var(--grid-gap)) * 32 / 41);text-align:center}
   .stage__title{margin:0;font-family:var(--font-display);font-weight:var(--weight-display);font-size:clamp(1.75rem,2.6vw,3rem);line-height:1.04;letter-spacing:var(--track-display);text-wrap:balance}
   .stage__link{color:var(--ink);text-decoration:none;border:0;transition:color var(--dur-base) var(--ease-editorial)}
   .stage__link:hover{color:var(--ink-700)}
@@ -95,7 +97,7 @@ const shot = stage ? picture(stage) : null;
     .stage__rail--left{order:2;grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--g)}
     .stage__rail--right{display:none}
     .stage__cell :global(.plate__frame){height:auto;aspect-ratio:3 / 4 !important}
-    .stage__text{padding:var(--space-4) 0 0;max-width:none;align-items:flex-start;text-align:left}
+    .stage__text{padding:var(--space-4) 0 0;margin-bottom:calc(var(--space-4) - var(--section-y-tight));max-width:none;align-items:flex-start;text-align:left}
     .stage__title{font-size:var(--text-display-s)}
   }
 </style>
