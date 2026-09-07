@@ -1,15 +1,16 @@
 ---
-/* Hero variant B — "The stage". One wide 16:9 plate in the middle of the page, three
-   portrait plates down each side sharing its height, and the eyebrow and headline
-   centred beneath the stage, one line. The wide frame is built to take a film later: pass `video`
-   and a muted, looping <video> replaces the photograph, which stays as its poster.
+/* The front-page lead — "The stage". One wide 16:9 plate in the middle of the page,
+   three portrait plates down each side sharing its height, and the eyebrow and
+   headline centred beneath the stage, one line. Chosen from the hero lab (variant B).
+   The wide frame is built to take a film later: pass `video` and a muted, looping
+   <video> replaces the photograph, which stays as its poster.
    Six-up geometry: with c the stage width and g the grid gap, each side rail is
    (9c/16 − 2g)/3 tall and, at 3:4, 9c/64 − g/2 wide, so c = 32(W − g)/41 of the row. */
-import Plate from '../Plate.astro';
-import TextLink from '../TextLink.astro';
+import Plate from './Plate.astro';
+import TextLink from './TextLink.astro';
 import type { Img, Post } from '@/lib/sanity';
 import { kicker, picture } from '@/lib/sanity';
-import { landscapeFirst, portraitFirst, unique } from './heroImages';
+import { landscapeFirst, portraitFirst, unique } from '@/lib/heroImages';
 
 interface Props {
   post: Post; rail?: Img[]; headline?: string; eyebrow?: string;

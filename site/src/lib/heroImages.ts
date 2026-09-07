@@ -1,4 +1,4 @@
-/* Helpers the hero variants share: choose photographs from the home page's rail by
+/* Helpers the heroes share: choose photographs from the home page's rail by
    orientation, dropping empties and repeats. */
 import type { Img } from '@/lib/sanity';
 

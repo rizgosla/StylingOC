@@ -11,7 +11,7 @@ import Plate from '../Plate.astro';
 import TextLink from '../TextLink.astro';
 import type { Img, Post } from '@/lib/sanity';
 import { kicker } from '@/lib/sanity';
-import { landscapeFirst, portraitFirst, unique } from './heroImages';
+import { landscapeFirst, portraitFirst, unique } from '@/lib/heroImages';
 
 interface Props { post: Post; rail?: Img[]; headline?: string; eyebrow?: string; order?: 'image-first' | 'text-first' }
 const { post, rail = [], headline, eyebrow, order = 'image-first' } = Astro.props;
