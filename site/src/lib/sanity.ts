@@ -6,9 +6,9 @@
 import { createClient, type SanityClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import * as local from '@seed/content';
-import type { HomePage, Img, Post, Ratio, ServicePackage, SiteSettings } from '@seed/content';
+import type { HomePage, Img, Layout, Post, Ratio, ServicePackage, SiteSettings } from '@seed/content';
 
-export type { HomePage, Img, Post, Ratio, ServicePackage, SiteSettings };
+export type { HomePage, Img, Layout, Post, Ratio, ServicePackage, SiteSettings };
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID as string | undefined;
 const dataset = (import.meta.env.PUBLIC_SANITY_DATASET as string | undefined) || 'production';
@@ -23,17 +23,17 @@ function client(): SanityClient {
 }
 
 /* ---------- GROQ ---------- */
-const IMG = `{
-  "sanity": { asset, hotspot, crop },
+const IMG_FIELDS = `"sanity": { asset, hotspot, crop },
   "src": asset->url,
   "width": asset->metadata.dimensions.width,
   "height": asset->metadata.dimensions.height,
   "lqip": asset->metadata.lqip,
-  alt, caption
-}`;
+  alt, caption`;
+const IMG = `{ ${IMG_FIELDS} }`;
 const PKG = `{ _id, line, numeral, title, items, price, priceNote, note, "image": image ${IMG} }`;
 const CARD = `{
   _id, title, "slug": slug.current, category, location, publishedAt, standfirst, dek, ratio, photoCredit, draftNote,
+  layout, interviewee, signoff,
   "leadImage": leadImage ${IMG}
 }`;
 const POST = `{
@@ -41,7 +41,8 @@ const POST = `{
   body[]{
     ...,
     _type == "imageBlock" => { "image": image ${IMG} },
-    _type == "serviceCallout" => { "package": package-> ${PKG} }
+    _type == "serviceCallout" => { "package": package-> ${PKG} },
+    _type == "gallery" => { "items": items[]{ _key, ${IMG_FIELDS} } }
   }
 }`;
 const HOME = `{
@@ -66,7 +67,12 @@ const cleanPost = (p: any): Post | null => {
     ...p,
     leadImage: cleanImg(p.leadImage),
     ratio: p.ratio || '4:5',
-    body: (p.body || []).map((n: any) => (n._type === 'imageBlock' ? { ...n, image: cleanImg(n.image) } : n)),
+    layout: p.layout || 'feature',
+    body: (p.body || []).map((n: any) => {
+      if (n._type === 'imageBlock') return { ...n, image: cleanImg(n.image) };
+      if (n._type === 'gallery') return { ...n, items: (n.items || []).map(cleanImg) };
+      return n;
+    }),
   };
 };
 
@@ -171,6 +177,10 @@ export function picture(img: Img, ratio?: Ratio): Srcset {
 
 /* ---------- small formatters ---------- */
 export const CATEGORY_LABEL: Record<string, string> = { interiors: 'Interiors', styling: 'Personal styling', studio: 'The studio' };
+/** Department label prefixed to the kicker. A feature is the house default and says nothing. */
+export const LAYOUT_EYEBROW: Record<Layout, string | undefined> = {
+  feature: undefined, essay: 'Photo essay', interview: 'In conversation', note: 'Note', guide: 'Guide',
+};
 export const formatDate = (iso: string) =>
   new Date(iso + (iso.length === 10 ? 'T12:00:00Z' : '')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 export const kicker = (p: Post) => [CATEGORY_LABEL[p.category] ?? p.category, p.location].filter(Boolean).join(' · ');

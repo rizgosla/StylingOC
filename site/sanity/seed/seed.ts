@@ -45,6 +45,16 @@ async function body(nodes: BodyNode[]) {
   for (const n of nodes) {
     if (n._type === 'imageBlock') out.push({ _type: 'imageBlock', _key: n._key, width: n.width, image: await imageRef(n.image) });
     else if (n._type === 'serviceCallout') out.push({ _type: 'serviceCallout', _key: n._key, package: { _type: 'reference', _ref: n.package._id } });
+    else if (n._type === 'gallery') {
+      const items: any[] = [];
+      for (const [idx, img] of n.items.entries()) {
+        const _key = `${n._key}i${idx}`;
+        const ref = await imageRef(img);
+        items.push(ref ? { ...ref, _key } : { _type: 'picture', _key, alt: 'Photograph to come' });
+      }
+      out.push({ _type: 'gallery', _key: n._key, ratio: n.ratio, caption: n.caption, items });
+    }
+    /* Blocks and qaPairs are already Portable Text; they carry their own keys. */
     else out.push(n);
   }
   return out;
@@ -54,7 +64,8 @@ async function postDoc(p: Post) {
   return {
     _id: p._id, _type: 'post',
     title: p.title, slug: { _type: 'slug', current: p.slug }, category: p.category, location: p.location,
-    publishedAt: p.publishedAt, standfirst: p.standfirst, dek: p.dek, ratio: p.ratio, photoCredit: p.photoCredit,
+    publishedAt: p.publishedAt, standfirst: p.standfirst, dek: p.dek, ratio: p.ratio, layout: p.layout,
+    interviewee: p.interviewee, signoff: p.signoff, photoCredit: p.photoCredit,
     draftNote: p.draftNote, leadImage: await imageRef(p.leadImage), body: await body(p.body),
   };
 }

@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { schemaTypes } from './sanity/schemas';
+import { postTemplates } from './sanity/templates';
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
@@ -31,8 +32,9 @@ export default defineConfig({
   ],
   schema: {
     types: schemaTypes,
-    // Singletons cannot be created from the "new document" menu.
-    templates: (templates) => templates.filter((t) => !SINGLETONS.has(t.schemaType)),
+    // Singletons cannot be created from the "new document" menu; a Journal post is
+    // only ever started from one of the five layout skeletons.
+    templates: (prev) => [...postTemplates, ...prev.filter((t) => !SINGLETONS.has(t.schemaType) && t.id !== 'post')],
   },
   document: {
     // Singletons cannot be duplicated, unpublished or deleted.

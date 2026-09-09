@@ -4,41 +4,20 @@
    Copy is verbatim from the client collateral wherever it exists; sentences written
    for this site are flagged with `draftNote` so the client can rewrite them in Studio. */
 
+import { callout, em, gallery, h2, h3, imageBlock, li, p, qa, quote } from './pt';
+import type { BodyNode, Img, Layout, Ratio, ServicePackage } from './pt';
+
+/* Body shapes and the Portable Text builders live in ./pt.ts; they are re-exported
+   here so `@seed/content` stays the single import for everything the site reads. */
+export * from './pt';
+
 export type Category = 'interiors' | 'styling' | 'studio';
-export type Ratio = '3:2' | '4:5' | '3:4' | '1:1';
-export type BlockWidth = 'column' | 'wide' | 'full';
 
-/** A picture. Locally a /images path; from Sanity a resolved asset. */
-export interface Img {
-  src: string;
-  width: number;
-  height: number;
-  alt: string;
-  caption?: string;
-  /** Sanity only: raw image object so crops/hotspots and srcsets can be built. */
-  sanity?: { asset: { _ref: string }; hotspot?: unknown; crop?: unknown };
-  lqip?: string;
-}
-
-export interface Span { _type: 'span'; _key: string; text: string; marks: string[] }
-export interface Block {
-  _type: 'block'; _key: string; style: 'normal' | 'h2' | 'h3';
-  children: Span[]; markDefs: Array<{ _key: string; _type: 'link'; href: string }>; listItem?: 'bullet'; level?: number;
-}
-export interface ImageBlock { _type: 'imageBlock'; _key: string; image: Img | null; width: BlockWidth }
-export interface QuoteBlock { _type: 'quoteBlock'; _key: string; quote: string; attribution: string; role?: string }
-export interface ServiceCallout { _type: 'serviceCallout'; _key: string; package: ServicePackage }
-export type BodyNode = Block | ImageBlock | QuoteBlock | ServiceCallout;
-
-export interface ServicePackage {
-  _id: string; line: 'interiors' | 'styling'; numeral: string; title: string;
-  items: string[]; price: string; priceNote?: string; note?: string; image?: Img | null;
-}
 export interface Testimonial { _id: string; quote: string; attribution: string; role?: string }
 export interface Post {
   _id: string; title: string; slug: string; category: Category; location?: string; publishedAt: string;
-  standfirst: string; dek: string; leadImage: Img | null; ratio: Ratio; body: BodyNode[];
-  photoCredit?: string; draftNote?: string;
+  standfirst: string; dek: string; leadImage: Img | null; ratio: Ratio; layout: Layout; body: BodyNode[];
+  interviewee?: string; signoff?: string; photoCredit?: string; draftNote?: string;
 }
 export interface NavLink { label: string; href: string }
 export interface FooterColumn { title: string; items: NavLink[] }
@@ -55,20 +34,19 @@ export interface HomePage {
   inquiryEyebrow: string; inquiryHeadline: string; inquiryIntro: string; inquiryNote: string;
 }
 
-/* ---------- helpers for hand-written Portable Text ---------- */
-let k = 0;
-const key = () => `k${(++k).toString(36)}`;
-const span = (text: string, marks: string[] = []): Span => ({ _type: 'span', _key: key(), text, marks });
-export const p = (...parts: Array<string | Span>): Block => ({
-  _type: 'block', _key: key(), style: 'normal', markDefs: [],
-  children: parts.map((x) => (typeof x === 'string' ? span(x) : x)),
-});
-export const em = (text: string) => span(text, ['em']);
-export const h2 = (text: string): Block => ({ _type: 'block', _key: key(), style: 'h2', markDefs: [], children: [span(text)] });
-export const li = (text: string): Block => ({ _type: 'block', _key: key(), style: 'normal', listItem: 'bullet', level: 1, markDefs: [], children: [span(text)] });
-export const quote = (q: string, attribution: string, role?: string): QuoteBlock => ({ _type: 'quoteBlock', _key: key(), quote: q, attribution, role });
-export const imageBlock = (image: Img | null, width: BlockWidth = 'wide'): ImageBlock => ({ _type: 'imageBlock', _key: key(), image, width });
-export const callout = (pkg: ServicePackage): ServiceCallout => ({ _type: 'serviceCallout', _key: key(), package: pkg });
+/* ---------- filler ----------
+   Placeholder prose for the draft posts, so the layouts can be reviewed before the
+   client writes them. Anything built from `lorem` carries a `draftNote`. */
+const LOREM = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.',
+];
+/** n lorem sentences, joined into one paragraph. */
+export const lorem = (n: number) => Array.from({ length: n }, (_, i) => LOREM[i % LOREM.length]).join(' ');
 
 /* ---------- images (the five originals; everything else is a placeholder) ---------- */
 export const images = {
@@ -132,14 +110,24 @@ export const posts: Post[] = [
     dek: 'Style is more than what you wear — it is how you feel.',
     leadImage: images.foundersGray,
     ratio: '4:5',
+    layout: 'guide',
     photoCredit: 'Photography courtesy of the studio',
+    draftNote: DRAFT,
     body: [
       p('Style is more than what you wear — it’s how you feel. Jenn and Merlyn, the visionary duo behind Styling OC, believe that true transformation happens when style meets soul. Their approach is equal parts artistry and empathy, creating refined, modern looks that empower women to step fully into their confidence.'),
-      h2('The design touch'),
+      h2('The edit'),
+      p(lorem(3)),
+      imageBlock(images.foundersDenim, 'column'),
+      h2('The sourcing'),
+      p(lorem(2)),
       li('Personalized styling with a luxury eye'),
       li('Thoughtful details that tell your story'),
       li('Confidence-boosting looks that last'),
       li('A seamless blend of elevated + effortless'),
+      h2('The fitting'),
+      p(lorem(3)),
+      h3('The design touch'),
+      p(lorem(2)),
       quote('After going through a really difficult season, they made me feel beautiful from the inside out. Their genuine encouragement, support, and incredible attention to detail helped me rediscover my confidence and feel like myself again.', 'Emily', 'Personal styling client'),
       callout(pkg('package-styling-02')),
       p(em('Style isn’t just seen. It’s felt.')),
@@ -156,14 +144,18 @@ export const posts: Post[] = [
     dek: 'A full-service project, from concept to the final cushion.',
     leadImage: images.livingMarble,
     ratio: '3:4',
+    layout: 'essay',
     draftNote: DRAFT,
     body: [
       p('The room had good bones and a difficult centre. A double-height wall asked for something monumental; the furniture that came with the house answered with a sectional pushed into the corner. We began by turning everything toward the light.'),
       p('The fireplace wall is now a single slab of grey marble, book-matched so the veining meets in the middle like an inkblot. Either side, black shelving holds the objects the family actually uses: a few ceramics, the books they are reading, nothing arranged for a photograph.'),
-      imageBlock(images.poolView, 'wide'),
+      gallery([images.meadsVaultedLiving, images.meadsFormalLiving], '3:2'),
+      imageBlock(images.poolView, 'full'),
       p('Seating is soft and round on purpose. Two curved sofas in cream bouclé face each other across a black stone table, so the conversation happens in the middle of the room and the view of the pool is shared rather than owned by one seat. A glass globe lamp adds the only shine.'),
+      gallery([images.meadsDiningKitchen, images.meadsDiningHall], '3:2', lorem(1)),
       h2('How the project ran'),
       p('This was a full-service engagement: concept development, space planning, furniture and décor selection, ordering, contractor coordination and final styling. The family lived in the house throughout, so work was sequenced room by room and the marble was installed in a single day.'),
+      gallery([images.meadsBedroom, images.meadsOffice, null], '4:5'),
       callout(pkg('package-interiors-02')),
       p(em('Thoughtful design. Personalised spaces. Timeless living.')),
     ],
@@ -179,10 +171,39 @@ export const posts: Post[] = [
     dek: 'Emily came to us during a season of transition.',
     leadImage: null,
     ratio: '1:1',
+    layout: 'interview',
+    interviewee: 'Emily',
+    signoff: 'This conversation has been edited and condensed.',
+    draftNote: DRAFT,
     body: [
       p('Emily came to us during a season of transition. Together, we curated a wardrobe and aesthetic that reflects her strength, softness, and sense of self. The result? A renewed confidence that shines in every detail.'),
+      qa('Lorem ipsum dolor sit amet, consectetur adipiscing elit?', p(lorem(2)), p(lorem(2))),
+      qa('Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris?', p(lorem(3))),
       quote('Working with Jenn and Merlyn was such a meaningful experience. They have a special gift for not only styling you beautifully, but also making you feel truly seen, cared for, and celebrated.', 'Emily', 'Personal styling client'),
+      imageBlock(null, 'column'),
+      qa('Duis aute irure dolor in reprehenderit in voluptate velit esse?'),
+      qa('Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia?', p(`${lorem(1)} `, em(lorem(1)))),
       callout(pkg('package-styling-01')),
+    ],
+  },
+  {
+    _id: 'post-a-note-on-lorem',
+    title: 'A note on lorem',
+    slug: 'a-note-on-lorem',
+    category: 'studio',
+    location: 'Orange County',
+    publishedAt: '2026-06-15',
+    standfirst: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
+    dek: 'Sed do eiusmod tempor incididunt ut labore et dolore magna.',
+    leadImage: null,
+    ratio: '4:5',
+    layout: 'note',
+    draftNote: DRAFT,
+    body: [
+      p(lorem(3)),
+      p(lorem(2)),
+      p(em(lorem(1))),
+      callout(pkg('package-interiors-01')),
     ],
   },
 ];

@@ -1,21 +1,31 @@
-import { defineField, defineType, defineArrayMember } from 'sanity';
+import { defineField, defineType, defineArrayMember, type ConditionalProperty } from 'sanity';
+import { RATIOS } from './objects';
 
 const CATEGORIES = [
   { title: 'Interiors', value: 'interiors' },
   { title: 'Personal styling', value: 'styling' },
   { title: 'The studio', value: 'studio' },
 ];
-const RATIOS = [
-  { title: '3:2 landscape', value: '3:2' },
-  { title: '4:5 portrait', value: '4:5' },
-  { title: '3:4 portrait', value: '3:4' },
-  { title: '1:1 square', value: '1:1' },
+
+/* Page shapes a Journal post can take. The frontend keys its hero, column and
+   rhythm off this; the body stays free-form whichever is chosen. */
+export const LAYOUTS = [
+  { title: 'Feature story', value: 'feature' },
+  { title: 'Photo essay', value: 'essay' },
+  { title: 'Interview', value: 'interview' },
+  { title: 'Short note', value: 'note' },
+  { title: 'Guide', value: 'guide' },
 ];
+/* The two interview-only fields disappear for every other template. */
+const isNotInterview: ConditionalProperty = ({ document }) => document?.layout !== 'interview';
 
 export const post = defineType({
   name: 'post', title: 'Journal post', type: 'document',
   groups: [{ name: 'story', title: 'Story', default: true }, { name: 'meta', title: 'Details' }],
   fields: [
+    defineField({ name: 'layout', title: 'Template', type: 'string', group: 'story', options: { list: LAYOUTS, layout: 'radio', direction: 'horizontal' }, initialValue: 'feature', description: 'Sets the page shape: hero, column and rhythm. The body stays free-form.', validation: (r) => r.required() }),
+    defineField({ name: 'interviewee', title: 'In conversation with', type: 'string', group: 'story', description: 'First name of the person interviewed, e.g. Emily.', hidden: isNotInterview }),
+    defineField({ name: 'signoff', title: 'Closing line', type: 'string', group: 'story', initialValue: 'This conversation has been edited and condensed.', hidden: isNotInterview }),
     defineField({ name: 'title', type: 'string', group: 'story', description: 'Sentence case: "A living room in Orange County, reconsidered".', validation: (r) => r.required().max(90) }),
     defineField({ name: 'slug', type: 'slug', group: 'meta', options: { source: 'title', maxLength: 80 }, validation: (r) => r.required() }),
     defineField({ name: 'category', type: 'string', group: 'meta', options: { list: CATEGORIES, layout: 'radio' }, initialValue: 'interiors', validation: (r) => r.required() }),
@@ -23,7 +33,7 @@ export const post = defineType({
     defineField({ name: 'publishedAt', title: 'Date', type: 'date', group: 'meta', validation: (r) => r.required() }),
     defineField({ name: 'standfirst', type: 'string', group: 'story', description: 'One line under the headline, set in small capitals. Keep it under 120 characters.', validation: (r) => r.required().max(140) }),
     defineField({ name: 'dek', title: 'Grid line', type: 'string', group: 'story', description: 'One short sentence shown under the title in story grids.', validation: (r) => r.required().max(100) }),
-    defineField({ name: 'leadImage', title: 'Lead photograph', type: 'picture', group: 'story', description: 'Leave empty to show a "Photograph to come" frame.' }),
+    defineField({ name: 'leadImage', title: 'Lead photograph', type: 'picture', group: 'story', description: 'Leave empty to show a "Photograph to come" frame. Short notes and interviews set it beside the text.' }),
     defineField({ name: 'ratio', title: 'Grid tile shape', type: 'string', group: 'meta', options: { list: RATIOS, layout: 'radio' }, initialValue: '4:5', description: 'How this story crops in the home and journal grids. Vary these so the grid stays uneven.' }),
     defineField({ name: 'photoCredit', title: 'Photography credit', type: 'string', group: 'meta' }),
     defineField({ name: 'body', type: 'body', group: 'story' }),
@@ -31,8 +41,11 @@ export const post = defineType({
   ],
   orderings: [{ title: 'Newest first', name: 'dateDesc', by: [{ field: 'publishedAt', direction: 'desc' }] }],
   preview: {
-    select: { title: 'title', subtitle: 'category', media: 'leadImage', draft: 'draftNote' },
-    prepare: ({ title, subtitle, media, draft }) => ({ title, subtitle: `${subtitle ?? ''}${draft ? ' · DRAFT' : ''}`, media }),
+    select: { title: 'title', subtitle: 'category', media: 'leadImage', draft: 'draftNote', layout: 'layout' },
+    prepare: ({ title, subtitle, media, draft, layout }) => {
+      const shape = LAYOUTS.find((l) => l.value === layout)?.title ?? 'Feature story';
+      return { title, subtitle: `${shape} · ${subtitle ?? ''}${draft ? ' · DRAFT' : ''}`, media };
+    },
   },
 });
 
