@@ -1,7 +1,10 @@
 ---
 /* Journal body. A 64ch column offset on the grid, first paragraph under a Zodiak
-   drop cap, one heading level, hairline-marked lists, and three studio blocks. */
+   drop cap on the feature layout, two heading levels, hairline-marked lists, and the
+   studio blocks. The page's layout is stamped onto every node so a block can shape
+   itself without reading the DOM — the photo essay numbers its plates that way. */
 import { PortableText as PT } from 'astro-portabletext';
+import type { Layout } from '@/lib/sanity';
 import Block from './Block.astro';
 import List from './List.astro';
 import ListItem from './ListItem.astro';
@@ -9,28 +12,43 @@ import Mark from './Mark.astro';
 import ImageBlock from './ImageBlock.astro';
 import QuoteBlock from './QuoteBlock.astro';
 import ServiceCallout from './ServiceCallout.astro';
+import Gallery from './Gallery.astro';
+import QaPair from './QaPair.astro';
 
-interface Props { value: any[] }
-const { value } = Astro.props;
+interface Props { value: any[]; layout?: Layout; interviewee?: string }
+const { value, layout = 'feature', interviewee } = Astro.props;
+
+/* Pure data prep: the prop is never mutated. Only the first exchange names its speakers. */
+let seenQa = false;
+const nodes = (value ?? []).map((node: any) => {
+  if (node?._type !== 'qaPair') return { ...node, layout };
+  const first = !seenQa;
+  seenQa = true;
+  return { ...node, layout, first, interviewee };
+});
+
 const components = {
-  type: { imageBlock: ImageBlock, quoteBlock: QuoteBlock, serviceCallout: ServiceCallout },
+  type: { imageBlock: ImageBlock, quoteBlock: QuoteBlock, serviceCallout: ServiceCallout, gallery: Gallery, qaPair: QaPair },
   block: Block,
   list: List,
   listItem: ListItem,
   mark: Mark,
 };
 ---
-<div class="prose">
-  <PT value={value} components={components} />
+<div class:list={['prose', `prose--${layout}`]}>
+  <PT value={nodes} components={components} />
 </div>
 
 <style is:global>
   .prose{font-size:var(--text-body);line-height:var(--leading-body);color:var(--ink-muted);max-width:var(--measure)}
   .prose > * + *{margin-top:var(--space-5)}
   .prose p{margin:0}
-  .prose > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.2em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
+  /* The drop cap belongs to the approved feature block and to nothing else. */
+  .prose--feature > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.2em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
   .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:var(--space-8);max-width:24ch}
   .prose h2 + *{margin-top:var(--space-4)}
+  .prose h3{font-family:var(--font-label);font-size:var(--text-title);font-weight:500;line-height:var(--leading-title);letter-spacing:0;color:var(--ink);margin-top:var(--space-7);max-width:var(--measure)}
+  .prose h3 + *{margin-top:var(--space-3)}
   .prose ul{margin-top:var(--space-5);border-top:var(--hairline) solid var(--rule-black)}
   .prose li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
   .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1.08em;color:var(--ink)}
@@ -39,9 +57,32 @@ const components = {
   .prose a:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
   /* Wide and full-bleed photographs break out of the 64ch column. */
   .prose .pt-img{margin-top:var(--space-8);margin-bottom:var(--space-8)}
-  .prose .pt-img--wide{width:calc(100% + 2 * var(--space-9));margin-left:calc(-1 * var(--space-9))}
-  .prose .pt-img--full{width:calc(100vw - var(--gutter) * 2);position:relative;left:50%;margin-left:min(calc(-50vw + var(--gutter)), calc(-1 * (var(--max-page) / 2) + var(--gutter)))}
+  .prose .pt-img--wide,.prose .pt-gallery{width:calc(100% + 2 * var(--space-9));margin-left:calc(-1 * var(--space-9))}
+  .prose .pt-gallery{margin-top:var(--space-8);margin-bottom:var(--space-8)}
+  /* --max-page is none on this site, so the full-bleed shift is measured from the
+     element's own centre out to the gutters. */
+  .prose .pt-img--full{width:calc(100vw - 2 * var(--gutter));margin-left:calc(50% - 50vw + var(--gutter));position:static;left:auto}
+
+  /* Interview: an exchange is a label, an italic question and a roman answer. */
+  .prose .pt-qa__a > p + p{margin-top:var(--space-4)}
+
+  /* Guide: a brass numeral counts the steps, on its own line above each h2. */
+  .prose--guide{counter-reset:step}
+  .prose--guide h2{counter-increment:step}
+  .prose--guide h2::before{content:counter(step,decimal-leading-zero);display:block;font-family:var(--font-display);font-size:var(--text-numeral);letter-spacing:var(--track-numeral);color:var(--accent);line-height:1;margin-bottom:var(--space-3)}
+
+  /* Photo essay: the text keeps its measure while the plates fill all eight columns,
+     and every plate carries a brass numeral above its caption. */
+  .prose--essay{max-width:none;counter-reset:plate}
+  .prose--essay > p,.prose--essay > h2,.prose--essay > h3,.prose--essay > ul,.prose--essay > .pq{max-width:var(--measure)}
+  .prose--essay .pt-img--wide,.prose--essay .pt-gallery{width:100%;margin-left:0}
+  .prose--essay .plate{counter-increment:plate}
+  .prose--essay .plate__caption--numbered::before{content:counter(plate,decimal-leading-zero) "  ";font-family:var(--font-display);font-size:var(--text-numeral);color:var(--accent);letter-spacing:var(--track-numeral);display:block;margin-bottom:var(--space-2)}
+
+  /* Note: a short column beside its plate. */
+  .prose--note{max-width:52ch}
+
   @media (max-width:1024px){
-    .prose .pt-img--wide{width:100%;margin-left:0}
+    .prose .pt-img--wide,.prose .pt-gallery{width:100%;margin-left:0}
   }
 </style>

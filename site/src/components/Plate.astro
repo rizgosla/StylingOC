@@ -21,8 +21,11 @@ interface Props {
   /** With `fit="height"` the frame keeps its ratio, takes `maxHeight` as its height and
       centres itself — for portrait leads that should not be cropped into a band. */
   fit?: 'width' | 'height';
+  /** Photo-essay plates carry a brass counter drawn on the caption line, so the caption
+      has to exist even when the picture has no words under it. */
+  numbered?: boolean;
 }
-const { image, ratio = 'natural', sizes = '100vw', caption = true, loading = 'lazy', fetchpriority = 'auto', class: cls = '', frameClass = '', placeholder = 'Photograph to come', maxHeight, fit = 'width' } = Astro.props;
+const { image, ratio = 'natural', sizes = '100vw', caption = true, loading = 'lazy', fetchpriority = 'auto', class: cls = '', frameClass = '', placeholder = 'Photograph to come', maxHeight, fit = 'width', numbered = false } = Astro.props;
 
 const r = ratio === 'natural' ? (image ? `${image.width} / ${image.height}` : '4 / 5') : ratio.replace(':', ' / ');
 const frameStyle = fit === 'height'
@@ -52,7 +55,9 @@ const captionText = typeof caption === 'string' ? caption : caption ? image?.cap
       </div>
     )}
   </div>
-  {captionText && <figcaption class="caption plate__caption">{captionText}</figcaption>}
+  {(captionText || numbered) && (
+    <figcaption class:list={['caption', 'plate__caption', numbered && 'plate__caption--numbered']}>{captionText}</figcaption>
+  )}
 </figure>
 
 <style>

@@ -4,4 +4,7 @@ type Props = BlockProps;
 const { node } = Astro.props;
 const style = node.style ?? 'normal';
 ---
-{style === 'h2' || style === 'h3' ? <h2><slot /></h2> : style === 'blockquote' ? <blockquote><slot /></blockquote> : <p><slot /></p>}
+{style === 'h2' ? <h2><slot /></h2>
+  : style === 'h3' ? <h3><slot /></h3>
+  : style === 'blockquote' ? <blockquote><slot /></blockquote>
+  : <p><slot /></p>}

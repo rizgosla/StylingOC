@@ -1,0 +1,33 @@
+---
+/* One exchange in an interview. The first exchange names both speakers with tiny
+   tracked caps; after that the italic question and roman answer carry the turn on
+   their own. An unanswered question keeps its place and says so. */
+import { PortableText as PT } from 'astro-portabletext';
+import type { TypedObjectProps } from 'astro-portabletext/types';
+import Block from './Block.astro';
+import Mark from './Mark.astro';
+
+type Props = TypedObjectProps;
+const { node } = Astro.props as any;
+
+const first = node.first === true;
+const interviewee = node.interviewee as string | undefined;
+const answer = (node.answer ?? []) as any[];
+---
+<div class="pt-qa">
+  {first && <p class="eyebrow eyebrow--muted pt-qa__who">Styling OC</p>}
+  <p class="pt-qa__q">{node.question}</p>
+  {first && interviewee && <p class="eyebrow eyebrow--muted pt-qa__who pt-qa__who--a">{interviewee}</p>}
+  {answer.length > 0
+    ? <div class="pt-qa__a"><PT value={answer} components={{ block: Block, mark: Mark }} /></div>
+    : <p class="caption pt-qa__pending">Answer to come</p>}
+</div>
+
+<style>
+  .pt-qa + .pt-qa{margin-top:var(--space-7)}
+  .pt-qa__who{margin:0 0 var(--space-2)}
+  .pt-qa__who--a{margin-top:var(--space-3)}
+  .pt-qa__q{margin:0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-title);line-height:var(--leading-title);color:var(--ink);max-width:var(--measure)}
+  .pt-qa__a{margin-top:var(--space-3);max-width:var(--measure)}
+  .pt-qa__pending{margin:var(--space-3) 0 0}
+</style>

@@ -1,0 +1,55 @@
+---
+/* One to three plates across, sharing a crop, divided by hairlines drawn in the gaps
+   so every plate is exactly the same width. A single plate runs wide on its own; an
+   empty set keeps the "Photograph to come" frame. Optional group caption under the row. */
+import type { TypedObjectProps } from 'astro-portabletext/types';
+import Plate from '@/components/Plate.astro';
+import type { Img, Ratio } from '@/lib/sanity';
+
+type Props = TypedObjectProps;
+const { node } = Astro.props as any;
+
+const items = ((node.items ?? []) as Array<Img | null>).map((i) => (i && i.src ? i : null));
+const ratio = (node.ratio ?? '4:5') as Ratio;
+/* PortableText stamps the page layout onto every node; the photo essay numbers its plates. */
+const numbered = node.layout === 'essay';
+const n = items.length;
+const sizes = '(max-width: 1024px) 50vw, 33vw';
+const caption = node.caption as string | undefined;
+---
+<figure class:list={['pt-gallery', `pt-gallery--${n}`]}>
+  {n === 0 && <Plate image={null} ratio="3:2" sizes="(max-width: 1024px) 100vw, 70vw" numbered={numbered} />}
+  {n === 1 && <Plate image={items[0]} ratio={ratio} sizes="(max-width: 1024px) 100vw, 70vw" numbered={numbered} />}
+  {n > 1 && (
+    <ul class="pt-gallery__row">
+      {items.map((img) => (
+        <li class="pt-gallery__cell">
+          <Plate image={img} ratio={ratio} sizes={sizes} numbered={numbered} />
+        </li>
+      ))}
+    </ul>
+  )}
+  {caption && <figcaption class="caption pt-gallery__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .pt-gallery{margin:0}
+  .pt-gallery__row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--column-gap) * 2)}
+  .pt-gallery--3 .pt-gallery__row{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pt-gallery__cell{position:relative;min-width:0}
+  /* The hairline lives in the gap, never as a border on the cell. */
+  .pt-gallery__cell + .pt-gallery__cell::before{content:"";position:absolute;top:0;bottom:0;left:calc(-1 * var(--column-gap));width:var(--hairline);background:var(--rule)}
+  .pt-gallery__caption{margin-top:var(--space-3)}
+  @media (max-width:1024px){
+    .pt-gallery__row{row-gap:var(--space-8)}
+    .pt-gallery--3 .pt-gallery__row{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .pt-gallery--3 .pt-gallery__cell:nth-child(3){grid-column:1 / -1;padding-top:var(--space-6);border-top:var(--hairline) solid var(--rule)}
+    .pt-gallery--3 .pt-gallery__cell:nth-child(3)::before{display:none}
+  }
+  @media (max-width:640px){
+    .pt-gallery__row,.pt-gallery--3 .pt-gallery__row{grid-template-columns:minmax(0,1fr);row-gap:var(--space-7)}
+    .pt-gallery__cell::before{display:none}
+    .pt-gallery__cell + .pt-gallery__cell{border-top:var(--hairline) solid var(--rule);padding-top:var(--space-6)}
+    .pt-gallery--3 .pt-gallery__cell:nth-child(3){padding-top:var(--space-6)}
+  }
+</style>

@@ -4,7 +4,7 @@ import Plate from '@/components/Plate.astro';
 import PortableText from '@/components/portable-text/PortableText.astro';
 import StoryGrid from '@/components/StoryGrid.astro';
 import InquiryForm from '@/components/InquiryForm.astro';
-import { getHome, getPosts, getRelated, formatDate, kicker } from '@/lib/sanity';
+import { getHome, getPosts, getRelated, formatDate, kicker, LAYOUT_EYEBROW } from '@/lib/sanity';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -16,14 +16,31 @@ const { home, settings } = await getHome();
 const related = await getRelated(post.slug, 3);
 const isoDate = post.publishedAt.length === 10 ? `${post.publishedAt}T12:00:00Z` : post.publishedAt;
 const portrait = Boolean(post.leadImage && post.leadImage.height > post.leadImage.width);
+
+const layout = post.layout ?? 'feature';
+/* The department label opens the eyebrow; a named interviewee finishes the phrase. */
+const department = layout === 'interview' && post.interviewee
+  ? `In conversation with ${post.interviewee}`
+  : LAYOUT_EYEBROW[layout];
+const eyebrow = [department, kicker(post)].filter(Boolean).join(' · ');
+/* Interview sets its portrait beside the title; the note sets its plate beside the text.
+   Everything else keeps the shipped header-then-plate opener. */
+const leadInHeader = layout === 'interview';
+const leadInBody = layout === 'note';
+const leadBelowRule = !leadInHeader && !leadInBody;
 ---
 <Base settings={settings} title={post.title} description={post.standfirst} image={post.leadImage} type="article" noindex={Boolean(post.draftNote)}>
-  <article class="post">
+  <article class:list={['post', `post--${layout}`]}>
     <header class="wrap post__head">
       <div class="grid">
+        {leadInHeader && (
+          <div class="post__headplate">
+            <Plate image={post.leadImage} ratio="3:4" sizes="(max-width:1024px) 100vw, 30vw" loading="eager" fetchpriority="high" />
+          </div>
+        )}
         <div class="post__headin">
-          <p class="eyebrow">{kicker(post)} · <time datetime={isoDate}>{formatDate(post.publishedAt)}</time></p>
-          <h1 class="display-l post__title">{post.title}</h1>
+          <p class="eyebrow">{eyebrow} · <time datetime={isoDate}>{formatDate(post.publishedAt)}</time></p>
+          <h1 class:list={[layout === 'note' ? 'display-m' : 'display-l', 'post__title']}>{post.title}</h1>
           <p class="standfirst post__standfirst">{post.standfirst}</p>
           <p class="caption post__byline">Styling OC{post.photoCredit ? ` · ${post.photoCredit}` : ''}</p>
           {post.draftNote && <p class="eyebrow post__draft">Draft — for client review</p>}
@@ -32,14 +49,26 @@ const portrait = Boolean(post.leadImage && post.leadImage.height > post.leadImag
       <div class="rule-black"></div>
     </header>
 
-    <div class="wrap post__lead">
-      <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes={portrait ? '(max-width: 640px) 100vw, 70vh' : '(max-width: 1600px) 100vw, 1560px'} loading="eager" fetchpriority="high" maxHeight={portrait ? '86vh' : '80vh'} fit={portrait ? 'height' : 'width'} />
-    </div>
+    {leadBelowRule && (
+      <div class="wrap post__lead">
+        {layout === 'essay' ? (
+          <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes="100vw" loading="eager" fetchpriority="high" fit="width" />
+        ) : (
+          <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes={portrait ? '(max-width: 640px) 100vw, 70vh' : '(max-width: 1600px) 100vw, 1560px'} loading="eager" fetchpriority="high" maxHeight={portrait ? '86vh' : '80vh'} fit={portrait ? 'height' : 'width'} />
+        )}
+      </div>
+    )}
 
     <div class="wrap">
       <div class="grid">
+        {leadInBody && (
+          <div class="post__noteplate">
+            <Plate image={post.leadImage} ratio="4:5" sizes="(max-width:1024px) 100vw, 40vw" loading="eager" fetchpriority="high" />
+          </div>
+        )}
         <div class="post__body">
-          <PortableText value={post.body} />
+          <PortableText value={post.body} layout={layout} interviewee={post.interviewee} />
+          {layout === 'interview' && post.signoff && <p class="italic post__signoff">{post.signoff}</p>}
         </div>
       </div>
     </div>
@@ -59,11 +88,35 @@ const portrait = Boolean(post.leadImage && post.leadImage.height > post.leadImag
   .post__draft{margin:0}
   .post__lead{padding-top:var(--space-5)}
   .post__body{grid-column:4 / span 6;padding-top:var(--section-y-tight);padding-bottom:var(--space-6)}
+
+  /* Interview: the portrait sits beside the title stack, never behind it. */
+  .post--interview .post__headplate{grid-column:1 / span 4}
+  .post--interview .post__headin{grid-column:6 / span 7}
+  .post__signoff{margin:var(--space-7) 0 0;font-size:var(--text-body);color:var(--ink-muted)}
+
+  /* Note: a short 52ch column with its plate in the left five. */
+  .post--note .post__headin{padding-bottom:var(--space-6)}
+  .post--note .post__noteplate{grid-column:1 / span 5;padding-top:var(--section-y-tight)}
+  .post--note .post__body{grid-column:7 / span 6}
+
+  /* Photo essay: the plates fill eight columns and the text keeps its measure inside them. */
+  .post--essay .post__body{grid-column:3 / span 8}
+
   @media (max-width:1024px){
     .post__headin{grid-column:1 / span 7}
     .post__body{grid-column:2 / span 6}
+    /* The split header stacks: the portrait runs full width above the title stack,
+       cropped to a band so the headline is not pushed a screen and a half down. */
+    .post--interview .post__headplate,.post--interview .post__headin{grid-column:1 / -1}
+    .post--interview .post__headplate :global(.plate__frame){max-height:56vh}
+    .post--note .post__noteplate{grid-column:1 / span 4}
+    .post--note .post__body{grid-column:5 / span 4}
+    .post--essay .post__body{grid-column:1 / -1}
   }
   @media (max-width:640px){
     .post__headin,.post__body{grid-column:1 / -1}
+    .post--interview .post__headplate,.post--note .post__noteplate{grid-column:1 / -1}
+    .post--interview .post__headin,.post--note .post__body,.post--essay .post__body{grid-column:1 / -1}
+    .post--note .post__noteplate{padding-top:var(--space-6)}
   }
 </style>
