@@ -1,7 +1,6 @@
 ---
-/* Journal body. One wide column offset on the grid, first paragraph under a Zodiak
-   drop cap on the feature layout, two heading levels, hairline-marked lists, and the
-   studio blocks. The page's layout is stamped onto every node so a block can shape
+/* Journal body. A centred serif column, two heading levels, hairline-marked lists and
+   the studio blocks. The page's layout is stamped onto every node so a block can shape
    itself without reading the DOM — the photo essay numbers its plates that way. */
 import { PortableText as PT } from 'astro-portabletext';
 import type { Layout } from '@/lib/sanity';
@@ -40,35 +39,36 @@ const components = {
 </div>
 
 <style is:global>
-  /* The column sets the measure now, so nothing here caps its own width in ch. */
-  .post .prose{font-size:var(--post-body);line-height:1.6;color:var(--ink-muted);max-width:none;text-wrap:pretty}
+  /* The centred column sets the measure, so nothing here caps its own width in ch.
+     The body is Zodiak upright at 19px — the serif voice the headline is set in. */
+  .post .prose{font-family:var(--font-editorial);font-weight:400;font-size:1.1875rem;line-height:1.7;color:var(--ink);max-width:none;text-wrap:pretty}
   /* :where() keeps the paragraph reset at zero specificity, so the sibling rule below
      still wins on direct children — `.prose p` would otherwise outrank `.prose > * + *`
      and every paragraph in the body would run into the next one. */
   .prose :where(p){margin:0}
   /* Left unprefixed on purpose: at one class it stays under the studio blocks' own
      scoped margins (a pull quote, a callout, a Q&A) exactly as it did before. */
-  .prose > * + *{margin-top:1.1em}
-  /* The drop cap belongs to the approved feature block and to nothing else. */
-  .post .prose--feature > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.6em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
-  .post .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-m);line-height:var(--leading-display-loose);letter-spacing:var(--track-display);color:var(--ink);margin-top:2.2em;max-width:none}
+  .prose > * + *{margin-top:1em}
+  .post .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:2.2em;max-width:none}
   .post .prose h2 + *{margin-top:.6em}
   /* Zodiak, never Archivo: a subheading is the display voice one step down. */
-  .post .prose h3{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:1.8em;max-width:none}
+  .post .prose h3{font-family:var(--font-display);font-weight:var(--weight-display);font-size:1.375rem;line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:1.8em;max-width:none}
   .post .prose h3 + *{margin-top:.6em}
   /* Scoped to the list block's own class: a bare `ul`/`li` selector also caught the
-     gallery row, which drew a black rule over the plates and a hairline under each. */
-  .post .prose .pt-list{margin-top:1.1em;border-top:var(--hairline) solid var(--rule-black)}
+     gallery row, which drew a black rule over the plates and a hairline under each.
+     A ruled list reads as a UI element, so it keeps the sans face. */
+  .post .prose .pt-list{margin-top:1.1em;border-top:var(--hairline) solid var(--rule-black);font-family:var(--font-body);font-size:0.9375rem;line-height:1.6}
   .post .prose .pt-list li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
-  .post .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1.08em;color:var(--ink)}
+  /* The body is already serif, so an emphasis is the italic cut at the same size. */
+  .post .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1em;color:var(--ink)}
   .post .prose strong{font-weight:500;color:var(--ink)}
   .post .prose a{color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid var(--rule-strong);transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
   .post .prose a:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
-  /* Wide plates and galleries already fill the ten-column body — no breakout needed. */
+  /* A column plate holds the text column exactly; a wide plate and a gallery break out
+     one column each side (cols 2–11 of the twelve); a full plate takes the viewport. */
   .post .prose .pt-img{margin-top:var(--space-8);margin-bottom:var(--space-8)}
-  .post .prose .pt-img--wide,.post .prose .pt-gallery{width:100%;margin-left:0}
-  /* A column plate is narrower than the text on purpose. */
-  .post .prose .pt-img--column{width:66%}
+  .post .prose .pt-img--column{width:100%}
+  .post .prose .pt-img--wide,.post .prose .pt-gallery{width:calc(100% + 2 * (100% / 8 + var(--grid-gap)));margin-left:calc(-1 * (100% / 8 + var(--grid-gap)))}
   .post .prose .pt-gallery{margin-top:var(--space-8);margin-bottom:var(--space-8)}
   /* --max-page is none on this site, so the full-bleed shift is measured from the
      element's own centre out to the gutters. */
@@ -77,8 +77,8 @@ const components = {
   /* Interview: an exchange is a label, an italic question and a roman answer. */
   .post .prose .pt-qa__a > p + p{margin-top:var(--space-4)}
 
-  /* Every small tracked line in a journal body holds 11px, never the 9px caption size. */
-  .post .caption,.post .eyebrow,.post .plate__caption,.post .pt-qa__who{font-size:var(--post-label)}
+  /* Every small tracked line in a journal page holds 11px, never the 9px caption size. */
+  .post .caption,.post .eyebrow,.post .plate__caption,.post .pt-qa__who,.post .plate__empty-label{font-size:var(--text-label-l)}
 
   /* Guide: a brass numeral counts the steps, on its own line above each h2. */
   .post .prose--guide{counter-reset:step}
@@ -90,10 +90,7 @@ const components = {
   .post .prose--essay .plate{counter-increment:plate}
   .post .prose--essay .plate__caption--numbered::before{content:counter(plate,decimal-leading-zero) "  ";font-family:var(--font-display);font-size:var(--text-numeral);color:var(--accent);letter-spacing:var(--track-numeral);display:block;margin-bottom:var(--space-2)}
 
-  /* Note: its column sits beside a plate, so nothing in it may break out to the viewport. */
-  .post .prose--note .pt-img--full{width:100%;margin-left:0}
-
   @media (max-width:1024px){
-    .post .prose .pt-img--column{width:100%}
+    .post .prose .pt-img--column,.post .prose .pt-img--wide,.post .prose .pt-gallery{width:100%;margin-left:0}
   }
 </style>

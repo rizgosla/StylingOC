@@ -32,14 +32,14 @@ export const postTemplates: Template[] = [
     id: 'post-feature', title: 'Journal post: Feature story', schemaType: 'post',
     value: () => ({
       ...base('feature', '4:5'),
-      body: [p(lorem(3)), p(lorem(2)), emptyImage('wide'), p(lorem(3)), h2('Lorem ipsum'), p(lorem(2)), loremQuote(), p(lorem(3)), emptyGallery(2), p(em(lorem(1)))],
+      body: [p(lorem(3)), p(lorem(2)), emptyImage('wide'), p(lorem(3)), h2('Lorem ipsum'), p(lorem(2)), emptyImage('column'), loremQuote(), p(lorem(3)), emptyGallery(2), p(em(lorem(1)))],
     }),
   },
   {
     id: 'post-essay', title: 'Journal post: Photo essay', schemaType: 'post',
     value: () => ({
       ...base('essay', '3:4'),
-      body: [p(lorem(2)), emptyGallery(2, '3:2'), p(lorem(3)), emptyImage('full'), p(lorem(2)), h2('Lorem ipsum'), p(lorem(3)), emptyGallery(3), loremQuote(), p(em(lorem(1)))],
+      body: [p(lorem(2)), emptyGallery(2, '3:2'), p(lorem(3)), emptyImage('full'), emptyImage('column'), p(lorem(2)), h2('Lorem ipsum'), p(lorem(3)), emptyGallery(3), emptyImage('wide'), loremQuote(), emptyImage('column'), p(em(lorem(1)))],
     }),
   },
   {
@@ -50,9 +50,10 @@ export const postTemplates: Template[] = [
       signoff: 'This conversation has been edited and condensed.',
       body: [
         p(lorem(2)),
+        emptyImage('wide'),
         qa('Lorem ipsum dolor sit amet, consectetur adipiscing elit?', p(lorem(2)), p(lorem(2))),
         qa('Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris?', p(lorem(3))),
-        emptyImage('column'),
+        emptyGallery(2),
         qa('Duis aute irure dolor in reprehenderit in voluptate velit esse?'),
         qa('Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia?', p(lorem(2))),
       ],
@@ -62,7 +63,7 @@ export const postTemplates: Template[] = [
     id: 'post-note', title: 'Journal post: Short note', schemaType: 'post',
     value: () => ({
       ...base('note', '4:5'),
-      body: [p(lorem(3)), p(lorem(2)), p(em(lorem(1)))],
+      body: [p(lorem(3)), emptyImage('column'), p(lorem(2)), emptyImage('wide'), p(em(lorem(1)))],
     }),
   },
   {
@@ -71,9 +72,10 @@ export const postTemplates: Template[] = [
       ...base('guide', '4:5'),
       body: [
         p(lorem(2)),
+        emptyImage('wide'),
         h2('Lorem ipsum'), p(lorem(3)), emptyImage('column'),
-        h2('Dolor sit amet'), p(lorem(2)), li(lorem(1)), li(lorem(1)), li(lorem(1)),
-        h2('Consectetur adipiscing'), p(lorem(3)), h3('Lorem subheading'), p(lorem(2)),
+        h2('Dolor sit amet'), p(lorem(2)), li(lorem(1)), li(lorem(1)), li(lorem(1)), emptyImage('column'),
+        h2('Consectetur adipiscing'), p(lorem(3)), emptyImage('column'), h3('Lorem subheading'), p(lorem(2)),
       ],
     }),
   },
