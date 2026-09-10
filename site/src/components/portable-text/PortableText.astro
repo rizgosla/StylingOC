@@ -1,5 +1,5 @@
 ---
-/* Journal body. A 64ch column offset on the grid, first paragraph under a Zodiak
+/* Journal body. One wide column offset on the grid, first paragraph under a Zodiak
    drop cap on the feature layout, two heading levels, hairline-marked lists, and the
    studio blocks. The page's layout is stamped onto every node so a block can shape
    itself without reading the DOM — the photo essay numbers its plates that way. */
@@ -40,55 +40,60 @@ const components = {
 </div>
 
 <style is:global>
-  .prose{font-size:var(--text-body);line-height:var(--leading-body);color:var(--ink-muted);max-width:var(--measure)}
+  /* The column sets the measure now, so nothing here caps its own width in ch. */
+  .post .prose{font-size:var(--post-body);line-height:1.6;color:var(--ink-muted);max-width:none;text-wrap:pretty}
   /* :where() keeps the paragraph reset at zero specificity, so the sibling rule below
      still wins on direct children — `.prose p` would otherwise outrank `.prose > * + *`
      and every paragraph in the body would run into the next one. */
   .prose :where(p){margin:0}
-  .prose > * + *{margin-top:var(--space-5)}
+  /* Left unprefixed on purpose: at one class it stays under the studio blocks' own
+     scoped margins (a pull quote, a callout, a Q&A) exactly as it did before. */
+  .prose > * + *{margin-top:1.1em}
   /* The drop cap belongs to the approved feature block and to nothing else. */
-  .prose--feature > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.2em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
-  .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:var(--space-8);max-width:24ch}
-  .prose h2 + *{margin-top:var(--space-4)}
-  .prose h3{font-family:var(--font-label);font-size:var(--text-title);font-weight:500;line-height:var(--leading-title);letter-spacing:0;color:var(--ink);margin-top:var(--space-7);max-width:var(--measure)}
-  .prose h3 + *{margin-top:var(--space-3)}
+  .post .prose--feature > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.6em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
+  .post .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-m);line-height:var(--leading-display-loose);letter-spacing:var(--track-display);color:var(--ink);margin-top:2.2em;max-width:none}
+  .post .prose h2 + *{margin-top:.6em}
+  /* Zodiak, never Archivo: a subheading is the display voice one step down. */
+  .post .prose h3{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:1.8em;max-width:none}
+  .post .prose h3 + *{margin-top:.6em}
   /* Scoped to the list block's own class: a bare `ul`/`li` selector also caught the
      gallery row, which drew a black rule over the plates and a hairline under each. */
-  .prose .pt-list{margin-top:var(--space-5);border-top:var(--hairline) solid var(--rule-black)}
-  .prose .pt-list li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
-  .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1.08em;color:var(--ink)}
-  .prose strong{font-weight:500;color:var(--ink)}
-  .prose a{color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid var(--rule-strong);transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
-  .prose a:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
-  /* Wide and full-bleed photographs break out of the 64ch column. */
-  .prose .pt-img{margin-top:var(--space-8);margin-bottom:var(--space-8)}
-  .prose .pt-img--wide,.prose .pt-gallery{width:calc(100% + 2 * var(--space-9));margin-left:calc(-1 * var(--space-9))}
-  .prose .pt-gallery{margin-top:var(--space-8);margin-bottom:var(--space-8)}
+  .post .prose .pt-list{margin-top:1.1em;border-top:var(--hairline) solid var(--rule-black)}
+  .post .prose .pt-list li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
+  .post .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1.08em;color:var(--ink)}
+  .post .prose strong{font-weight:500;color:var(--ink)}
+  .post .prose a{color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid var(--rule-strong);transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
+  .post .prose a:hover{color:var(--accent-strong);border-bottom-color:var(--accent)}
+  /* Wide plates and galleries already fill the ten-column body — no breakout needed. */
+  .post .prose .pt-img{margin-top:var(--space-8);margin-bottom:var(--space-8)}
+  .post .prose .pt-img--wide,.post .prose .pt-gallery{width:100%;margin-left:0}
+  /* A column plate is narrower than the text on purpose. */
+  .post .prose .pt-img--column{width:66%}
+  .post .prose .pt-gallery{margin-top:var(--space-8);margin-bottom:var(--space-8)}
   /* --max-page is none on this site, so the full-bleed shift is measured from the
      element's own centre out to the gutters. */
-  .prose .pt-img--full{width:calc(100vw - 2 * var(--gutter));margin-left:calc(50% - 50vw + var(--gutter));position:static;left:auto}
+  .post .prose .pt-img--full{width:calc(100vw - 2 * var(--gutter));margin-left:calc(50% - 50vw + var(--gutter));position:static;left:auto}
 
   /* Interview: an exchange is a label, an italic question and a roman answer. */
-  .prose .pt-qa__a > p + p{margin-top:var(--space-4)}
+  .post .prose .pt-qa__a > p + p{margin-top:var(--space-4)}
+
+  /* Every small tracked line in a journal body holds 11px, never the 9px caption size. */
+  .post .caption,.post .eyebrow,.post .plate__caption,.post .pt-qa__who{font-size:var(--post-label)}
 
   /* Guide: a brass numeral counts the steps, on its own line above each h2. */
-  .prose--guide{counter-reset:step}
-  .prose--guide h2{counter-increment:step}
-  .prose--guide h2::before{content:counter(step,decimal-leading-zero);display:block;font-family:var(--font-display);font-size:var(--text-numeral);letter-spacing:var(--track-numeral);color:var(--accent);line-height:1;margin-bottom:var(--space-3)}
+  .post .prose--guide{counter-reset:step}
+  .post .prose--guide h2{counter-increment:step}
+  .post .prose--guide h2::before{content:counter(step,decimal-leading-zero);display:block;font-family:var(--font-display);font-size:var(--text-numeral);letter-spacing:var(--track-numeral);color:var(--accent);line-height:1;margin-bottom:var(--space-3)}
 
-  /* Photo essay: the text keeps its measure while the plates fill all eight columns,
-     and every plate carries a brass numeral above its caption. */
-  .prose--essay{max-width:none;counter-reset:plate}
-  .prose--essay > p,.prose--essay > h2,.prose--essay > h3,.prose--essay > ul,.prose--essay > .pq,.prose--essay > .sc,.prose--essay > .pt-img--column{max-width:var(--measure)}
-  .prose--essay .pt-img--wide,.prose--essay .pt-gallery{width:100%;margin-left:0}
-  .prose--essay .plate{counter-increment:plate}
-  .prose--essay .plate__caption--numbered::before{content:counter(plate,decimal-leading-zero) "  ";font-family:var(--font-display);font-size:var(--text-numeral);color:var(--accent);letter-spacing:var(--track-numeral);display:block;margin-bottom:var(--space-2)}
+  /* Photo essay: every plate carries a brass numeral above its caption. */
+  .post .prose--essay{counter-reset:plate}
+  .post .prose--essay .plate{counter-increment:plate}
+  .post .prose--essay .plate__caption--numbered::before{content:counter(plate,decimal-leading-zero) "  ";font-family:var(--font-display);font-size:var(--text-numeral);color:var(--accent);letter-spacing:var(--track-numeral);display:block;margin-bottom:var(--space-2)}
 
-  /* Note: a short column beside its plate, so nothing in the body may break out of it. */
-  .prose--note{max-width:52ch}
-  .prose--note .pt-img--wide,.prose--note .pt-gallery,.prose--note .pt-img--full{width:100%;margin-left:0}
+  /* Note: its column sits beside a plate, so nothing in it may break out to the viewport. */
+  .post .prose--note .pt-img--full{width:100%;margin-left:0}
 
   @media (max-width:1024px){
-    .prose .pt-img--wide,.prose .pt-gallery{width:100%;margin-left:0}
+    .post .prose .pt-img--column{width:100%}
   }
 </style>

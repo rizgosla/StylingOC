@@ -79,44 +79,48 @@ const leadBelowRule = !leadInHeader && !leadInBody;
 </Base>
 
 <style>
+  /* The journal's own type scale. Scoped to the article so the home page and the
+     global tokens are untouched: a wide column wants a bigger body than a 64ch one. */
+  .post{
+    --post-body:clamp(1.0625rem,0.95rem + 0.35vw,1.3125rem);   /* 17px → 21px at 1900 */
+    --post-lead:clamp(1.25rem,1.1rem + 0.5vw,1.625rem);
+    --post-label:var(--text-label-l);                          /* 11px — never 9px in a body */
+  }
+
   .post__head{padding-top:clamp(28px,4vw,56px)}
-  .post__headin{grid-column:2 / span 9;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-7)}
+  .post__headin{grid-column:2 / span 10;display:flex;flex-direction:column;gap:var(--space-5);padding-bottom:var(--space-7)}
   .eyebrow{margin:0}
-  .post__title{margin:0;max-width:18ch;text-wrap:balance}
-  .post__standfirst{margin:0;max-width:60ch}
+  .post__title{margin:0;max-width:22ch;text-wrap:balance}
+  .post__standfirst{margin:0;max-width:44ch;font-size:var(--post-lead);line-height:1.5}
   .post__byline{margin:0}
   .post__draft{margin:0}
-  .post__lead{padding-top:var(--space-5)}
-  .post__body{grid-column:4 / span 6;padding-top:var(--section-y-tight);padding-bottom:var(--space-6)}
+  /* One wide column for every layout: ten of the twelve, indented by one. */
+  .post__body{grid-column:2 / span 10;padding-top:var(--section-y-tight);padding-bottom:var(--space-6)}
 
   /* Interview: the portrait sits beside the title stack, never behind it. */
   .post--interview .post__headplate{grid-column:1 / span 3}
   .post--interview .post__headin{grid-column:5 / span 8}
-  .post__signoff{margin:var(--space-7) 0 0;font-size:var(--text-body);color:var(--ink-muted)}
+  .post__signoff{margin:var(--space-7) 0 0;font-size:var(--post-body);color:var(--ink-muted)}
 
-  /* Note: a short 52ch column with its plate in the left four. */
+  /* Note: the only layout that keeps a split — its plate holds the left four. */
   .post--note .post__headin{padding-bottom:var(--space-6)}
   .post--note .post__noteplate{grid-column:1 / span 4;padding-top:var(--section-y-tight)}
   .post--note .post__body{grid-column:6 / span 7}
 
-  /* Photo essay: the plates fill eight columns and the text keeps its measure inside them. */
-  .post--essay .post__body{grid-column:3 / span 8}
-
   @media (max-width:1024px){
     .post__headin{grid-column:1 / span 7}
-    .post__body{grid-column:2 / span 6}
+    .post__body{grid-column:1 / -1}
     /* The split header stacks: the portrait runs full width above the title stack,
        cropped to a band so the headline is not pushed a screen and a half down. */
     .post--interview .post__headplate,.post--interview .post__headin{grid-column:1 / -1}
     .post--interview .post__headplate :global(.plate__frame){max-height:56vh}
     /* Every split stacks at tablet: the note's plate runs full width above its column. */
     .post--note .post__noteplate,.post--note .post__body{grid-column:1 / -1}
-    .post--essay .post__body{grid-column:1 / -1}
   }
   @media (max-width:640px){
     .post__headin,.post__body{grid-column:1 / -1}
     .post--interview .post__headplate,.post--note .post__noteplate{grid-column:1 / -1}
-    .post--interview .post__headin,.post--note .post__body,.post--essay .post__body{grid-column:1 / -1}
+    .post--interview .post__headin,.post--note .post__body{grid-column:1 / -1}
     .post--note .post__noteplate{padding-top:var(--space-6)}
   }
 </style>
