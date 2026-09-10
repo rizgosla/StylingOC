@@ -14,3 +14,6 @@ Thumbs.db
 .impeccable/live/accept-receipts/
 .impeccable/live/roots.json
 .impeccable/live/inject-journal.json
+
+# Firecrawl scrape cache
+.firecrawl/
