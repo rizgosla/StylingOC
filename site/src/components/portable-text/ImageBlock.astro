@@ -7,5 +7,8 @@ const { node } = Astro.props as any;
 const image = (node.image && node.image.src ? node.image : null) as Img | null;
 const width: 'column' | 'wide' | 'full' = node.width ?? 'wide';
 const sizes = width === 'full' ? '100vw' : width === 'wide' ? '(max-width: 1024px) 100vw, 70vw' : '(max-width: 1024px) 100vw, 50vw';
+/* A full-bleed plate is as wide as the page, so a tall picture would run for two screens;
+   it crops to a band instead. Wide and column plates keep their natural height. */
+const maxHeight = width === 'full' ? '88vh' : undefined;
 ---
-<Plate image={image} ratio={image ? 'natural' : '3:2'} sizes={sizes} class={`pt-img pt-img--${width}`} numbered={node.layout === 'essay'} />
+<Plate image={image} ratio={image ? 'natural' : '3:2'} sizes={sizes} maxHeight={maxHeight} class={`pt-img pt-img--${width}`} numbered={node.layout === 'essay'} />

@@ -35,7 +35,7 @@ const leadBelowRule = !leadInHeader && !leadInBody;
       <div class="grid">
         {leadInHeader && (
           <div class="post__headplate">
-            <Plate image={post.leadImage} ratio="3:4" sizes="(max-width:1024px) 100vw, 30vw" loading="eager" fetchpriority="high" />
+            <Plate image={post.leadImage} ratio="3:4" sizes="(max-width:1024px) 100vw, 22vw" loading="eager" fetchpriority="high" />
           </div>
         )}
         <div class="post__headin">
@@ -63,7 +63,7 @@ const leadBelowRule = !leadInHeader && !leadInBody;
       <div class="grid">
         {leadInBody && (
           <div class="post__noteplate">
-            <Plate image={post.leadImage} ratio="4:5" sizes="(max-width:1024px) 100vw, 40vw" loading="eager" fetchpriority="high" />
+            <Plate image={post.leadImage} ratio="4:5" sizes="(max-width:1024px) 100vw, 30vw" loading="eager" fetchpriority="high" />
           </div>
         )}
         <div class="post__body">
@@ -90,14 +90,14 @@ const leadBelowRule = !leadInHeader && !leadInBody;
   .post__body{grid-column:4 / span 6;padding-top:var(--section-y-tight);padding-bottom:var(--space-6)}
 
   /* Interview: the portrait sits beside the title stack, never behind it. */
-  .post--interview .post__headplate{grid-column:1 / span 4}
-  .post--interview .post__headin{grid-column:6 / span 7}
+  .post--interview .post__headplate{grid-column:1 / span 3}
+  .post--interview .post__headin{grid-column:5 / span 8}
   .post__signoff{margin:var(--space-7) 0 0;font-size:var(--text-body);color:var(--ink-muted)}
 
-  /* Note: a short 52ch column with its plate in the left five. */
+  /* Note: a short 52ch column with its plate in the left four. */
   .post--note .post__headin{padding-bottom:var(--space-6)}
-  .post--note .post__noteplate{grid-column:1 / span 5;padding-top:var(--section-y-tight)}
-  .post--note .post__body{grid-column:7 / span 6}
+  .post--note .post__noteplate{grid-column:1 / span 4;padding-top:var(--section-y-tight)}
+  .post--note .post__body{grid-column:6 / span 7}
 
   /* Photo essay: the plates fill eight columns and the text keeps its measure inside them. */
   .post--essay .post__body{grid-column:3 / span 8}

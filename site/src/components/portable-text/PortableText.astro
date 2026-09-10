@@ -41,16 +41,21 @@ const components = {
 
 <style is:global>
   .prose{font-size:var(--text-body);line-height:var(--leading-body);color:var(--ink-muted);max-width:var(--measure)}
+  /* :where() keeps the paragraph reset at zero specificity, so the sibling rule below
+     still wins on direct children — `.prose p` would otherwise outrank `.prose > * + *`
+     and every paragraph in the body would run into the next one. */
+  .prose :where(p){margin:0}
   .prose > * + *{margin-top:var(--space-5)}
-  .prose p{margin:0}
   /* The drop cap belongs to the approved feature block and to nothing else. */
   .prose--feature > p:first-child::first-letter{font-family:var(--font-display);font-weight:var(--weight-display);font-size:4.2em;line-height:.8;float:left;padding:.1em .12em 0 0;color:var(--ink)}
   .prose h2{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-s);line-height:var(--leading-title);letter-spacing:var(--track-display);color:var(--ink);margin-top:var(--space-8);max-width:24ch}
   .prose h2 + *{margin-top:var(--space-4)}
   .prose h3{font-family:var(--font-label);font-size:var(--text-title);font-weight:500;line-height:var(--leading-title);letter-spacing:0;color:var(--ink);margin-top:var(--space-7);max-width:var(--measure)}
   .prose h3 + *{margin-top:var(--space-3)}
-  .prose ul{margin-top:var(--space-5);border-top:var(--hairline) solid var(--rule-black)}
-  .prose li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
+  /* Scoped to the list block's own class: a bare `ul`/`li` selector also caught the
+     gallery row, which drew a black rule over the plates and a hairline under each. */
+  .prose .pt-list{margin-top:var(--space-5);border-top:var(--hairline) solid var(--rule-black)}
+  .prose .pt-list li{padding:var(--space-3) 0;border-bottom:var(--hairline) solid var(--rule);color:var(--ink)}
   .prose em{font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:1.08em;color:var(--ink)}
   .prose strong{font-weight:500;color:var(--ink)}
   .prose a{color:var(--ink);text-decoration:none;border-bottom:var(--hairline) solid var(--rule-strong);transition:border-color var(--dur-base) var(--ease-editorial),color var(--dur-base) var(--ease-editorial)}
@@ -74,7 +79,7 @@ const components = {
   /* Photo essay: the text keeps its measure while the plates fill all eight columns,
      and every plate carries a brass numeral above its caption. */
   .prose--essay{max-width:none;counter-reset:plate}
-  .prose--essay > p,.prose--essay > h2,.prose--essay > h3,.prose--essay > ul,.prose--essay > .pq{max-width:var(--measure)}
+  .prose--essay > p,.prose--essay > h2,.prose--essay > h3,.prose--essay > ul,.prose--essay > .pq,.prose--essay > .sc{max-width:var(--measure)}
   .prose--essay .pt-img--wide,.prose--essay .pt-gallery{width:100%;margin-left:0}
   .prose--essay .plate{counter-increment:plate}
   .prose--essay .plate__caption--numbered::before{content:counter(plate,decimal-leading-zero) "  ";font-family:var(--font-display);font-size:var(--text-numeral);color:var(--accent);letter-spacing:var(--track-numeral);display:block;margin-bottom:var(--space-2)}
