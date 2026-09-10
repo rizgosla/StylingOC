@@ -42,7 +42,7 @@ export const gallery = defineType({
   fields: [
     defineField({ name: 'items', title: 'Photographs', type: 'array', of: [defineArrayMember({ type: 'picture' })], description: 'One to three across. A single photograph renders as a wide plate.', validation: (r) => r.min(1).max(3) }),
     defineField({ name: 'ratio', title: 'Shared crop', type: 'string', initialValue: '4:5', options: { list: RATIOS, layout: 'radio' } }),
-    defineField({ name: 'caption', title: 'Group caption', type: 'string', description: 'Optional line under the row when the photographs have no captions of their own.' }),
+    defineField({ name: 'caption', title: 'Group caption', type: 'string', description: 'Optional line under the row, shown in addition to any captions on the photographs.' }),
   ],
   preview: {
     /* items.length is not selectable, so count the first three slots instead. */

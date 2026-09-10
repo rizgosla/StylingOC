@@ -57,3 +57,18 @@ export const imageBlock = (image: Img | null, width: BlockWidth = 'wide'): Image
 export const callout = (pkg: ServicePackage): ServiceCallout => ({ _type: 'serviceCallout', _key: key(), package: pkg });
 export const gallery = (items: Array<Img | null>, ratio: Ratio = '4:5', caption?: string): Gallery => ({ _type: 'gallery', _key: key(), items, ratio, caption });
 export const qa = (question: string, ...answer: Block[]): QaPair => ({ _type: 'qaPair', _key: key(), question, answer });
+
+/* ---------- filler ----------
+   Placeholder prose for the draft posts and the Studio's "Create new" templates, so
+   layouts can be reviewed before the client writes them. Anything built from `lorem`
+   carries a `draftNote`. */
+const LOREM = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.',
+];
+/** n lorem sentences, joined into one paragraph. */
+export const lorem = (n: number) => Array.from({ length: n }, (_, i) => LOREM[i % LOREM.length]).join(' ');

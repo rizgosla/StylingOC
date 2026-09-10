@@ -79,13 +79,14 @@ const components = {
   /* Photo essay: the text keeps its measure while the plates fill all eight columns,
      and every plate carries a brass numeral above its caption. */
   .prose--essay{max-width:none;counter-reset:plate}
-  .prose--essay > p,.prose--essay > h2,.prose--essay > h3,.prose--essay > ul,.prose--essay > .pq,.prose--essay > .sc{max-width:var(--measure)}
+  .prose--essay > p,.prose--essay > h2,.prose--essay > h3,.prose--essay > ul,.prose--essay > .pq,.prose--essay > .sc,.prose--essay > .pt-img--column{max-width:var(--measure)}
   .prose--essay .pt-img--wide,.prose--essay .pt-gallery{width:100%;margin-left:0}
   .prose--essay .plate{counter-increment:plate}
   .prose--essay .plate__caption--numbered::before{content:counter(plate,decimal-leading-zero) "  ";font-family:var(--font-display);font-size:var(--text-numeral);color:var(--accent);letter-spacing:var(--track-numeral);display:block;margin-bottom:var(--space-2)}
 
-  /* Note: a short column beside its plate. */
+  /* Note: a short column beside its plate, so nothing in the body may break out of it. */
   .prose--note{max-width:52ch}
+  .prose--note .pt-img--wide,.prose--note .pt-gallery,.prose--note .pt-img--full{width:100%;margin-left:0}
 
   @media (max-width:1024px){
     .prose .pt-img--wide,.prose .pt-gallery{width:100%;margin-left:0}

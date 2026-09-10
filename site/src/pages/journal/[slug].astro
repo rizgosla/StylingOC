@@ -52,7 +52,7 @@ const leadBelowRule = !leadInHeader && !leadInBody;
     {leadBelowRule && (
       <div class="wrap post__lead">
         {layout === 'essay' ? (
-          <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes="100vw" loading="eager" fetchpriority="high" fit="width" />
+          <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes="100vw" loading="eager" fetchpriority="high" maxHeight={portrait ? '86vh' : undefined} fit={portrait ? 'height' : 'width'} />
         ) : (
           <Plate image={post.leadImage} ratio={post.leadImage ? 'natural' : '3:2'} sizes={portrait ? '(max-width: 640px) 100vw, 70vh' : '(max-width: 1600px) 100vw, 1560px'} loading="eager" fetchpriority="high" maxHeight={portrait ? '86vh' : '80vh'} fit={portrait ? 'height' : 'width'} />
         )}
@@ -109,8 +109,8 @@ const leadBelowRule = !leadInHeader && !leadInBody;
        cropped to a band so the headline is not pushed a screen and a half down. */
     .post--interview .post__headplate,.post--interview .post__headin{grid-column:1 / -1}
     .post--interview .post__headplate :global(.plate__frame){max-height:56vh}
-    .post--note .post__noteplate{grid-column:1 / span 4}
-    .post--note .post__body{grid-column:5 / span 4}
+    /* Every split stacks at tablet: the note's plate runs full width above its column. */
+    .post--note .post__noteplate,.post--note .post__body{grid-column:1 / -1}
     .post--essay .post__body{grid-column:1 / -1}
   }
   @media (max-width:640px){

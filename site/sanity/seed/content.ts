@@ -4,7 +4,7 @@
    Copy is verbatim from the client collateral wherever it exists; sentences written
    for this site are flagged with `draftNote` so the client can rewrite them in Studio. */
 
-import { callout, em, gallery, h2, h3, imageBlock, li, p, qa, quote } from './pt';
+import { callout, em, gallery, h2, h3, imageBlock, li, lorem, p, qa, quote } from './pt';
 import type { BodyNode, Img, Layout, Ratio, ServicePackage } from './pt';
 
 /* Body shapes and the Portable Text builders live in ./pt.ts; they are re-exported
@@ -33,20 +33,6 @@ export interface HomePage {
   studioEyebrow: string; studioHeadline: string; studioBody: string[]; studioPortrait: Img | null; pillars: string[];
   inquiryEyebrow: string; inquiryHeadline: string; inquiryIntro: string; inquiryNote: string;
 }
-
-/* ---------- filler ----------
-   Placeholder prose for the draft posts, so the layouts can be reviewed before the
-   client writes them. Anything built from `lorem` carries a `draftNote`. */
-const LOREM = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-  'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.',
-];
-/** n lorem sentences, joined into one paragraph. */
-export const lorem = (n: number) => Array.from({ length: n }, (_, i) => LOREM[i % LOREM.length]).join(' ');
 
 /* ---------- images (the five originals; everything else is a placeholder) ---------- */
 export const images = {

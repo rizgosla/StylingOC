@@ -7,24 +7,17 @@
    the seed data those builders are used to write. */
 
 import type { Template } from 'sanity';
-import { em, gallery, h2, h3, imageBlock, key, li, p, qa, quote } from './seed/pt';
-import type { BlockWidth, Ratio } from './seed/pt';
+import { em, gallery, h2, h3, imageBlock, key, li, lorem, p, qa, quote } from './seed/pt';
+import type { BlockWidth, Layout, Ratio } from './seed/pt';
 
-const LOREM = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-  'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-];
-const lorem = (n: number) => Array.from({ length: n }, (_, i) => LOREM[i % LOREM.length]).join(' ');
-
-/* A picture with no asset: the page renders a "Photograph to come" frame. */
-const emptyPicture = () => ({ _type: 'picture', _key: key(), alt: 'Describe the photograph' });
+/* A picture with no asset: the page renders a "Photograph to come" frame. A `_key`
+   belongs only to array items, so the gallery adds one and the image block does not. */
+const emptyPicture = () => ({ _type: 'picture', alt: 'Describe the photograph' });
 const emptyImage = (width: BlockWidth) => ({ ...imageBlock(null, width), image: emptyPicture() });
-const emptyGallery = (n: number, ratio: Ratio = '4:5') => ({ ...gallery([], ratio), items: Array.from({ length: n }, () => emptyPicture()) });
+const emptyGallery = (n: number, ratio: Ratio = '4:5') => ({ ...gallery([], ratio), items: Array.from({ length: n }, () => ({ ...emptyPicture(), _key: key() })) });
 const loremQuote = () => quote(lorem(1), 'Name', 'Client');
 
-const base = (layout: string, ratio: Ratio) => ({
+const base = (layout: Layout, ratio: Ratio) => ({
   layout,
   title: 'Lorem ipsum: a headline in sentence case',
   standfirst: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',

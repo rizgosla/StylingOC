@@ -23,7 +23,7 @@ export const post = defineType({
   name: 'post', title: 'Journal post', type: 'document',
   groups: [{ name: 'story', title: 'Story', default: true }, { name: 'meta', title: 'Details' }],
   fields: [
-    defineField({ name: 'layout', title: 'Template', type: 'string', group: 'story', options: { list: LAYOUTS, layout: 'radio', direction: 'horizontal' }, initialValue: 'feature', description: 'Sets the page shape: hero, column and rhythm. The body stays free-form.', validation: (r) => r.required() }),
+    defineField({ name: 'layout', title: 'Template', type: 'string', group: 'story', options: { list: LAYOUTS, layout: 'radio', direction: 'horizontal' }, initialValue: 'feature', description: 'Sets the page shape: hero, column and rhythm. The body stays free-form.' }),
     defineField({ name: 'interviewee', title: 'In conversation with', type: 'string', group: 'story', description: 'First name of the person interviewed, e.g. Emily.', hidden: isNotInterview }),
     defineField({ name: 'signoff', title: 'Closing line', type: 'string', group: 'story', initialValue: 'This conversation has been edited and condensed.', hidden: isNotInterview }),
     defineField({ name: 'title', type: 'string', group: 'story', description: 'Sentence case: "A living room in Orange County, reconsidered".', validation: (r) => r.required().max(90) }),
