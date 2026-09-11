@@ -11,6 +11,7 @@ import TextLink from './TextLink.astro';
 import type { Img, Post } from '@/lib/sanity';
 import { kicker, picture } from '@/lib/sanity';
 import { landscapeFirst, portraitFirst, unique } from '@/lib/heroImages';
+import { HOME_ONLY } from '@/lib/site';
 
 interface Props {
   post: Post; rail?: Img[]; headline?: string; eyebrow?: string;
@@ -21,6 +22,11 @@ const { post, rail = [], headline, eyebrow, video = null } = Astro.props;
 const title = headline?.trim() || post.title;
 const label = eyebrow?.trim() || kicker(post);
 const href = `/journal/${post.slug}/`;
+/* Home-only: the stage is a picture and a headline, not a door to a story page. */
+const Frame = HOME_ONLY ? 'div' : 'a';
+const Title = HOME_ONLY ? 'span' : 'a';
+const frameAttrs: Record<string, string> = HOME_ONLY ? {} : { href, tabindex: '-1', 'aria-hidden': 'true' };
+const titleAttrs: Record<string, string> = HOME_ONLY ? {} : { href };
 
 const pool = unique([post.leadImage, ...rail]);
 const stage = landscapeFirst(pool)[0] ?? null;
@@ -37,7 +43,7 @@ const shot = stage ? picture(stage) : null;
 
     <div class="stage__main">
       <figure class="stage__plate">
-        <a class="stage__frame" href={href} tabindex="-1" aria-hidden="true">
+        <Frame class="stage__frame" {...frameAttrs}>
           {video && shot ? (
             <video class="stage__media" autoplay muted loop playsinline preload="metadata" poster={shot.src} data-stage-video>
               <source src={video.src} type={video.type ?? 'video/mp4'} />
@@ -47,7 +53,7 @@ const shot = stage ? picture(stage) : null;
           ) : (
             <span class="stage__empty"><span class="caption">Photograph to come</span></span>
           )}
-        </a>
+        </Frame>
       </figure>
     </div>
 
@@ -57,9 +63,9 @@ const shot = stage ? picture(stage) : null;
   </div>
   <div class="stage__text">
     <p class="eyebrow">{label}</p>
-    <h1 id="lead-title" class="stage__title"><a href={href} class="stage__link">{title}</a></h1>
+    <h1 id="lead-title" class="stage__title"><Title class="stage__link" {...titleAttrs}>{title}</Title></h1>
     <p class="standfirst stage__standfirst">{post.standfirst}</p>
-    <TextLink href={href} class="stage__more">Read the story</TextLink>
+    {!HOME_ONLY && <TextLink href={href} class="stage__more">Read the story</TextLink>}
   </div>
 </section>
 

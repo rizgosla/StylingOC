@@ -5,10 +5,12 @@
    links right). On small screens the nav row becomes a "Menu" text button that
    opens a full-height white panel. Nothing is ever transparent over a photograph. */
 import type { SiteSettings } from '@/lib/sanity';
+import { isLiveLink } from '@/lib/site';
 
 interface Props { settings: SiteSettings; current?: string }
 const { settings, current = '' } = Astro.props;
-const links = settings.nav;
+/* Only links the site can honour right now (on-page sections while it is home-only). */
+const links = settings.nav.filter((l) => isLiveLink(l.href));
 function isActive(href: string): boolean {
   const path = href.split('#')[0];
   return path.length > 1 && current.startsWith(path);

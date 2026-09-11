@@ -4,13 +4,14 @@
    wordmark and tagline left, the small-caps site links centred, the colophon right.
    Below 640px it stacks and centres again. No black rule, no cropped mark. */
 import type { SiteSettings } from '@/lib/sanity';
+import { isLiveLink } from '@/lib/site';
 
 interface Props { settings: SiteSettings }
 const { settings } = Astro.props;
 const year = new Date().getFullYear();
 const place = settings.location || 'Orange County, California';
 const links = [
-  ...settings.nav.filter((l) => Boolean(l.href) && l.href !== '/#inquire'),
+  ...settings.nav.filter((l) => isLiveLink(l.href) && l.href !== '/#inquire'),
   ...(settings.instagram ? [{ label: 'Instagram', href: settings.instagram }] : []),
 ] as { label: string; href: string }[];
 ---

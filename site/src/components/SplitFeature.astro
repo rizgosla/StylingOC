@@ -6,22 +6,28 @@ import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { Post } from '@/lib/sanity';
 import { firstParagraph, kicker } from '@/lib/sanity';
+import { HOME_ONLY } from '@/lib/site';
 
 interface Props { post: Post; eyebrow?: string }
 const { post, eyebrow = 'Feature' } = Astro.props;
 const href = `/journal/${post.slug}/`;
 const para = firstParagraph(post);
+/* Home-only: plate and headline stay, the anchors and the "Read the story" line go. */
+const Img = HOME_ONLY ? 'div' : 'a';
+const Title = HOME_ONLY ? 'span' : 'a';
+const imgAttrs: Record<string, string> = HOME_ONLY ? {} : { href, tabindex: '-1', 'aria-hidden': 'true' };
+const titleAttrs: Record<string, string> = HOME_ONLY ? {} : { href };
 ---
 <section class="wrap sf section" aria-labelledby="sf-title">
   <div class="grid sf__grid">
-    <a class="sf__img reveal" href={href} tabindex="-1" aria-hidden="true">
+    <Img class="sf__img reveal" {...imgAttrs}>
       <Plate image={post.leadImage} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 36vw" />
-    </a>
+    </Img>
     <div class="sf__text reveal">
       <p class="eyebrow eyebrow--ink sf__eyebrow">{eyebrow} · {kicker(post)}</p>
-      <h2 id="sf-title" class="display-l sf__title"><a class="sf__link" href={href}>{post.title}</a></h2>
+      <h2 id="sf-title" class="display-l sf__title"><Title class="sf__link" {...titleAttrs}>{post.title}</Title></h2>
       <p class="sf__para dropcap">{para}</p>
-      <TextLink href={href}>Read the story</TextLink>
+      {!HOME_ONLY && <TextLink href={href}>Read the story</TextLink>}
     </div>
   </div>
 </section>

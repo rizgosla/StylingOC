@@ -3,6 +3,7 @@
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { HomePage } from '@/lib/sanity';
+import { HOME_ONLY } from '@/lib/site';
 
 interface Props { home: HomePage }
 const { home } = Astro.props;
@@ -34,7 +35,7 @@ const { home } = Astro.props;
           )
         ))}
       </div>
-      <TextLink href="/journal/">Read the journal</TextLink>
+      {!HOME_ONLY && <TextLink href="/journal/">Read the journal</TextLink>}
     </div>
   </div>
 </section>
