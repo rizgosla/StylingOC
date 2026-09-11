@@ -50,8 +50,11 @@ const titleAttrs: Record<string, string> = HOME_ONLY ? {} : { href };
   }
   @media (max-width:640px){
     .sf__img,.sf__text{grid-column:1 / -1}
-    /* Kicker and headline centre under the plate; the drop-capped paragraph stays ranged left. */
-    .sf__eyebrow,.sf__title{text-align:center}
+    /* Everything centres under the plate. A floated drop cap would pull the first
+       lines off the axis, so on a phone the opening letter sits at text size. */
+    .sf__text{align-items:center;text-align:center}
     .sf__title{margin-inline:auto}
+    .sf__text :global(.tl){align-self:center}
+    .sf__para::first-letter{float:none;font:inherit;padding:0;color:inherit}
   }
 </style>
