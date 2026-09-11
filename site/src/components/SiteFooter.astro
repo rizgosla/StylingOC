@@ -32,8 +32,8 @@ const links = [
 
 <style>
   .ft{background:var(--surface)}
-  /* The band spans the viewport: negative gutters pull it past .wrap, the hairline is its own. */
-  .ft__stack{margin-inline:calc(-1 * var(--gutter));border-top:var(--hairline) solid var(--rule);display:grid;grid-template-columns:1fr auto 1fr;align-items:end;column-gap:var(--space-6);text-align:left;padding:var(--space-6) var(--space-5)}
+  /* The band sits inside the page gutters, a section's worth of air below the form. */
+  .ft__stack{margin-top:var(--section-y-tight);border-top:var(--hairline) solid var(--rule);display:grid;grid-template-columns:1fr auto 1fr;align-items:end;column-gap:var(--space-6);text-align:left;padding:var(--space-6) 0 var(--space-7)}
   .ft__lead{display:flex;flex-direction:column;align-items:flex-start}
   .ft__mark{font-family:var(--font-display);font-weight:var(--weight-display-strong);font-size:var(--text-display-m);line-height:1;letter-spacing:var(--track-display-wide);text-transform:uppercase;color:var(--ink);text-decoration:none;border:0;white-space:nowrap;transition:color var(--dur-base) var(--ease-editorial)}
   .ft__mark:hover{color:var(--accent-strong)}
@@ -55,7 +55,7 @@ const links = [
   .ft__email:hover::after,.ft__email:focus-visible::after{width:100%}
   .ft__email:hover{color:var(--accent-strong)}
   @media (max-width:640px){
-    .ft__stack{display:flex;flex-direction:column;align-items:center;text-align:center;padding:var(--space-7) var(--gutter) var(--space-8)}
+    .ft__stack{display:flex;flex-direction:column;align-items:center;text-align:center;padding:var(--space-7) 0 var(--space-8)}
     .ft__lead{align-items:center}
     .ft__mark{font-size:clamp(2rem,9vw,3rem)}
     .ft__links{margin-top:var(--space-6);gap:var(--space-2) var(--space-5)}
