@@ -58,7 +58,7 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
         </div>
         <div class="iq__field iq__field--message">
           <label for="iq-message" class="eyebrow eyebrow--muted">Tell us about the project <span class="iq__req" aria-hidden="true">*</span></label>
-          <textarea id="iq-message" name="message" rows="3" required maxlength="4000" aria-describedby="iq-hint"></textarea>
+          <textarea id="iq-message" name="message" rows="1" required maxlength="4000" aria-describedby="iq-hint"></textarea>
         </div>
         <div class="iq__hp" aria-hidden="true">
           <label for="iq-company">Company</label>
@@ -90,7 +90,7 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
   .iq__field label{display:block}
   .iq__req{color:var(--accent-strong)}
   .iq__field input,.iq__field select,.iq__field textarea{width:100%;min-height:44px;border:0;border-bottom:var(--hairline) solid var(--rule-strong);background:transparent;padding:10px 0;color:var(--ink);font-family:var(--font-body);font-weight:var(--weight-body);font-size:var(--text-body);line-height:1.5;transition:border-color var(--dur-base) var(--ease-editorial)}
-  .iq__field textarea{resize:vertical;min-height:72px}
+  .iq__field textarea{resize:vertical;min-height:44px;height:44px}
   .iq__field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 9px) 55%,calc(100% - 4px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:24px;cursor:pointer}
   .iq__field input:focus,.iq__field select:focus,.iq__field textarea:focus{outline:none;border-bottom-color:var(--accent-strong)}
   .iq__field input:focus-visible,.iq__field select:focus-visible,.iq__field textarea:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:3px}
@@ -118,6 +118,8 @@ const note = [hint, home.inquiryNote].filter(Boolean).join(' · ');
   }
   @media (max-width:640px){
     .iq__intro,.iq__form{grid-column:1 / -1}
+    .iq__intro{align-items:center;text-align:center}
+    .iq__title,.iq__lede{margin-inline:auto}
     .iq__fields{grid-template-columns:minmax(0,1fr)}
     .iq__field--interest,.iq__field--message{grid-column:1 / -1}
     .iq__actions{flex-wrap:wrap;justify-content:flex-start}

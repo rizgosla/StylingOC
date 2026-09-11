@@ -7,12 +7,10 @@ import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { ServicePackage } from '@/lib/sanity';
 
-interface Props { id: string; eyebrow: string; headline: string; intro: string; packages: ServicePackage[] }
-const { id, eyebrow, headline, intro, packages } = Astro.props;
+interface Props { id: string; headline: string; intro: string; packages: ServicePackage[] }
+const { id, headline, intro, packages } = Astro.props;
 ---
 <section class="wrap sgd section-tight" id={id} aria-labelledby={`${id}-title`}>
-  <p class="eyebrow eyebrow--ink sgd__kicker">{eyebrow}</p>
-  <div class="rule-black"></div>
   <div class="grid sgd__body">
     <div class="sgd__desc reveal">
       <h2 id={`${id}-title`} class="display-l sgd__title">{headline}</h2>
@@ -40,7 +38,6 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
 
 <style>
   .sgd{scroll-margin-top:72px}
-  .sgd__kicker{margin:0 0 var(--space-5);text-align:center}
   .sgd__body{padding:var(--section-y-tight) 0 var(--space-9);align-items:center}
   .sgd__desc{grid-column:1 / span 4;display:flex;flex-direction:column;gap:var(--space-5);padding-right:var(--column-gap)}
   .sgd__title{margin:0;max-width:12ch;text-wrap:balance;font-size:clamp(2.5rem,3.5vw,4.25rem);line-height:1.05}
@@ -59,7 +56,10 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
   .sgd__price .label{font-size:var(--text-lede)}
   .sgd__note{margin:var(--space-4) 0 0;font-family:var(--font-editorial);font-style:italic;font-weight:300;font-size:var(--text-title);line-height:1.55;color:var(--ink-muted);max-width:26ch}
   @media (max-width:1024px){
-    .sgd__desc{grid-column:1 / -1;padding-right:0;padding-bottom:var(--space-6);border-bottom:var(--hairline) solid var(--rule)}
+    /* Stacked above the centred experiences, the description centres with them. */
+    .sgd__desc{grid-column:1 / -1;padding-right:0;padding-bottom:var(--space-6);border-bottom:var(--hairline) solid var(--rule);align-items:center;text-align:center}
+    .sgd__title,.sgd__lede{margin-inline:auto}
+    .sgd__desc :global(.tl){align-self:center}
     .sgd__items{grid-column:1 / -1}
   }
   @media (max-width:640px){

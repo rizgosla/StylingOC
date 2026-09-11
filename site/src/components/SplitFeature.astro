@@ -50,5 +50,8 @@ const titleAttrs: Record<string, string> = HOME_ONLY ? {} : { href };
   }
   @media (max-width:640px){
     .sf__img,.sf__text{grid-column:1 / -1}
+    /* Kicker and headline centre under the plate; the drop-capped paragraph stays ranged left. */
+    .sf__eyebrow,.sf__title{text-align:center}
+    .sf__title{margin-inline:auto}
   }
 </style>

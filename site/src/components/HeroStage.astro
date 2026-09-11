@@ -95,7 +95,6 @@ const shot = stage ? picture(stage) : null;
   .stage__standfirst{margin:0;max-width:none;font-size:var(--text-lede);text-wrap:pretty}
   .eyebrow{margin:0}
   .stage__text :global(.stage__more){align-self:center}
-  @media (max-width:640px){.stage__text :global(.stage__more){align-self:flex-start}}
 
   @media (max-width:640px){
     .stage__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--g)}
@@ -103,7 +102,7 @@ const shot = stage ? picture(stage) : null;
     .stage__rail--left{order:2;grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--g)}
     .stage__rail--right{display:none}
     .stage__cell :global(.plate__frame){height:auto;aspect-ratio:3 / 4 !important}
-    .stage__text{padding:var(--space-4) 0 0;margin-bottom:calc(var(--space-4) - var(--section-y-tight));max-width:none;align-items:flex-start;text-align:left}
+    .stage__text{padding:var(--space-4) 0 0;margin-bottom:calc(var(--space-4) - var(--section-y-tight));max-width:none}
     .stage__title{font-size:var(--text-display-s)}
   }
 </style>

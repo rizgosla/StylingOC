@@ -42,4 +42,9 @@ const titleAttrs: Record<string, string> = HOME_ONLY ? {} : { href };
   .card__link{color:var(--ink);text-decoration:none;border:0;background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-size:0 var(--hairline);background-position:0 100%;transition:background-size var(--dur-base) var(--ease-rule)}
   .card__link:hover,.card__link:focus-visible{background-size:100% var(--hairline)}
   .card__dek{margin:0;max-width:none;white-space:nowrap;overflow-x:clip;font-size:min(var(--text-body-s), calc(100cqw / (var(--dek-chars) * 0.47)))}
+  /* One story per row on a phone: the words centre under the plate. */
+  @media (max-width:640px){
+    .card__meta{align-items:center;text-align:center}
+    .card__rule{align-self:stretch}
+  }
 </style>

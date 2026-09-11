@@ -5,8 +5,9 @@
    where the browser lacks it). The heading and introduction are the first panel; each
    package is a panel behind a full-height hairline: a large thin numeral, the plate,
    the title and the price in full. Panels alternate between two heights; the plates are all the same size.
-   Below 1025px, and under prefers-reduced-motion, it is an ordinary sideways-scrolling
-   row instead of a pinned one. */
+   It pins at every width: on a phone the introduction fills the first screen, centred,
+   and each package takes most of the next. Only under prefers-reduced-motion is it an
+   ordinary sideways-scrolling row instead. */
 import Plate from './Plate.astro';
 import TextLink from './TextLink.astro';
 import type { ServicePackage } from '@/lib/sanity';
@@ -32,7 +33,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
           <li class:list={['col__panel', i % 2 ? 'col__panel--high' : 'col__panel--low']}>
             <span class="col__num" aria-hidden="true">{p.numeral}</span>
             <div class="col__plate">
-              <Plate image={p.image ?? null} ratio="4:5" sizes="(max-width: 1024px) 60vw, 19vw" caption={false} />
+              <Plate image={p.image ?? null} ratio="4:5" sizes="(max-width: 640px) 78vw, (max-width: 1024px) 44vw, 19vw" caption={false} />
             </div>
             <h3 class="col__name">{p.title}</h3>
             <p class="col__price"><span class="label">{p.price}</span>{p.priceNote && <span class="col__pn">{p.priceNote}</span>}</p>
@@ -45,12 +46,13 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
 
 <style>
   /* Geometry shared by both modes: the intro panel and the package panels have fixed
-     viewport widths so the row's length — and therefore the pinned scroll distance —
-     is known in CSS: intro 34vw + n × 24vw. */
-  /* The intro panel ends exactly on the story grid's first divider, so that one vertical
-     line runs straight down from the stories into the menu; the package panels then keep
-     their own narrower rhythm. 100cqw is the section's own width (scrollbar excluded). */
-  .col{--sgcol:calc((100cqw - 2 * var(--gutter) - 4 * var(--column-gap)) / 3);--intro-w:calc(var(--gutter) + var(--sgcol) + var(--column-gap));--panel-w:max(24cqw,420px);--bar:64px;container-type:inline-size;position:relative;scroll-margin-top:0}
+     widths so the row's length — and therefore the pinned scroll distance — is known in
+     CSS: intro + n × panel. The widths live on the section so the pin height and the
+     panels read the same values. 100cqw is the section's own width (scrollbar excluded). */
+  /* On wide screens the intro panel ends exactly on the story grid's first divider, so
+     that one vertical line runs straight down from the stories into the menu; the package
+     panels then keep their own narrower rhythm. */
+  .col{--sgcol:calc((100cqw - 2 * var(--gutter) - 4 * var(--column-gap)) / 3);--intro-w:calc(var(--gutter) + var(--sgcol) + var(--column-gap));--panel-w:max(24cqw,420px);--bar:64px;--stagger:min(9vh,80px);container-type:inline-size;position:relative;scroll-margin-top:0}
   /* The row starts on the page's left gutter and runs off the right edge of the screen. */
   .col__track{display:flex;align-items:stretch;margin:0;padding:0;width:max-content}
   .col__panel{flex:0 0 var(--panel-w);width:var(--panel-w);display:flex;flex-direction:column;gap:var(--space-4);padding:0 clamp(20px,2.4vw,44px);border-left:var(--hairline) solid var(--rule);min-width:0}
@@ -67,36 +69,51 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
   .col__price{margin:0;display:flex;flex-direction:column;gap:2px;color:var(--ink)}
   .col__pn{font-size:0.75rem;line-height:1.5;color:var(--ink-muted);max-width:26ch}
 
-  /* Pinned mode (wide screens, motion allowed). */
-  @media (min-width:1025px) and (prefers-reduced-motion:no-preference){
-    .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100cqw + 100vh)}
-    .col__frame{position:sticky;top:0;height:100vh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
-    .col__track{height:100vh;will-change:transform}
+  /* Tablet: the story grid above has stacked, so the intro is no longer tied to it. */
+  @media (max-width:1024px){
+    .col{--panel-w:clamp(300px,44cqw,420px);--intro-w:min(100cqw,560px)}
+  }
+  /* Phone: the introduction is the whole first screen, set centred; each package panel
+     takes most of the next. The plate is capped by the screen's height so a panel always
+     fits inside the pinned frame, even under the browser's toolbars. */
+  @media (max-width:640px){
+    .col{--panel-w:78cqw;--intro-w:100cqw;--stagger:min(3svh,28px)}
+    .col__panel--intro{padding-inline:var(--gutter)}
+    .col__introin{align-items:center;text-align:center;margin-inline:auto}
+    .col__title,.col__lede{margin-inline:auto}
+    .col__introin :global(.tl){align-self:center}
+    .col__hint{margin-top:var(--space-5)}
+    .col__panel{padding-inline:clamp(18px,5cqw,28px)}
+    .col__plate{width:min(100%,36svh)}
+  }
+
+  /* Pinned mode (every width, motion allowed). svh keeps the frame steady while a phone's
+     toolbars show and hide; on the desktop it equals vh. */
+  @media (prefers-reduced-motion:no-preference){
+    .col__pin{height:calc(var(--intro-w) + var(--n) * var(--panel-w) - 100cqw + 100svh)}
+    .col__frame{position:sticky;top:0;height:100svh;overflow:hidden;border-top:var(--hairline) solid var(--rule-black);border-bottom:var(--hairline) solid var(--rule)}
+    .col__track{height:100svh;will-change:transform}
     /* Panels centre in the pinned viewport and stagger around that centre; the plate keeps
        its full panel width at every viewport height, so its size never changes. */
-    .col__panel{--stagger:min(9vh,80px);justify-content:center;padding-top:var(--bar);padding-bottom:0}
+    .col__panel{justify-content:center;padding-top:var(--bar);padding-bottom:0}
     .col__panel--intro{justify-content:center;padding-top:var(--bar);padding-bottom:var(--bar)}
     .col__panel--high{padding-bottom:calc(2 * var(--stagger))}
     .col__panel--low{padding-top:calc(var(--bar) + 2 * var(--stagger))}
     .col__track:focus-visible{outline:var(--hairline) solid var(--focus-ring);outline-offset:-6px}
   }
 
-  /* Row mode (narrow screens, or reduced motion): native sideways scroll. */
-  @media (max-width:1024px), (prefers-reduced-motion:reduce){
+  /* Row mode (reduced motion): native sideways scroll. */
+  @media (prefers-reduced-motion:reduce){
     .col{padding-block:var(--section-y-tight)}
-    .col__pin{border-top:0}
     .col__frame{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
     .col__frame::-webkit-scrollbar{display:none}
     .col__track{padding-top:var(--space-7);padding-right:var(--gutter);padding-bottom:var(--space-8)}
     .col__panel{scroll-snap-align:start;padding-top:var(--space-4)}
-        .col__panel{--panel-w:clamp(280px,42vw,400px)}
-    .col__panel--intro{--intro-w:min(88vw,480px);padding-left:var(--gutter);justify-content:flex-start}
+    .col__panel--intro{justify-content:flex-start}
     .col__hint{display:none}
   }
-  @media (max-width:640px){
-    .col__panel{--panel-w:68vw !important}
-    .col__panel--intro{--intro-w:88vw;flex-basis:88vw;width:88vw}
-    .col__panel--low{padding-top:var(--space-7)}
+  @media (max-width:640px) and (prefers-reduced-motion:reduce){
+    .col{--intro-w:88cqw}
   }
 </style>
 
@@ -105,7 +122,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
 <style is:inline>
   @keyframes soc-collage-slide { from { transform: translateX(0); } to { transform: translateX(calc(100cqw - 100%)); } }
   @supports (animation-timeline: view()) {
-    @media (min-width: 1025px) and (prefers-reduced-motion: no-preference) {
+    @media (prefers-reduced-motion: no-preference) {
       .col__pin { view-timeline-name: --soc-collage; view-timeline-axis: block; }
       .col__track {
         animation-name: soc-collage-slide;
@@ -125,7 +142,7 @@ const { id, eyebrow, headline, intro, packages } = Astro.props;
     document.querySelectorAll<HTMLElement>('[data-collage]').forEach((root) => {
       const pin = root.querySelector<HTMLElement>('.col__pin')!;
       const track = root.querySelector<HTMLElement>('.col__track')!;
-      const pinned = () => matchMedia('(min-width: 1025px) and (prefers-reduced-motion: no-preference)').matches;
+      const pinned = () => matchMedia('(prefers-reduced-motion: no-preference)').matches;
       let ticking = false;
       const update = () => {
         ticking = false;

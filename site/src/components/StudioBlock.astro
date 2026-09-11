@@ -9,7 +9,7 @@ interface Props { home: HomePage }
 const { home } = Astro.props;
 ---
 <section class="wrap st section-tight" id="studio" aria-labelledby="st-title">
-  <div class="rule-black"></div>
+  <div class="rule"></div>
   <div class="grid st__grid">
     <div class="st__img reveal">
       <Plate image={home.studioPortrait} ratio="4:5" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
@@ -61,5 +61,11 @@ const { home } = Astro.props;
   }
   @media (max-width:640px){
     .st__img,.st__text{grid-column:1 / -1}
+    /* Eyebrow, names, pillars and the italic lede centre; the longer paragraphs stay ranged left. */
+    .st__text{align-items:center;text-align:center;padding-right:0}
+    .st__pillars{justify-content:center}
+    .st__text :global(.tl){align-self:center}
+    .st__body{align-self:stretch}
+    .st__body .body:not(.st__lede){text-align:left}
   }
 </style>
